@@ -41,12 +41,15 @@ export default function Navbar({ isHome }) {
         className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-12"
         aria-label="Primary"
       >
+      <div className='flex flex-row items-center gap-2'>
+      <img src='/public/ever.png' alt='logo' height={30} width={30}/>
         <Link
           to="/"
           className="text-sm font-semibold tracking-[0.2em] md:text-lg md:tracking-[0.25em]"
         >
           EVERVALE REALTY
         </Link>
+        </div>
         <div className="hidden items-center gap-8 md:flex">
           {links.map((link) => (
             <NavLink
