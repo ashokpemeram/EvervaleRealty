@@ -42,7 +42,7 @@ export default function Navbar({ isHome }) {
         aria-label="Primary"
       >
       <div className='flex flex-row items-center gap-2'>
-      <img src='/public/ever.png' alt='logo' height={30} width={30}/>
+      <img src='/ever.png' alt='logo' height={30} width={30}/>
         <Link
           to="/"
           className="text-sm font-semibold tracking-[0.2em] md:text-lg md:tracking-[0.25em]"
