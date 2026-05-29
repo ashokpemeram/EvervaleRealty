@@ -1,4 +1,4 @@
-﻿import useScrollReveal from '../hooks/useScrollReveal'
+import useScrollReveal from '../hooks/useScrollReveal'
 import {
   ExchangeIcon,
   PortfolioIcon,
@@ -143,7 +143,7 @@ export default function Services() {
             </p>
             <h2 className="mt-3 text-3xl font-semibold">Beyond Transactions</h2>
             <div className="mt-8 space-y-6">
-              {approach.map((item, index) => (
+              {approach.map((item) => (
                 <div
                   key={item.title}
                   className="flex items-start gap-4 border-b border-navy/10 pb-6"

@@ -1,8 +1,18 @@
-﻿import useScrollReveal from '../hooks/useScrollReveal'
+import { useLocation } from 'react-router-dom'
+import useScrollReveal from '../hooks/useScrollReveal'
 import { MailIcon, MapPinIcon, PhoneIcon } from '../components/Icons'
 
 export default function Contact() {
   useScrollReveal()
+  const location = useLocation()
+  
+  const ventureName = location.state?.ventureName || ''
+  const plotNumber = location.state?.plotNumber || ''
+  const plotPrice = location.state?.plotPrice || ''
+
+  const prefilledMessage = ventureName && plotNumber
+    ? `I am interested in acquiring ${plotNumber} at ${ventureName} (listed at ${plotPrice}). Please coordinate a private briefing with my office.`
+    : ''
 
   return (
     <div className="bg-ivory">
@@ -140,6 +150,7 @@ export default function Contact() {
                 </label>
                 <textarea
                   rows="5"
+                  defaultValue={prefilledMessage}
                   placeholder="Tell us about your property or project..."
                   className="w-full rounded-2xl border border-navy/10 bg-ivory px-4 py-3 text-sm focus:border-gold focus:outline-none"
                 />

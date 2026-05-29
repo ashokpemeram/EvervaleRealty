@@ -11,6 +11,7 @@ export default {
       fontFamily: {
         heading: ['Poppins', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         body: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        serif: ['Playfair Display', 'Georgia', 'ui-serif', 'serif'],
       },
       boxShadow: {
         soft: '0 18px 40px rgba(11, 31, 58, 0.14)',

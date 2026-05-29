@@ -1,10 +1,11 @@
-﻿import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { ArrowUpRight } from './Icons'
 
 export default function ServiceCard({
   title,
   description,
   cta,
+  // eslint-disable-next-line no-unused-vars
   icon: Icon,
   highlight,
   delay,

@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Services from './pages/Services'
 import Contact from './pages/Contact'
+import Visualizer from './pages/Visualizer'
 import LoadingScreen from './components/LoadingScreen'
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/visualizer" element={<Visualizer />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

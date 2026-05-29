@@ -1,8 +1,10 @@
-﻿import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import HeroSection from '../components/HeroSection'
 import ServiceCard from '../components/ServiceCard'
 import PropertyCard from '../components/PropertyCard'
 import TestimonialCard from '../components/TestimonialCard'
+import PlotPlanViewer from '../components/PlotPlanViewer'
 import useScrollReveal from '../hooks/useScrollReveal'
 import {
   ExchangeIcon,
@@ -43,22 +45,250 @@ const services = [
 
 const properties = [
   {
-    name: 'Nocturne Ridge Estate',
-    location: 'Bel Air, Los Angeles',
-    price: '$9.8M',
-    tag: 'NEW ACQUISITION',
+    name: 'Evervale Oakridge Estates',
+    location: 'Austin Hills, TX',
+    price: 'From $450K',
+    tag: 'VENTURE PLOTS',
     image:
       'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80',
-    details: { beds: 5, baths: 6, area: '7,900 sq ft' },
+    details: { totalPlots: 8, area: '80\' x 120\' - 120\' x 160\'' },
+    plots: [
+      {
+        id: 'oak-plot-1',
+        number: 'Plot 1',
+        dimensions: "80' x 120'",
+        area: '9,600 sq ft',
+        price: '$450K',
+        status: 'available',
+        x: 100,
+        y: 80,
+        width: 80,
+        height: 60,
+        zoning: 'Residential Land',
+        verification: 'Approved'
+      },
+      {
+        id: 'oak-plot-2',
+        number: 'Plot 2',
+        dimensions: "80' x 120'",
+        area: '9,600 sq ft',
+        price: '$465K',
+        status: 'available',
+        x: 190,
+        y: 80,
+        width: 80,
+        height: 60,
+        zoning: 'Residential Land',
+        verification: 'Approved'
+      },
+      {
+        id: 'oak-plot-3',
+        number: 'Plot 3',
+        dimensions: "90' x 130'",
+        area: '11,700 sq ft',
+        price: '$510K',
+        status: 'reserved',
+        x: 280,
+        y: 80,
+        width: 80,
+        height: 60,
+        zoning: 'Residential Land',
+        verification: 'Approved'
+      },
+      {
+        id: 'oak-plot-4',
+        number: 'Plot 4',
+        dimensions: "90' x 130'",
+        area: '11,700 sq ft',
+        price: '$495K',
+        status: 'available',
+        x: 370,
+        y: 80,
+        width: 80,
+        height: 60,
+        zoning: 'Residential Land',
+        verification: 'Approved'
+      },
+      {
+        id: 'oak-plot-5',
+        number: 'Plot 5',
+        dimensions: "100' x 140'",
+        area: '14,000 sq ft',
+        price: '$580K',
+        status: 'sold',
+        x: 100,
+        y: 200,
+        width: 80,
+        height: 60,
+        zoning: 'Residential Land',
+        verification: 'Approved'
+      },
+      {
+        id: 'oak-plot-6',
+        number: 'Plot 6',
+        dimensions: "100' x 140'",
+        area: '14,000 sq ft',
+        price: '$610K',
+        status: 'available',
+        x: 190,
+        y: 200,
+        width: 80,
+        height: 60,
+        zoning: 'Residential Land',
+        verification: 'Approved'
+      },
+      {
+        id: 'oak-plot-7',
+        number: 'Plot 7',
+        dimensions: "110' x 150'",
+        area: '16,500 sq ft',
+        price: '$680K',
+        status: 'reserved',
+        x: 280,
+        y: 200,
+        width: 80,
+        height: 60,
+        zoning: 'Residential Land',
+        verification: 'Approved'
+      },
+      {
+        id: 'oak-plot-8',
+        number: 'Plot 8',
+        dimensions: "120' x 160'",
+        area: '19,200 sq ft',
+        price: '$750K',
+        status: 'sold',
+        x: 370,
+        y: 200,
+        width: 80,
+        height: 60,
+        zoning: 'Residential Land',
+        verification: 'Approved'
+      }
+    ]
   },
   {
-    name: 'Harborlight Villa',
-    location: 'Miami Beach, FL',
-    price: '$6.4M',
-    tag: 'NEW ACQUISITION',
+    name: 'Evervale Lakeside Estates',
+    location: 'Lake Tahoe, NV',
+    price: 'From $590K',
+    tag: 'VENTURE PLOTS',
     image:
       'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1200&q=80',
-    details: { beds: 4, baths: 5, area: '5,300 sq ft' },
+    details: { totalPlots: 8, area: '90\' x 130\' - 130\' x 180\'' },
+    plots: [
+      {
+        id: 'lake-plot-1',
+        number: 'Plot 1',
+        dimensions: "90' x 130'",
+        area: '11,700 sq ft',
+        price: '$590K',
+        status: 'available',
+        x: 100,
+        y: 80,
+        width: 80,
+        height: 60,
+        zoning: 'Residential Land',
+        verification: 'Approved'
+      },
+      {
+        id: 'lake-plot-2',
+        number: 'Plot 2',
+        dimensions: "90' x 130'",
+        area: '11,700 sq ft',
+        price: '$610K',
+        status: 'available',
+        x: 190,
+        y: 80,
+        width: 80,
+        height: 60,
+        zoning: 'Residential Land',
+        verification: 'Approved'
+      },
+      {
+        id: 'lake-plot-3',
+        number: 'Plot 3',
+        dimensions: "100' x 140'",
+        area: '14,000 sq ft',
+        price: '$650K',
+        status: 'reserved',
+        x: 280,
+        y: 80,
+        width: 80,
+        height: 60,
+        zoning: 'Residential Land',
+        verification: 'Approved'
+      },
+      {
+        id: 'lake-plot-4',
+        number: 'Plot 4',
+        dimensions: "100' x 140'",
+        area: '14,000 sq ft',
+        price: '$630K',
+        status: 'available',
+        x: 370,
+        y: 80,
+        width: 80,
+        height: 60,
+        zoning: 'Residential Land',
+        verification: 'Approved'
+      },
+      {
+        id: 'lake-plot-5',
+        number: 'Plot 5',
+        dimensions: "110' x 150'",
+        area: '16,500 sq ft',
+        price: '$720K',
+        status: 'sold',
+        x: 100,
+        y: 200,
+        width: 80,
+        height: 60,
+        zoning: 'Residential Land',
+        verification: 'Approved'
+      },
+      {
+        id: 'lake-plot-6',
+        number: 'Plot 6',
+        dimensions: "110' x 150'",
+        area: '16,500 sq ft',
+        price: '$740K',
+        status: 'available',
+        x: 190,
+        y: 200,
+        width: 80,
+        height: 60,
+        zoning: 'Residential Land',
+        verification: 'Approved'
+      },
+      {
+        id: 'lake-plot-7',
+        number: 'Plot 7',
+        dimensions: "120' x 160'",
+        area: '19,200 sq ft',
+        price: '$810K',
+        status: 'reserved',
+        x: 280,
+        y: 200,
+        width: 80,
+        height: 60,
+        zoning: 'Residential Land',
+        verification: 'Approved'
+      },
+      {
+        id: 'lake-plot-8',
+        number: 'Plot 8',
+        dimensions: "130' x 180'",
+        area: '23,400 sq ft',
+        price: '$890K',
+        status: 'sold',
+        x: 370,
+        y: 200,
+        width: 80,
+        height: 60,
+        zoning: 'Residential Land',
+        verification: 'Approved'
+      }
+    ]
   },
   {
     name: 'Summit Glasshouse',
@@ -103,6 +333,13 @@ const testimonials = [
 
 export default function Home() {
   useScrollReveal()
+  const [isViewerOpen, setIsViewerOpen] = useState(false)
+  const [selectedVenture, setSelectedVenture] = useState(null)
+
+  const handleViewPlots = (venture) => {
+    setSelectedVenture(venture)
+    setIsViewerOpen(true)
+  }
 
   return (
     <div className="bg-ivory">
@@ -155,6 +392,7 @@ export default function Home() {
                 key={property.name}
                 {...property}
                 delay={index * 120}
+                onViewPlots={() => handleViewPlots(property)}
               />
             ))}
           </div>
@@ -176,7 +414,7 @@ export default function Home() {
               <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
                 <ShieldIcon className="h-10 w-10 text-gold" />
                 <p className="mt-6 text-lg font-semibold uppercase tracking-[0.2em] text-white/80">
-                  CAN YOU OUT OUR SAFE. SWIFT FOR WORSE
+                  SECURE. SWIFT. DISCREET.
                 </p>
               </div>
               <p className="text-sm text-white/70">
@@ -282,6 +520,12 @@ export default function Home() {
           </Link>
         </div>
       </section>
+      
+      <PlotPlanViewer
+        venture={selectedVenture}
+        isOpen={isViewerOpen}
+        onClose={() => setIsViewerOpen(false)}
+      />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-﻿import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { InstagramIcon, LinkedinIcon, XIcon } from './Icons'
 
 const socialLinks = [
@@ -42,7 +42,7 @@ export default function Footer() {
               <Link to="/services">Asset Management</Link>
             </li>
             <li>
-              <a href="#">Private Listings</a>
+              <Link to="/visualizer">AI Visualiser</Link>
             </li>
           </ul>
         </div>
