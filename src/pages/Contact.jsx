@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import useScrollReveal from '../hooks/useScrollReveal'
 import { MailIcon, MapPinIcon, PhoneIcon } from '../components/Icons'
@@ -5,14 +6,56 @@ import { MailIcon, MapPinIcon, PhoneIcon } from '../components/Icons'
 export default function Contact() {
   useScrollReveal()
   const location = useLocation()
-  
+
+  // Dynamic Contact state synced with localStorage
+  const [contact] = useState(() => {
+    const cachedContact = localStorage.getItem('evervale_contact')
+    return cachedContact ? JSON.parse(cachedContact) : {
+      address: '428 Penthouse Plaza, Art District, NY 10012',
+      phone: '+1 (212) 555-0198',
+      email: 'concierge@evervale.com'
+    }
+  })
+
   const ventureName = location.state?.ventureName || ''
   const plotNumber = location.state?.plotNumber || ''
   const plotPrice = location.state?.plotPrice || ''
 
-  const prefilledMessage = ventureName && plotNumber
-    ? `I am interested in acquiring ${plotNumber} at ${ventureName} (listed at ${plotPrice}). Please coordinate a private briefing with my office.`
-    : ''
+  // Controlled Form States
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  const [preferredContact, setPreferredContact] = useState('Email')
+  const [message, setMessage] = useState(() => {
+    return (ventureName && plotNumber)
+      ? `I am interested in acquiring ${plotNumber} at ${ventureName} (listed at ${plotPrice}). Please coordinate a private briefing with my office.`
+      : ''
+  })
+  const [success, setSuccess] = useState(false)
+
+  // Submit and save lead inquiry to local DB
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    const newInquiry = {
+      id: `lead-${Date.now()}`,
+      name,
+      email,
+      phone,
+      contact: preferredContact,
+      message
+    }
+
+    const cached = localStorage.getItem('evervale_inquiries')
+    const current = cached ? JSON.parse(cached) : []
+    localStorage.setItem('evervale_inquiries', JSON.stringify([...current, newInquiry]))
+
+    setSuccess(true)
+    setName('')
+    setEmail('')
+    setPhone('')
+    setMessage('')
+  }
 
   return (
     <div className="bg-ivory">
@@ -51,7 +94,7 @@ export default function Contact() {
                     <p className="text-xs uppercase tracking-[0.2em] text-white/60">
                       Office
                     </p>
-                    <p>428 Penthouse Plaza, Art District, NY 10012</p>
+                    <p>{contact.address}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -60,7 +103,7 @@ export default function Contact() {
                     <p className="text-xs uppercase tracking-[0.2em] text-white/60">
                       Phone
                     </p>
-                    <p>+1 (212) 555-0198</p>
+                    <p>{contact.phone}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -69,7 +112,7 @@ export default function Contact() {
                     <p className="text-xs uppercase tracking-[0.2em] text-white/60">
                       Email
                     </p>
-                    <p>concierge@evervale.com</p>
+                    <p>{contact.email}</p>
                   </div>
                 </div>
               </div>
@@ -98,70 +141,108 @@ export default function Contact() {
             className="reveal rounded-4xl bg-white p-8 shadow-soft"
             data-animate
           >
-            <h2 className="text-lg font-semibold">Inquiry Submission</h2>
-            <form className="mt-6 space-y-5">
-              <div className="grid gap-5 md:grid-cols-2">
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-[0.2em] text-navy/50">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="John Doe"
-                    className="w-full rounded-2xl border border-navy/10 bg-ivory px-4 py-3 text-sm focus:border-gold focus:outline-none"
-                  />
+            {success ? (
+              <div className="flex flex-col items-center justify-center text-center py-16 animate-fade-in select-none">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gold/15 text-gold mb-6">
+                  {/* Big Checkmark */}
+                  <svg className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-[0.2em] text-navy/50">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    placeholder="john@example.com"
-                    className="w-full rounded-2xl border border-navy/10 bg-ivory px-4 py-3 text-sm focus:border-gold focus:outline-none"
-                  />
-                </div>
+                <h3 className="text-2xl font-serif text-navy font-semibold">Briefing Request Submitted</h3>
+                <p className="text-sm text-navy/60 max-w-sm mt-3 leading-relaxed">
+                  Our private office concierge has registered your operational requirements. A partner will coordinate with your counsel shortly.
+                </p>
+                <button
+                  onClick={() => setSuccess(false)}
+                  className="mt-8 rounded-full border border-navy/20 px-6 py-2.5 text-xs font-semibold tracking-widest text-navy hover:bg-navy hover:text-white transition-all duration-300 uppercase"
+                >
+                  Submit Another Inquiry
+                </button>
               </div>
-              <div className="grid gap-5 md:grid-cols-2">
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-[0.2em] text-navy/50">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    placeholder="+1 (000) 000-0000"
-                    className="w-full rounded-2xl border border-navy/10 bg-ivory px-4 py-3 text-sm focus:border-gold focus:outline-none"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-[0.2em] text-navy/50">
-                    Preferred Contact
-                  </label>
-                  <select className="w-full rounded-2xl border border-navy/10 bg-ivory px-4 py-3 text-sm focus:border-gold focus:outline-none">
-                    <option>Email</option>
-                    <option>Phone</option>
-                    <option>Private Briefing</option>
-                  </select>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-[0.2em] text-navy/50">
-                  Your Message
-                </label>
-                <textarea
-                  rows="5"
-                  defaultValue={prefilledMessage}
-                  placeholder="Tell us about your property or project..."
-                  className="w-full rounded-2xl border border-navy/10 bg-ivory px-4 py-3 text-sm focus:border-gold focus:outline-none"
-                />
-              </div>
-              <button
-                type="submit"
-                className="rounded-full bg-gold px-7 py-3 text-sm font-semibold tracking-[0.2em] text-navy"
-              >
-                INQUIRY SUBMISSION
-              </button>
-            </form>
+            ) : (
+              <>
+                <h2 className="text-lg font-semibold">Inquiry Submission</h2>
+                <form onSubmit={handleSubmit} className="mt-6 space-y-5">
+                  <div className="grid gap-5 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <label className="text-xs uppercase tracking-[0.2em] text-navy/50 font-bold">
+                        Full Name
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="John Doe"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="w-full rounded-2xl border border-navy/10 bg-ivory px-4 py-3 text-sm focus:border-gold focus:outline-none"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs uppercase tracking-[0.2em] text-navy/50 font-bold">
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        placeholder="john@example.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full rounded-2xl border border-navy/10 bg-ivory px-4 py-3 text-sm focus:border-gold focus:outline-none"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="grid gap-5 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <label className="text-xs uppercase tracking-[0.2em] text-navy/50 font-bold">
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        placeholder="+1 (000) 000-0000"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        className="w-full rounded-2xl border border-navy/10 bg-ivory px-4 py-3 text-sm focus:border-gold focus:outline-none"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs uppercase tracking-[0.2em] text-navy/50 font-bold">
+                        Preferred Contact
+                      </label>
+                      <select
+                        value={preferredContact}
+                        onChange={(e) => setPreferredContact(e.target.value)}
+                        className="w-full rounded-2xl border border-navy/10 bg-ivory px-4 py-3 text-sm focus:border-gold focus:outline-none"
+                      >
+                        <option>Email</option>
+                        <option>Phone</option>
+                        <option>Private Briefing</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs uppercase tracking-[0.2em] text-navy/50 font-bold">
+                      Your Message
+                    </label>
+                    <textarea
+                      rows="5"
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      placeholder="Tell us about your property or project..."
+                      className="w-full rounded-2xl border border-navy/10 bg-ivory px-4 py-3 text-sm focus:border-gold focus:outline-none"
+                      required
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="rounded-full bg-gold px-7 py-3 text-sm font-semibold tracking-[0.2em] text-navy transition-all duration-300 hover:shadow-card hover:-translate-y-0.5 uppercase"
+                  >
+                    INQUIRY SUBMISSION
+                  </button>
+                </form>
+              </>
+            )}
           </div>
         </div>
       </section>

@@ -53,10 +53,10 @@ export default function Footer() {
               <Link to="/about">Our Story</Link>
             </li>
             <li>
-              <a href="#">Press</a>
+              <Link to="/admin">Admin Portal</Link>
             </li>
             <li>
-              <a href="#">Careers</a>
+              <a href="#">Press</a>
             </li>
           </ul>
         </div>

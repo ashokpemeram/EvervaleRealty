@@ -76,7 +76,7 @@ function getContrastColor(hexColor) {
   const g = parseInt(cleanHex.substring(2, 4), 16)
   const b = parseInt(cleanHex.substring(4, 6), 16)
   const yiq = (r * 299 + g * 587 + b * 114) / 1000
-  return yiq >= 128 ? '#0A0F1E' : '#FFFFFF'
+  return yiq >= 128 ? '#0B1F3A' : '#FFFFFF'
 }
 
 export default function Visualizer() {
@@ -448,17 +448,17 @@ export default function Visualizer() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0F1E] text-white py-12 px-4 md:px-8 font-sans">
+    <div className="min-h-screen bg-ivory text-navy pt-28 pb-16 px-4 md:px-8 font-sans">
       <div className="mx-auto max-w-[1280px]">
         {/* Header Block with custom fonts */}
         <header className="mb-10 text-center md:text-left">
-          <span className="text-xs font-semibold uppercase tracking-[0.4em] text-[#E0A500]">
+          <span className="text-xs font-semibold uppercase tracking-[0.4em] text-gold">
             Advanced Generative Advisory
           </span>
-          <h1 className="mt-2 text-4xl md:text-5xl font-serif text-white tracking-wide">
+          <h1 className="mt-2 text-4xl md:text-5xl font-serif text-navy tracking-wide">
             AI House Visualiser
           </h1>
-          <p className="mt-3 text-sm text-[#9E9A90] max-w-xl">
+          <p className="mt-3 text-sm text-navy/70 max-w-xl">
             Enter your plot details. Claude will generate a high-performance vector floor plan mapped to custom style and environmental frameworks.
           </p>
         </header>
@@ -467,38 +467,38 @@ export default function Visualizer() {
         <div className="grid gap-8 lg:grid-cols-[420px,1fr] items-start">
           
           {/* Sticky Left Form Panel */}
-          <aside className="bg-[#0F1A3A] border border-white/10 rounded-2xl p-6 md:p-8 space-y-6 lg:sticky lg:top-24">
+          <aside className="bg-white border border-navy/10 rounded-4xl p-6 md:p-8 space-y-6 lg:sticky lg:top-28 shadow-soft text-navy">
             <div>
-              <h2 className="text-xl font-bold text-white tracking-wide">Design Inputs</h2>
-              <p className="text-xs text-[#9E9A90] mt-1">Configure layout specifications below</p>
+              <h2 className="text-xl font-bold text-navy tracking-wide">Design Inputs</h2>
+              <p className="text-xs text-navy/60 mt-1">Configure layout specifications below</p>
             </div>
 
             <form onSubmit={handleGenerate} className="space-y-5">
               {/* Plot Dimensions Input Group */}
               <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-white/50 font-bold">1. Plot Dimensions (ft)</label>
+                <label className="text-xs uppercase tracking-widest text-navy/60 font-bold">1. Plot Dimensions (ft)</label>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <span className="text-[10px] text-gray-400 block mb-1">Width (20-100)</span>
+                    <span className="text-[10px] text-navy/40 block mb-1">Width (20-100)</span>
                     <input
                       type="number"
                       min="20"
                       max="100"
                       value={form.width_ft}
                       onChange={(e) => setForm(prev => ({ ...prev, width_ft: Number(e.target.value) }))}
-                      className="w-full bg-[#0A0F1E] border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#E0A500]"
+                      className="w-full bg-ivory border border-navy/15 rounded px-3 py-2 text-sm text-navy focus:outline-none focus:border-gold"
                       required
                     />
                   </div>
                   <div>
-                    <span className="text-[10px] text-gray-400 block mb-1">Depth (30-120)</span>
+                    <span className="text-[10px] text-navy/40 block mb-1">Depth (30-120)</span>
                     <input
                       type="number"
                       min="30"
                       max="120"
                       value={form.depth_ft}
                       onChange={(e) => setForm(prev => ({ ...prev, depth_ft: Number(e.target.value) }))}
-                      className="w-full bg-[#0A0F1E] border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#E0A500]"
+                      className="w-full bg-ivory border border-navy/15 rounded px-3 py-2 text-sm text-navy focus:outline-none focus:border-gold"
                       required
                     />
                   </div>
@@ -507,14 +507,14 @@ export default function Visualizer() {
 
               {/* Main Structural Settings */}
               <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-white/50 font-bold">2. Configuration</label>
+                <label className="text-xs uppercase tracking-widest text-navy/60 font-bold">2. Configuration</label>
                 <div className="grid grid-cols-3 gap-2">
                   <div>
-                    <span className="text-[10px] text-gray-400 block mb-1">Facing</span>
+                    <span className="text-[10px] text-navy/40 block mb-1">Facing</span>
                     <select
                       value={form.facing}
                       onChange={(e) => setForm(prev => ({ ...prev, facing: e.target.value }))}
-                      className="w-full bg-[#0A0F1E] border border-white/10 rounded px-2.5 py-2 text-xs text-white focus:outline-none focus:border-[#E0A500]"
+                      className="w-full bg-ivory border border-navy/15 rounded px-2.5 py-2 text-xs text-navy focus:outline-none focus:border-gold"
                     >
                       <option>East</option>
                       <option>West</option>
@@ -523,11 +523,11 @@ export default function Visualizer() {
                     </select>
                   </div>
                   <div>
-                    <span className="text-[10px] text-gray-400 block mb-1">Floors</span>
+                    <span className="text-[10px] text-navy/40 block mb-1">Floors</span>
                     <select
                       value={form.floors}
                       onChange={(e) => setForm(prev => ({ ...prev, floors: e.target.value }))}
-                      className="w-full bg-[#0A0F1E] border border-white/10 rounded px-2.5 py-2 text-xs text-white focus:outline-none focus:border-[#E0A500]"
+                      className="w-full bg-ivory border border-navy/15 rounded px-2.5 py-2 text-xs text-navy focus:outline-none focus:border-gold"
                     >
                       <option>G</option>
                       <option>G+1</option>
@@ -535,11 +535,11 @@ export default function Visualizer() {
                     </select>
                   </div>
                   <div>
-                    <span className="text-[10px] text-gray-400 block mb-1">BHK</span>
+                    <span className="text-[10px] text-navy/40 block mb-1">BHK</span>
                     <select
                       value={form.bhk}
                       onChange={(e) => setForm(prev => ({ ...prev, bhk: e.target.value }))}
-                      className="w-full bg-[#0A0F1E] border border-white/10 rounded px-2.5 py-2 text-xs text-white focus:outline-none focus:border-[#E0A500]"
+                      className="w-full bg-ivory border border-navy/15 rounded px-2.5 py-2 text-xs text-navy focus:outline-none focus:border-gold"
                     >
                       <option>1 BHK</option>
                       <option>2 BHK</option>
@@ -551,14 +551,14 @@ export default function Visualizer() {
 
               {/* Utility configuration */}
               <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-white/50 font-bold">3. Rooms Needed</label>
+                <label className="text-xs uppercase tracking-widest text-navy/60 font-bold">3. Rooms Needed</label>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <span className="text-[10px] text-gray-400 block mb-1">Bathrooms</span>
+                    <span className="text-[10px] text-navy/40 block mb-1">Bathrooms</span>
                     <select
                       value={form.bathrooms}
                       onChange={(e) => setForm(prev => ({ ...prev, bathrooms: e.target.value }))}
-                      className="w-full bg-[#0A0F1E] border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#E0A500]"
+                      className="w-full bg-ivory border border-navy/15 rounded px-3 py-2 text-sm text-navy focus:outline-none focus:border-gold"
                     >
                       <option>1</option>
                       <option>2</option>
@@ -566,11 +566,11 @@ export default function Visualizer() {
                     </select>
                   </div>
                   <div>
-                    <span className="text-[10px] text-gray-400 block mb-1">Parking Lot</span>
+                    <span className="text-[10px] text-navy/40 block mb-1">Parking Lot</span>
                     <select
                       value={form.parking}
                       onChange={(e) => setForm(prev => ({ ...prev, parking: e.target.value }))}
-                      className="w-full bg-[#0A0F1E] border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#E0A500]"
+                      className="w-full bg-ivory border border-navy/15 rounded px-3 py-2 text-sm text-navy focus:outline-none focus:border-gold"
                     >
                       <option>None</option>
                       <option>1 car</option>
@@ -582,7 +582,7 @@ export default function Visualizer() {
 
               {/* Multi-Select Requirements Chips */}
               <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-white/50 font-bold">4. Special Requirements</label>
+                <label className="text-xs uppercase tracking-widest text-navy/60 font-bold">4. Special Requirements</label>
                 <div className="flex flex-wrap gap-2 pt-1">
                   {[
                     'Pooja room', 'Study room', 'Open terrace', 
@@ -597,8 +597,8 @@ export default function Visualizer() {
                         onClick={() => handleToggleRequirement(option)}
                         className={`px-3 py-1.5 rounded-full text-xs font-semibold tracking-wider transition-all duration-300 ${
                           isSelected
-                            ? 'bg-[#E0A500] text-[#0A0F1E]'
-                            : 'bg-transparent border border-white/20 text-[#9E9A90] hover:border-white/50'
+                            ? 'bg-gold text-navy'
+                            : 'bg-transparent border border-navy/20 text-navy/70 hover:border-navy/50'
                         }`}
                       >
                         {option}
@@ -610,7 +610,7 @@ export default function Visualizer() {
 
               {/* Single Select Style Preference Chips */}
               <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-white/50 font-bold">5. Style Preference</label>
+                <label className="text-xs uppercase tracking-widest text-navy/60 font-bold">5. Style Preference</label>
                 <div className="flex flex-wrap gap-2 pt-1">
                   {[
                     'Modern minimalist', 'Traditional/Vastu', 
@@ -624,8 +624,8 @@ export default function Visualizer() {
                         onClick={() => setForm(prev => ({ ...prev, stylePreference: option }))}
                         className={`px-3.5 py-1.5 rounded text-xs font-semibold tracking-wider transition-all duration-300 ${
                           isSelected
-                            ? 'bg-[#E0A500] text-[#0A0F1E]'
-                            : 'bg-transparent border border-white/20 text-[#9E9A90] hover:border-white/50'
+                            ? 'bg-gold text-navy'
+                            : 'bg-transparent border border-navy/20 text-navy/70 hover:border-navy/50'
                         }`}
                       >
                         {option}
@@ -640,12 +640,12 @@ export default function Visualizer() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 bg-[#E0A500] hover:bg-[#c28f00] disabled:bg-gray-800 disabled:text-gray-500 rounded text-[#0A0F1E] font-bold text-xs tracking-widest flex items-center justify-center gap-2.5 transition-all duration-300 uppercase shadow-soft"
+                  className="w-full py-3.5 bg-gold hover:bg-gold/90 disabled:bg-gray-200 disabled:text-gray-400 rounded text-navy font-bold text-xs tracking-widest flex items-center justify-center gap-2.5 transition-all duration-300 uppercase shadow-soft"
                 >
                   {loading ? (
                     <>
                       {/* Loading Spinner */}
-                      <svg className="animate-spin h-4 w-4 text-[#0A0F1E]" fill="none" viewBox="0 0 24 24">
+                      <svg className="animate-spin h-4 w-4 text-navy" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                       </svg>
@@ -664,44 +664,44 @@ export default function Visualizer() {
             
             {layout ? (
               // Active Floorplan View
-              <section className="bg-[#0F1A3A] border border-white/10 rounded-2xl p-6 md:p-8 space-y-6">
+              <section className="bg-white border border-navy/10 text-navy rounded-4xl p-6 md:p-8 space-y-6 shadow-soft">
                 
                 {/* 1. Dynamic Stats Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 border-b border-white/10 pb-6 text-center md:text-left select-none">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 border-b border-navy/10 pb-6 text-center md:text-left select-none">
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest text-[#9E9A90] font-bold">Plot Size</p>
-                    <p className="text-base font-semibold text-white mt-0.5">{form.width_ft} × {form.depth_ft} ft</p>
+                    <p className="text-[10px] uppercase tracking-widest text-navy/50 font-bold">Plot Size</p>
+                    <p className="text-base font-semibold text-navy mt-0.5">{form.width_ft} × {form.depth_ft} ft</p>
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest text-[#9E9A90] font-bold">Total Area</p>
-                    <p className="text-base font-semibold text-white mt-0.5">{form.width_ft * form.depth_ft} sqft</p>
+                    <p className="text-[10px] uppercase tracking-widest text-navy/50 font-bold">Total Area</p>
+                    <p className="text-base font-semibold text-navy mt-0.5">{form.width_ft * form.depth_ft} sqft</p>
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest text-[#9E9A90] font-bold">Built-up Area</p>
-                    <p className="text-base font-semibold text-[#E0A500] mt-0.5">~{Math.round(form.width_ft * form.depth_ft * 0.63)} sqft</p>
+                    <p className="text-[10px] uppercase tracking-widest text-navy/50 font-bold">Built-up Area</p>
+                    <p className="text-base font-semibold text-gold mt-0.5">~{Math.round(form.width_ft * form.depth_ft * 0.63)} sqft</p>
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest text-[#9E9A90] font-bold">Configuration</p>
-                    <p className="text-base font-semibold text-white mt-0.5">{form.bhk} · {form.floors}</p>
+                    <p className="text-[10px] uppercase tracking-widest text-navy/50 font-bold">Configuration</p>
+                    <p className="text-base font-semibold text-navy mt-0.5">{form.bhk} · {form.floors}</p>
                   </div>
                 </div>
 
                 {/* 2. Architect Note */}
-                <div className="border-l-2 border-[#E0A500] pl-4 italic text-sm text-gray-300 leading-relaxed py-1">
+                <div className="border-l-2 border-gold pl-4 italic text-sm text-navy/80 leading-relaxed py-1">
                   "{layout.architect_note}"
                 </div>
 
                 {/* 3. Floor Tabs Selection (only if upper floors exist) */}
                 {Object.keys(layout.floors).length > 1 && (
-                  <div className="flex items-center gap-2 bg-[#0A0F1E] p-1.5 rounded-lg w-fit select-none">
+                  <div className="flex items-center gap-2 bg-ivory p-1.5 rounded-lg w-fit select-none">
                     {Object.keys(layout.floors).map((tab) => (
                       <button
                         key={tab}
                         onClick={() => setActiveFloorTab(tab)}
                         className={`px-4 py-2 rounded text-xs font-semibold tracking-wider uppercase transition-all duration-300 ${
                           activeFloorTab === tab
-                            ? 'bg-[#E0A500] text-[#0A0F1E]'
-                            : 'text-[#9E9A90] hover:text-white'
+                            ? 'bg-gold text-navy'
+                            : 'text-navy/60 hover:text-navy'
                         }`}
                       >
                         {tab === 'ground' ? 'Ground Floor' : tab === 'first' ? 'First Floor' : 'Second Floor'}
@@ -711,7 +711,7 @@ export default function Visualizer() {
                 )}
 
                 {/* 4. Interactive SVG Floorplan Canvas */}
-                <div className="relative bg-[#0A0F1E] rounded-xl border border-white/5 p-8 flex items-center justify-center overflow-x-auto">
+                <div className="relative bg-ivory rounded-2xl border border-navy/5 p-8 flex items-center justify-center overflow-x-auto">
                   <svg
                     width={svgWidth}
                     height={svgHeight}
@@ -721,7 +721,7 @@ export default function Visualizer() {
                     {/* Background grid */}
                     <defs>
                       <pattern id="room-grid" width="15" height="15" patternUnits="userSpaceOnUse">
-                        <path d="M 15 0 L 0 0 0 15" fill="none" stroke="#E0A500" strokeWidth="0.5" strokeOpacity="0.05" />
+                        <path d="M 15 0 L 0 0 0 15" fill="none" stroke="#F4C542" strokeWidth="0.5" strokeOpacity="0.1" />
                       </pattern>
                     </defs>
                     <rect width={svgWidth} height={svgHeight} fill="url(#room-grid)" />
@@ -733,26 +733,26 @@ export default function Visualizer() {
                       width={plotWidth}
                       height={plotHeight}
                       fill="none"
-                      stroke="#9E9A90"
+                      stroke="#0B1F3A"
                       strokeWidth="2"
                       strokeDasharray="4 6"
-                      strokeOpacity="0.4"
+                      strokeOpacity="0.3"
                     />
 
                     {/* Edge Dimension Labels */}
                     {/* Top Plot Width label */}
-                    <text x={pad + plotWidth / 2} y={pad - 12} textAnchor="middle" className="text-[10px] font-bold fill-[#9E9A90] tracking-widest">
+                    <text x={pad + plotWidth / 2} y={pad - 12} textAnchor="middle" className="text-[10px] font-bold fill-navy/70 tracking-widest">
                       {form.width_ft} FT
                     </text>
-                    <line x1={pad} y1={pad - 6} x2={pad + plotWidth} y2={pad - 6} stroke="#9E9A90" strokeWidth="0.75" strokeOpacity="0.3" />
+                    <line x1={pad} y1={pad - 6} x2={pad + plotWidth} y2={pad - 6} stroke="#0B1F3A" strokeWidth="0.75" strokeOpacity="0.2" />
 
                     {/* Left Plot Depth label */}
                     <g transform={`rotate(-90 ${pad - 15} ${pad + plotHeight / 2})`}>
-                      <text x={pad - 15} y={pad + plotHeight / 2} textAnchor="middle" className="text-[10px] font-bold fill-[#9E9A90] tracking-widest">
+                      <text x={pad - 15} y={pad + plotHeight / 2} textAnchor="middle" className="text-[10px] font-bold fill-navy/70 tracking-widest">
                         {form.depth_ft} FT
                       </text>
                     </g>
-                    <line x1={pad - 6} y1={pad} x2={pad - 6} y2={pad + plotHeight} stroke="#9E9A90" strokeWidth="0.75" strokeOpacity="0.3" />
+                    <line x1={pad - 6} y1={pad} x2={pad - 6} y2={pad + plotHeight} stroke="#0B1F3A" strokeWidth="0.75" strokeOpacity="0.2" />
 
                     {/* Dynamic Facing Arrow on correct boundary */}
                     {renderFacingArrow()}
@@ -782,7 +782,7 @@ export default function Visualizer() {
                             height={rh}
                             fill={room.color}
                             fillOpacity="0.85"
-                            stroke="#0A0F1E"
+                            stroke="#FFFFFF"
                             strokeWidth="1.5"
                             rx="3"
                           />
@@ -832,10 +832,10 @@ export default function Visualizer() {
 
                 {/* 5. Interactive Room Swatch Legend */}
                 <div className="space-y-2">
-                  <p className="text-[10px] uppercase tracking-widest text-[#9E9A90] font-bold">Color Index</p>
+                  <p className="text-[10px] uppercase tracking-widest text-navy/50 font-bold">Color Index</p>
                   <div className="flex flex-wrap gap-4 select-none">
                     {getUniqueRooms().map((room) => (
-                      <span key={room.name} className="flex items-center gap-2 text-xs font-semibold text-gray-300">
+                      <span key={room.name} className="flex items-center gap-2 text-xs font-semibold text-navy/70">
                         <span className="h-3.5 w-3.5 rounded" style={{ backgroundColor: room.color }} />
                         {room.name}
                       </span>
@@ -844,10 +844,10 @@ export default function Visualizer() {
                 </div>
 
                 {/* 6. Dynamic Action Buttons Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 border-t border-white/10 pt-6 select-none">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 border-t border-navy/10 pt-6 select-none">
                   <button
                     type="button"
-                    className="py-3 border border-white/20 hover:border-white/50 text-white font-bold text-xs tracking-wider rounded transition-all duration-300 uppercase"
+                    className="py-3 border border-navy/20 hover:border-navy/50 text-navy font-bold text-xs tracking-wider rounded transition-all duration-300 uppercase"
                   >
                     Estimate Cost ↗
                   </button>
@@ -855,11 +855,11 @@ export default function Visualizer() {
                     type="button"
                     onClick={handleCheckVastu}
                     disabled={vastuLoading}
-                    className="py-3 bg-transparent border border-[#E0A500] text-[#E0A500] hover:bg-[#E0A500]/10 font-bold text-xs tracking-wider rounded transition-all duration-300 uppercase flex items-center justify-center gap-2"
+                    className="py-3 bg-transparent border border-gold text-gold hover:bg-gold/10 font-bold text-xs tracking-wider rounded transition-all duration-300 uppercase flex items-center justify-center gap-2"
                   >
                     {vastuLoading ? (
                       <>
-                        <svg className="animate-spin h-3.5 w-3.5 text-[#E0A500]" fill="none" viewBox="0 0 24 24">
+                        <svg className="animate-spin h-3.5 w-3.5 text-gold" fill="none" viewBox="0 0 24 24">
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                         </svg>
@@ -872,7 +872,7 @@ export default function Visualizer() {
                   <button
                     type="button"
                     onClick={handleRetry2BHK}
-                    className="py-3 border border-white/20 hover:border-white/50 text-white font-bold text-xs tracking-wider rounded transition-all duration-300 uppercase"
+                    className="py-3 border border-navy/20 hover:border-navy/50 text-navy font-bold text-xs tracking-wider rounded transition-all duration-300 uppercase"
                   >
                     Try 2BHK ↗
                   </button>
@@ -882,21 +882,21 @@ export default function Visualizer() {
             ) : (
               // Empty State Placeholder View
               <div
-                className="border-2 border-dashed border-white/20 rounded-2xl flex flex-col items-center justify-center p-12 text-center"
+                className="border-2 border-dashed border-navy/20 rounded-2xl flex flex-col items-center justify-center p-12 text-center"
                 style={{
                   minHeight: `${Math.max(300, Math.min(500, (form.depth_ft / form.width_ft) * 350))}px`
                 }}
               >
-                <div className="text-gray-600 mb-4 animate-pulse">
+                <div className="text-navy/20 mb-4 animate-pulse">
                   {/* Blueprint House Icon */}
-                  <svg className="h-14 w-14 text-white/10" fill="none" stroke="currentColor" strokeWidth="1.2" viewBox="0 0 24 24">
+                  <svg className="h-14 w-14 text-navy/15" fill="none" stroke="currentColor" strokeWidth="1.2" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                   </svg>
                 </div>
-                <h3 className="text-sm font-bold tracking-[0.2em] text-[#9E9A90] uppercase">
+                <h3 className="text-sm font-bold tracking-[0.2em] text-navy/50 uppercase">
                   Your floor plan will appear here
                 </h3>
-                <p className="text-xs text-white/30 max-w-[280px] mt-2 leading-relaxed">
+                <p className="text-xs text-navy/35 max-w-[280px] mt-2 leading-relaxed">
                   Adjust values on the left and trigger the generator to build custom CAD vector models.
                 </p>
               </div>
@@ -906,10 +906,10 @@ export default function Visualizer() {
             {vastuReport && (
               <section
                 ref={vastuRef}
-                className="bg-[#0F1A3A] border border-[#E0A500]/30 rounded-2xl p-6 md:p-8 space-y-8 animate-vastu-panel shadow-card"
+                className="bg-white border border-gold/30 rounded-4xl p-6 md:p-8 space-y-8 animate-vastu-panel shadow-soft text-navy"
               >
                 {/* Header: Score Ring + Note layout */}
-                <div className="flex flex-col md:flex-row items-center gap-6 border-b border-white/10 pb-6 select-none">
+                <div className="flex flex-col md:flex-row items-center gap-6 border-b border-navy/10 pb-6 select-none">
                   {/* Progress Radial Ring SVG */}
                   <div className="relative h-28 w-28 flex items-center justify-center shrink-0">
                     <svg className="h-full w-full transform -rotate-90">
@@ -918,7 +918,7 @@ export default function Visualizer() {
                         cy="56"
                         r="45"
                         fill="transparent"
-                        stroke="#13233A"
+                        stroke="#F6F7F9"
                         strokeWidth="8"
                       />
                       <circle
@@ -926,7 +926,7 @@ export default function Visualizer() {
                         cy="56"
                         r="45"
                         fill="transparent"
-                        stroke="#E0A500"
+                        stroke="#F4C542"
                         strokeWidth="8"
                         strokeDasharray={2 * Math.PI * 45}
                         strokeDashoffset={2 * Math.PI * 45 * (1 - vastuReport.score / 100)}
@@ -935,16 +935,16 @@ export default function Visualizer() {
                       />
                     </svg>
                     <div className="absolute flex flex-col items-center">
-                      <span className="text-2xl font-extrabold text-white">{vastuReport.score}</span>
-                      <span className="text-[8px] font-bold text-[#9E9A90] tracking-widest uppercase">Score</span>
+                      <span className="text-2xl font-extrabold text-navy">{vastuReport.score}</span>
+                      <span className="text-[8px] font-bold text-navy/50 tracking-widest uppercase">Score</span>
                     </div>
                   </div>
 
                   {/* Summary Notes */}
                   <div className="space-y-2 text-center md:text-left">
-                    <h3 className="text-lg font-bold text-white tracking-wide">Vastu Mandala Assessment</h3>
-                    <p className="text-xs text-gray-300 leading-relaxed max-w-xl">{vastuReport.summary}</p>
-                    <p className="text-[10px] text-[#E0A500] font-bold tracking-widest uppercase mt-2">
+                    <h3 className="text-lg font-bold text-navy tracking-wide">Vastu Mandala Assessment</h3>
+                    <p className="text-xs text-navy/80 leading-relaxed max-w-xl">{vastuReport.summary}</p>
+                    <p className="text-[10px] text-gold font-bold tracking-widest uppercase mt-2">
                       {vastuReport.compass_note}
                     </p>
                   </div>
@@ -959,24 +959,24 @@ export default function Visualizer() {
                     {/* Section 1: Compliant gets right */}
                     {vastuReport.compliant.length > 0 && (
                       <div className="space-y-3.5">
-                        <h4 className="text-xs font-bold tracking-widest text-[#00B289] uppercase flex items-center gap-2">
-                          <span className="h-1.5 w-1.5 rounded-full bg-[#00B289]" />
+                        <h4 className="text-xs font-bold tracking-widest text-emerald-600 uppercase flex items-center gap-2">
+                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
                           What this layout gets right
                         </h4>
                         <div className="grid gap-3">
                           {vastuReport.compliant.map((item, idx) => (
-                            <div key={`comp-${idx}`} className="bg-[#0A0F1E] border border-white/5 p-4 rounded-xl flex gap-3.5 items-start">
-                              <div className="p-2 bg-[#E0A500]/15 text-[#E0A500] rounded-lg shrink-0">
+                            <div key={`comp-${idx}`} className="bg-ivory border border-navy/5 p-4 rounded-xl flex gap-3.5 items-start">
+                              <div className="p-2 bg-gold/15 text-gold rounded-lg shrink-0">
                                 <VastuIcon name={item.icon_key} className="h-5 w-5" />
                               </div>
                               <div className="space-y-1">
                                 <div className="flex items-center gap-2">
-                                  <h5 className="text-xs font-bold text-white">{item.title}</h5>
-                                  <span className="px-2 py-0.5 rounded-full text-[8px] font-extrabold uppercase tracking-wider bg-emerald-500/10 text-emerald-400">
+                                  <h5 className="text-xs font-bold text-navy">{item.title}</h5>
+                                  <span className="px-2 py-0.5 rounded-full text-[8px] font-extrabold uppercase tracking-wider bg-emerald-500/10 text-emerald-600">
                                     {item.tag}
                                   </span>
                                 </div>
-                                <p className="text-[11px] text-[#9E9A90] leading-relaxed">{item.description}</p>
+                                <p className="text-[11px] text-navy/70 leading-relaxed">{item.description}</p>
                               </div>
                             </div>
                           ))}
@@ -987,8 +987,8 @@ export default function Visualizer() {
                     {/* Section 2: Adjustments recommended */}
                     {vastuReport.adjustments.length > 0 && (
                       <div className="space-y-3.5">
-                        <h4 className="text-xs font-bold tracking-widest text-orange-400 uppercase flex items-center gap-2">
-                          <span className="h-1.5 w-1.5 rounded-full bg-orange-400" />
+                        <h4 className="text-xs font-bold tracking-widest text-orange-600 uppercase flex items-center gap-2">
+                          <span className="h-1.5 w-1.5 rounded-full bg-orange-600" />
                           Adjustments recommended
                         </h4>
                         <div className="grid gap-3">
@@ -997,23 +997,23 @@ export default function Visualizer() {
                             return (
                               <div
                                 key={`adj-${idx}`}
-                                className={`bg-[#0A0F1E] border border-white/5 p-4 rounded-xl flex gap-3.5 items-start ${
+                                className={`bg-ivory border border-navy/5 p-4 rounded-xl flex gap-3.5 items-start ${
                                   isImportant ? 'border-l-4 border-l-red-500' : ''
                                 }`}
                               >
-                                <div className={`p-2 rounded-lg shrink-0 ${isImportant ? 'bg-red-500/15 text-red-400' : 'bg-orange-500/15 text-orange-400'}`}>
+                                <div className={`p-2 rounded-lg shrink-0 ${isImportant ? 'bg-red-500/15 text-red-500' : 'bg-orange-500/15 text-orange-500'}`}>
                                   <VastuIcon name={item.icon_key} className="h-5 w-5" />
                                 </div>
                                 <div className="space-y-1">
                                   <div className="flex items-center gap-2">
-                                    <h5 className="text-xs font-bold text-white">{item.title}</h5>
+                                    <h5 className="text-xs font-bold text-navy">{item.title}</h5>
                                     <span className={`px-2 py-0.5 rounded-full text-[8px] font-extrabold uppercase tracking-wider ${
-                                      isImportant ? 'bg-red-500/10 text-red-400' : 'bg-orange-500/10 text-orange-400'
+                                      isImportant ? 'bg-red-500/10 text-red-500' : 'bg-orange-500/10 text-orange-500'
                                     }`}>
                                       {item.tag}
                                     </span>
                                   </div>
-                                  <p className="text-[11px] text-[#9E9A90] leading-relaxed">{item.description}</p>
+                                  <p className="text-[11px] text-navy/70 leading-relaxed">{item.description}</p>
                                 </div>
                               </div>
                             )
@@ -1025,24 +1025,24 @@ export default function Visualizer() {
                     {/* Section 3: Quick wins */}
                     {vastuReport.quick_wins.length > 0 && (
                       <div className="space-y-3.5">
-                        <h4 className="text-xs font-bold tracking-widest text-teal-400 uppercase flex items-center gap-2">
-                          <span className="h-1.5 w-1.5 rounded-full bg-teal-400" />
+                        <h4 className="text-xs font-bold tracking-widest text-teal-600 uppercase flex items-center gap-2">
+                          <span className="h-1.5 w-1.5 rounded-full bg-teal-600" />
                           Quick wins to improve score
                         </h4>
                         <div className="grid gap-3">
                           {vastuReport.quick_wins.map((item, idx) => (
-                            <div key={`win-${idx}`} className="bg-[#0A0F1E] border border-white/5 p-4 rounded-xl flex gap-3.5 items-start">
-                              <div className="p-2 bg-teal-500/15 text-teal-400 rounded-lg shrink-0">
+                            <div key={`win-${idx}`} className="bg-ivory border border-navy/5 p-4 rounded-xl flex gap-3.5 items-start">
+                              <div className="p-2 bg-teal-500/15 text-teal-600 rounded-lg shrink-0">
                                 <VastuIcon name={item.icon_key} className="h-5 w-5" />
                               </div>
                               <div className="space-y-1">
                                 <div className="flex items-center gap-2">
-                                  <h5 className="text-xs font-bold text-white">{item.title}</h5>
-                                  <span className="px-2 py-0.5 rounded-full text-[8px] font-extrabold uppercase tracking-wider bg-teal-500/10 text-teal-400">
+                                  <h5 className="text-xs font-bold text-navy">{item.title}</h5>
+                                  <span className="px-2 py-0.5 rounded-full text-[8px] font-extrabold uppercase tracking-wider bg-teal-500/10 text-teal-600">
                                     {item.tag}
                                   </span>
                                 </div>
-                                <p className="text-[11px] text-[#9E9A90] leading-relaxed">{item.description}</p>
+                                <p className="text-[11px] text-navy/70 leading-relaxed">{item.description}</p>
                               </div>
                             </div>
                           ))}
@@ -1053,35 +1053,35 @@ export default function Visualizer() {
                   </div>
 
                   {/* Vector Compass Dial mapping facing directions */}
-                  <div className="flex flex-col items-center justify-center bg-[#0A0F1E] border border-white/5 rounded-2xl p-6 select-none shrink-0 self-center">
+                  <div className="flex flex-col items-center justify-center bg-ivory border border-navy/5 rounded-2xl p-6 select-none shrink-0 self-center">
                     <svg width="150" height="150" viewBox="0 0 150 150" className="max-w-full">
                       {/* Compass Circle */}
-                      <circle cx="75" cy="75" r="60" fill="none" stroke="#E0A500" strokeWidth="1.5" strokeOpacity="0.2" />
-                      <circle cx="75" cy="75" r="50" fill="none" stroke="#E0A500" strokeWidth="1" strokeOpacity="0.1" />
+                      <circle cx="75" cy="75" r="60" fill="none" stroke="#F4C542" strokeWidth="1.5" strokeOpacity="0.3" />
+                      <circle cx="75" cy="75" r="50" fill="none" stroke="#F4C542" strokeWidth="1" strokeOpacity="0.15" />
 
                       {/* Direction Ticks */}
-                      <line x1="75" y1="15" x2="75" y2="25" stroke="#E0A500" strokeWidth="1.5" strokeOpacity="0.4" />
-                      <line x1="75" y1="125" x2="75" y2="135" stroke="#E0A500" strokeWidth="1.5" strokeOpacity="0.4" />
-                      <line x1="15" y1="75" x2="25" y2="75" stroke="#E0A500" strokeWidth="1.5" strokeOpacity="0.4" />
-                      <line x1="125" y1="75" x2="135" y2="75" stroke="#E0A500" strokeWidth="1.5" strokeOpacity="0.4" />
+                      <line x1="75" y1="15" x2="75" y2="25" stroke="#F4C542" strokeWidth="1.5" strokeOpacity="0.5" />
+                      <line x1="75" y1="125" x2="75" y2="135" stroke="#F4C542" strokeWidth="1.5" strokeOpacity="0.5" />
+                      <line x1="15" y1="75" x2="25" y2="75" stroke="#F4C542" strokeWidth="1.5" strokeOpacity="0.5" />
+                      <line x1="125" y1="75" x2="135" y2="75" stroke="#F4C542" strokeWidth="1.5" strokeOpacity="0.5" />
 
                       {/* Direction labels (Highlight active direction in Gold) */}
-                      <text x="75" y="32" textAnchor="middle" fontSize="10" fontWeight="bold" className={form.facing === 'North' ? 'fill-[#E0A500]' : 'fill-gray-600'}>N</text>
-                      <text x="75" y="126" textAnchor="middle" fontSize="10" fontWeight="bold" className={form.facing === 'South' ? 'fill-[#E0A500]' : 'fill-gray-600'}>S</text>
-                      <text x="118" y="79" textAnchor="middle" fontSize="10" fontWeight="bold" className={form.facing === 'East' ? 'fill-[#E0A500]' : 'fill-gray-600'}>E</text>
-                      <text x="32" y="79" textAnchor="middle" fontSize="10" fontWeight="bold" className={form.facing === 'West' ? 'fill-[#E0A500]' : 'fill-gray-600'}>W</text>
+                      <text x="75" y="32" textAnchor="middle" fontSize="10" fontWeight="bold" className={form.facing === 'North' ? 'fill-gold font-extrabold' : 'fill-navy/40'}>N</text>
+                      <text x="75" y="126" textAnchor="middle" fontSize="10" fontWeight="bold" className={form.facing === 'South' ? 'fill-gold font-extrabold' : 'fill-navy/40'}>S</text>
+                      <text x="118" y="79" textAnchor="middle" fontSize="10" fontWeight="bold" className={form.facing === 'East' ? 'fill-gold font-extrabold' : 'fill-navy/40'}>E</text>
+                      <text x="32" y="79" textAnchor="middle" fontSize="10" fontWeight="bold" className={form.facing === 'West' ? 'fill-gold font-extrabold' : 'fill-navy/40'}>W</text>
 
                       {/* Moving needle indicating Facing direction dynamically */}
                       <g transform={`rotate(${
                         form.facing === 'East' ? 90 : form.facing === 'West' ? 270 : form.facing === 'North' ? 0 : 180
                       } 75 75)`}>
                         {/* Needle points Up (North position of rotated group) */}
-                        <polygon points="75,32 79,75 71,75" fill="#E0A500" />
-                        <polygon points="75,118 79,75 71,75" fill="#1E293B" />
-                        <circle cx="75" cy="75" r="4.5" fill="#0A0F1E" stroke="#E0A500" strokeWidth="2" />
+                        <polygon points="75,32 79,75 71,75" fill="#F4C542" />
+                        <polygon points="75,118 79,75 71,75" fill="#0B1F3A" />
+                        <circle cx="75" cy="75" r="4.5" fill="#F6F7F9" stroke="#F4C542" strokeWidth="2" />
                       </g>
                     </svg>
-                    <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase mt-4">
+                    <span className="text-[10px] font-bold text-navy/40 tracking-widest uppercase mt-4">
                       Grid Alignment
                     </span>
                   </div>
@@ -1090,11 +1090,11 @@ export default function Visualizer() {
 
                 {/* Regenerate compliant plan Vastu Action */}
                 {!vastuReport.compliant_extra && (
-                  <div className="border-t border-white/10 pt-6 select-none">
+                  <div className="border-t border-navy/10 pt-6 select-none">
                     <button
                       type="button"
                       onClick={handleRegenerateVastu}
-                      className="w-full py-4 bg-[#E0A500] hover:bg-[#c28f00] rounded text-[#0A0F1E] font-bold text-xs tracking-widest flex items-center justify-center gap-2 transition-all duration-300 uppercase shadow-soft"
+                      className="w-full py-4 bg-gold hover:bg-gold/90 rounded text-navy font-bold text-xs tracking-widest flex items-center justify-center gap-2 transition-all duration-300 uppercase shadow-soft"
                     >
                       Generate Vastu-compliant layout →
                     </button>
