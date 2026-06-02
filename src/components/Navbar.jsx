@@ -87,6 +87,16 @@ export default function Navbar({ isHome }) {
             MENU
           </button>
           <Link
+            to="/admin"
+            className={`hidden rounded-full border px-5 py-2 text-xs font-semibold tracking-[0.2em] transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold/80 md:inline-flex ${
+              showSolid
+                ? 'border-navy/20 text-navy hover:border-navy/50 hover:bg-navy/5'
+                : 'border-white/40 text-white hover:border-white hover:bg-white/10'
+            }`}
+          >
+            ADMIN
+          </Link>
+          <Link
             to="/contact"
             className={`hidden rounded-full px-5 py-2 text-xs font-semibold tracking-[0.2em] transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold/80 md:inline-flex ${
               showSolid
@@ -119,12 +129,24 @@ export default function Navbar({ isHome }) {
               {link.label}
             </NavLink>
           ))}
-          <Link
-            to="/contact"
-            className="mt-2 inline-flex w-fit rounded-full bg-gold px-5 py-2 text-xs font-semibold tracking-[0.2em] text-navy"
-          >
-            CONTACT US
-          </Link>
+          <div className="mt-2 flex flex-wrap gap-2.5">
+            <Link
+              to="/admin"
+              className={`inline-flex rounded-full border px-5 py-2 text-xs font-semibold tracking-[0.2em] ${
+                showSolid
+                  ? 'border-navy/20 text-navy hover:bg-navy/5'
+                  : 'border-white/40 text-white hover:bg-white/10'
+              }`}
+            >
+              ADMIN
+            </Link>
+            <Link
+              to="/contact"
+              className="inline-flex rounded-full bg-gold px-5 py-2 text-xs font-semibold tracking-[0.2em] text-navy"
+            >
+              CONTACT US
+            </Link>
+          </div>
         </div>
       </div>
     </header>
