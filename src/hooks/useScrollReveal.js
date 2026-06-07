@@ -1,6 +1,6 @@
-﻿import { useEffect } from 'react'
+import { useEffect } from 'react'
 
-export default function useScrollReveal() {
+export default function useScrollReveal(deps = []) {
   useEffect(() => {
     const elements = document.querySelectorAll('[data-animate]')
     if (!elements.length) return
@@ -29,5 +29,6 @@ export default function useScrollReveal() {
     elements.forEach((el) => observer.observe(el))
 
     return () => observer.disconnect()
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps)
 }

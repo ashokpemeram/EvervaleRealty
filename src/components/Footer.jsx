@@ -1,13 +1,46 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { InstagramIcon, LinkedinIcon, XIcon } from './Icons'
-
-const socialLinks = [
-  { label: 'LinkedIn', href: '#', icon: LinkedinIcon },
-  { label: 'Instagram', href: '#', icon: InstagramIcon },
-  { label: 'X', href: '#', icon: XIcon },
-]
+import { InstagramIcon, LinkedinIcon, XIcon, FacebookIcon } from './Icons'
+import { api } from '../services/api'
 
 export default function Footer() {
+  const [socials, setSocials] = useState({
+    linkedin: 'https://linkedin.com/company/evervalerealty',
+    instagram: 'https://instagram.com/evervalerealty',
+    twitter: 'https://twitter.com/evervalerealty',
+    facebook: 'https://facebook.com/evervalerealty'
+  })
+
+  useEffect(() => {
+    let active = true
+    const fetchContactSettings = async () => {
+      try {
+        const settings = await api.getContactSettings()
+        if (active && settings) {
+          setSocials({
+            linkedin: settings.linkedin || '',
+            instagram: settings.instagram || '',
+            twitter: settings.twitter || '',
+            facebook: settings.facebook || ''
+          })
+        }
+      } catch (error) {
+        console.error('Error fetching contact settings in Footer:', error)
+      }
+    }
+    fetchContactSettings()
+    return () => {
+      active = false
+    }
+  }, [])
+
+  const activeLinks = [
+    { label: 'LinkedIn', href: socials.linkedin, icon: LinkedinIcon },
+    { label: 'Instagram', href: socials.instagram, icon: InstagramIcon },
+    { label: 'X', href: socials.twitter, icon: XIcon },
+    { label: 'Facebook', href: socials.facebook, icon: FacebookIcon },
+  ].filter(link => link.href)
+
   return (
     <footer className="bg-navy text-white">
       <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-2 lg:grid-cols-4 lg:px-12">
@@ -20,10 +53,12 @@ export default function Footer() {
             acquisitions and portfolio stewardship.
           </p>
           <div className="mt-6 flex gap-3">
-            {socialLinks.map((item) => (
+            {activeLinks.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={item.label}
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white/70 transition-all duration-300 hover:border-gold hover:text-gold"
               >

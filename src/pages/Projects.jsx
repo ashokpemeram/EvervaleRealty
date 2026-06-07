@@ -1,19 +1,33 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PropertyCard from '../components/PropertyCard'
 import PlotPlanViewer from '../components/PlotPlanViewer'
 import useScrollReveal from '../hooks/useScrollReveal'
+import { api } from '../services/api'
 
 export default function Projects() {
-  useScrollReveal()
-
-  const [properties] = useState(() => {
-    const cached = localStorage.getItem('evervale_properties')
-    return cached ? JSON.parse(cached) : []
-  })
+  const [properties, setProperties] = useState([])
 
   const [activeFilter, setActiveFilter] = useState('all')
   const [isViewerOpen, setIsViewerOpen] = useState(false)
   const [selectedVenture, setSelectedVenture] = useState(null)
+
+  useScrollReveal([properties, activeFilter])
+
+  useEffect(() => {
+    let active = true
+    const fetchProperties = async () => {
+      try {
+        const data = await api.getProperties()
+        if (active) setProperties(data)
+      } catch (error) {
+        console.error('Error fetching projects:', error)
+      }
+    }
+    fetchProperties()
+    return () => {
+      active = false
+    }
+  }, [])
 
   const handleViewPlots = (venture) => {
     setSelectedVenture(venture)
@@ -21,12 +35,14 @@ export default function Projects() {
   }
 
   // Filter listings based on category selection
-  const filteredProperties = properties.filter((property) => {
-    const isVenture = !!property.plots || property.tag === 'VENTURE PLOTS'
-    if (activeFilter === 'residences') return !isVenture
-    if (activeFilter === 'ventures') return isVenture
-    return true // 'all'
-  })
+  const filteredProperties = Array.isArray(properties)
+    ? properties.filter((property) => {
+        const isVenture = property.tag === 'VENTURE PLOTS' || (Array.isArray(property.plots) && property.plots.length > 0)
+        if (activeFilter === 'residences') return !isVenture
+        if (activeFilter === 'ventures') return isVenture
+        return true // 'all'
+      })
+    : []
 
   return (
     <div className="bg-ivory min-h-screen pt-28 pb-20 select-none font-sans">
@@ -70,7 +86,7 @@ export default function Projects() {
         </div>
 
         {/* Listings Grid */}
-        {filteredProperties.length > 0 ? (
+        {Array.isArray(filteredProperties) && filteredProperties.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 animate-fade-in">
             {filteredProperties.map((property, index) => (
               <div key={property.name} className="reveal" data-animate>

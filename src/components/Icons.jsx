@@ -1,4 +1,4 @@
-﻿export const ArrowUpRight = ({ className }) => (
+export const ArrowUpRight = ({ className }) => (
   <svg
     className={className}
     viewBox="0 0 24 24"
@@ -274,5 +274,20 @@ export const MailIcon = ({ className }) => (
   >
     <rect x="3" y="5" width="18" height="14" rx="2" />
     <path d="M3 7l9 6 9-6" />
+  </svg>
+)
+
+export const FacebookIcon = ({ className }) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
   </svg>
 )

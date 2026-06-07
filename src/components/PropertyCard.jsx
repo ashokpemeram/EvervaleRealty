@@ -1,6 +1,9 @@
+import { Link } from 'react-router-dom'
 import { AreaIcon, BathIcon, BedIcon } from './Icons'
 
 export default function PropertyCard({
+  _id,
+  id,
   image,
   tag,
   name,
@@ -11,7 +14,8 @@ export default function PropertyCard({
   plots,
   onViewPlots,
 }) {
-  const isVenture = !!plots
+  const isVenture = tag === 'VENTURE PLOTS' || (Array.isArray(plots) && plots.length > 0)
+  const detailLink = `/properties/${_id || id || 'mock-id'}`
 
   return (
     <article
@@ -19,7 +23,7 @@ export default function PropertyCard({
       style={{ transitionDelay: `${delay}ms` }}
       data-animate
     >
-      <div className="relative h-52 overflow-hidden">
+      <Link to={detailLink} className="block relative h-52 overflow-hidden cursor-pointer">
         <img
           src={image}
           alt={name}
@@ -29,12 +33,12 @@ export default function PropertyCard({
         <span className="absolute left-4 top-4 rounded-full bg-navy/90 px-3 py-1 text-[10px] font-semibold tracking-[0.25em] text-gold">
           {tag}
         </span>
-      </div>
+      </Link>
       <div className="space-y-3 p-6 flex flex-col justify-between min-h-[170px]">
-        <div className="space-y-1">
-          <h3 className="text-lg font-semibold text-navy leading-snug">{name}</h3>
+        <Link to={detailLink} className="space-y-1 block cursor-pointer group-hover:text-gold transition-colors duration-300">
+          <h3 className="text-lg font-semibold text-navy leading-snug transition-colors duration-300">{name}</h3>
           <p className="text-sm text-navy/60">{location}</p>
-        </div>
+        </Link>
         
         <div className="flex items-baseline justify-between border-t border-navy/5 pt-3">
           <p className="text-lg font-semibold text-gold">{price}</p>

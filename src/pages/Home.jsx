@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import HeroSection from '../components/HeroSection'
 import ServiceCard from '../components/ServiceCard'
@@ -6,6 +6,7 @@ import PropertyCard from '../components/PropertyCard'
 import TestimonialCard from '../components/TestimonialCard'
 import PlotPlanViewer from '../components/PlotPlanViewer'
 import useScrollReveal from '../hooks/useScrollReveal'
+import { api } from '../services/api'
 import {
   ExchangeIcon,
   LockIcon,
@@ -43,35 +44,38 @@ const services = [
   },
 ]
 
-const testimonials = [
-  {
-    quote:
-      'Evervale delivered a rare off-market asset with a closing cadence that felt effortless.',
-    name: 'Celia Monroe',
-    role: 'Principal Investor',
-  },
-  {
-    quote:
-      'Their verification process rivals institutional due diligence. We never compromise.',
-    name: 'Dylan Park',
-    role: 'Private Office Lead',
-  },
-  {
-    quote:
-      'The team blends modern analytics with a bespoke client experience. Impeccable.',
-    name: 'Anika Shah',
-    role: 'Portfolio Director',
-  },
-]
-
 export default function Home() {
-  useScrollReveal()
-  const [properties] = useState(() => {
-    const cached = localStorage.getItem('evervale_properties')
-    return cached ? JSON.parse(cached) : []
-  })
+  const [properties, setProperties] = useState([])
+  const [testimonials, setTestimonials] = useState([])
   const [isViewerOpen, setIsViewerOpen] = useState(false)
   const [selectedVenture, setSelectedVenture] = useState(null)
+  useScrollReveal([properties, testimonials])
+
+  const homeProperties = Array.isArray(properties)
+    ? properties.filter(p => p.showOnHome).slice(0, 4)
+    : []
+
+  useEffect(() => {
+    let active = true
+    const fetchData = async () => {
+      try {
+        const [propertiesData, testimonialsData] = await Promise.all([
+          api.getProperties(),
+          api.getTestimonials()
+        ])
+        if (active) {
+          setProperties(propertiesData)
+          setTestimonials(testimonialsData)
+        }
+      } catch (error) {
+        console.error('Error fetching Home page data:', error)
+      }
+    }
+    fetchData()
+    return () => {
+      active = false
+    }
+  }, [])
 
   const handleViewPlots = (venture) => {
     setSelectedVenture(venture)
@@ -116,7 +120,7 @@ export default function Home() {
               <h2 className="mt-3 text-3xl font-semibold">New Acquisitions</h2>
             </div>
             <Link
-              to="/services"
+              to="/projects"
               className="reveal text-xs font-semibold tracking-[0.3em] text-navy/70"
               data-animate
             >
@@ -124,7 +128,7 @@ export default function Home() {
             </Link>
           </div>
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {properties.map((property, index) => (
+            {Array.isArray(homeProperties) && homeProperties.map((property, index) => (
               <PropertyCard
                 key={property.name}
                 {...property}
@@ -223,7 +227,7 @@ export default function Home() {
             </p>
           </div>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {testimonials.map((testimonial, index) => (
+            {Array.isArray(testimonials) && testimonials.map((testimonial, index) => (
               <TestimonialCard
                 key={testimonial.name}
                 {...testimonial}

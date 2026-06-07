@@ -1,21 +1,49 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import useScrollReveal from '../hooks/useScrollReveal'
-import { MailIcon, MapPinIcon, PhoneIcon } from '../components/Icons'
+import { MailIcon, MapPinIcon, PhoneIcon, InstagramIcon, LinkedinIcon, XIcon, FacebookIcon } from '../components/Icons'
+import { api } from '../services/api'
 
 export default function Contact() {
   useScrollReveal()
   const location = useLocation()
 
-  // Dynamic Contact state synced with localStorage
-  const [contact] = useState(() => {
-    const cachedContact = localStorage.getItem('evervale_contact')
-    return cachedContact ? JSON.parse(cachedContact) : {
-      address: '428 Penthouse Plaza, Art District, NY 10012',
-      phone: '+1 (212) 555-0198',
-      email: 'concierge@evervale.com'
-    }
+  // Dynamic Contact state synced with backend API
+  const [contact, setContact] = useState({
+    address: '428 Penthouse Plaza, Art District, NY 10012',
+    phone: '+1 (212) 555-0198',
+    email: 'concierge@evervale.com',
+    linkedin: 'https://linkedin.com/company/evervalerealty',
+    instagram: 'https://instagram.com/evervalerealty',
+    twitter: 'https://twitter.com/evervalerealty',
+    facebook: 'https://facebook.com/evervalerealty'
   })
+
+  useEffect(() => {
+    let active = true
+    const fetchContactSettings = async () => {
+      try {
+        const settings = await api.getContactSettings()
+        if (active && settings) {
+          setContact({
+            address: settings.address || '',
+            phone: settings.phone || '',
+            email: settings.email || '',
+            linkedin: settings.linkedin || 'https://linkedin.com/company/evervalerealty',
+            instagram: settings.instagram || 'https://instagram.com/evervalerealty',
+            twitter: settings.twitter || 'https://twitter.com/evervalerealty',
+            facebook: settings.facebook || 'https://facebook.com/evervalerealty'
+          })
+        }
+      } catch (error) {
+        console.error('Error fetching contact settings:', error)
+      }
+    }
+    fetchContactSettings()
+    return () => {
+      active = false
+    }
+  }, [])
 
   const ventureName = location.state?.ventureName || ''
   const plotNumber = location.state?.plotNumber || ''
@@ -33,8 +61,8 @@ export default function Contact() {
   })
   const [success, setSuccess] = useState(false)
 
-  // Submit and save lead inquiry to local DB
-  const handleSubmit = (e) => {
+  // Submit and save lead inquiry to backend
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     const newInquiry = {
@@ -46,15 +74,17 @@ export default function Contact() {
       message
     }
 
-    const cached = localStorage.getItem('evervale_inquiries')
-    const current = cached ? JSON.parse(cached) : []
-    localStorage.setItem('evervale_inquiries', JSON.stringify([...current, newInquiry]))
-
-    setSuccess(true)
-    setName('')
-    setEmail('')
-    setPhone('')
-    setMessage('')
+    try {
+      await api.createInquiry(newInquiry)
+      setSuccess(true)
+      setName('')
+      setEmail('')
+      setPhone('')
+      setMessage('')
+    } catch (error) {
+      console.error('Error submitting inquiry:', error)
+      alert('Failed to submit inquiry. Please try again.')
+    }
   }
 
   return (
@@ -121,9 +151,50 @@ export default function Contact() {
                   Connect With Us
                 </p>
                 <div className="mt-3 flex gap-3 text-gold">
-                  <span className="h-8 w-8 rounded-full border border-gold/40" />
-                  <span className="h-8 w-8 rounded-full border border-gold/40" />
-                  <span className="h-8 w-8 rounded-full border border-gold/40" />
+                  {contact.linkedin && (
+                    <a
+                      href={contact.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-gold/40 text-gold transition-all duration-300 hover:border-white hover:text-white"
+                      aria-label="LinkedIn"
+                    >
+                      <LinkedinIcon className="h-4 w-4" />
+                    </a>
+                  )}
+                  {contact.instagram && (
+                    <a
+                      href={contact.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-gold/40 text-gold transition-all duration-300 hover:border-white hover:text-white"
+                      aria-label="Instagram"
+                    >
+                      <InstagramIcon className="h-4 w-4" />
+                    </a>
+                  )}
+                  {contact.twitter && (
+                    <a
+                      href={contact.twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-gold/40 text-gold transition-all duration-300 hover:border-white hover:text-white"
+                      aria-label="X"
+                    >
+                      <XIcon className="h-4 w-4" />
+                    </a>
+                  )}
+                  {contact.facebook && (
+                    <a
+                      href={contact.facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-gold/40 text-gold transition-all duration-300 hover:border-white hover:text-white"
+                      aria-label="Facebook"
+                    >
+                      <FacebookIcon className="h-4 w-4" />
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
