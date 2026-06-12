@@ -204,6 +204,11 @@ export default function LoadingScreen({ onComplete }) {
           <span className="intro-subtitle">REALTY</span>
           <span className="intro-rule" aria-hidden="true" />
         </div>
+        <div className="intro-subline">
+          <span className="intro-rule" aria-hidden="true" />
+          <span className="intro-subtitle">LLP</span>
+          <span className="intro-rule" aria-hidden="true" />
+        </div>
         <p className="intro-tagline">Property. Powered.</p>
         <div className="intro-progress" aria-hidden="true">
           <div className="intro-progress-track">

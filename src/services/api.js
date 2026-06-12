@@ -1,6 +1,5 @@
 // Resilient API client with strict type-guards to prevent runtime rendering crashes
 import {
-  defaultProperties,
   defaultContact,
   defaultTestimonials,
   defaultInquiries
@@ -69,208 +68,49 @@ export const api = {
 
   // Properties
   getProperties: async () => {
-    try {
-      const res = await customFetch('/api/properties')
-      const data = await handleResponse(res)
-      if (Array.isArray(data)) {
-        localStorage.setItem('evervale_properties', JSON.stringify(data))
-        return data
-      }
-    } catch (error) {
-      console.warn('Backend offline: Falling back to local properties data.', error.message)
-    }
-
-    const cached = localStorage.getItem('evervale_properties')
-    if (cached) {
-      try {
-        const parsed = JSON.parse(cached)
-        if (Array.isArray(parsed)) return parsed
-      } catch (err) {
-        console.error('Failed to parse cached properties:', err)
-      }
-    }
-    return defaultProperties
+    const res = await customFetch('/api/properties')
+    return await handleResponse(res)
   },
 
   getProperty: async (id) => {
-    try {
-      const res = await customFetch(`/api/properties/${id}`)
-      const data = await handleResponse(res)
-      if (data && typeof data === 'object') {
-        return data
-      }
-    } catch (error) {
-      console.warn(`Backend offline: Fetching property ${id} from cache/defaults.`, error.message)
-    }
-
-    const cached = localStorage.getItem('evervale_properties')
-    if (cached) {
-      try {
-        const parsed = JSON.parse(cached)
-        if (Array.isArray(parsed)) {
-          const found = parsed.find(p => p._id === id || p.id === id)
-          if (found) return found
-        }
-      } catch (err) {
-        console.error('Failed to parse cached properties for individual fetch:', err)
-      }
-    }
-    return defaultProperties.find(p => p._id === id || p.id === id) || defaultProperties[0]
+    const res = await customFetch(`/api/properties/${id}`)
+    return await handleResponse(res)
   },
 
   createProperty: async (propertyData) => {
-    try {
-      const res = await customFetch('/api/properties', {
-        method: 'POST',
-        headers: getAuthHeaders(),
-        body: JSON.stringify(propertyData)
-      })
-      const data = await handleResponse(res)
-      if (data && typeof data === 'object') {
-        const cached = localStorage.getItem('evervale_properties')
-        const list = cached ? JSON.parse(cached) : defaultProperties
-        if (Array.isArray(list)) {
-          localStorage.setItem('evervale_properties', JSON.stringify([...list, data]))
-        }
-        return data
-      }
-    } catch (error) {
-      console.warn('Backend offline: Creating property listing locally.', error.message)
-    }
-
-    const mockCreated = {
-      ...propertyData,
-      _id: `prop-local-${Date.now()}`
-    }
-    const cached = localStorage.getItem('evervale_properties')
-    let list = []
-    try {
-      list = cached ? JSON.parse(cached) : defaultProperties
-    } catch (err) {
-      console.error('Failed to parse cached properties for addition:', err)
-    }
-    if (!Array.isArray(list)) list = defaultProperties
-    localStorage.setItem('evervale_properties', JSON.stringify([...list, mockCreated]))
-    return mockCreated
+    const res = await customFetch('/api/properties', {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(propertyData)
+    })
+    return await handleResponse(res)
   },
 
   updateProperty: async (id, propertyData) => {
-    try {
-      const res = await customFetch(`/api/properties/${id}`, {
-        method: 'PUT',
-        headers: getAuthHeaders(),
-        body: JSON.stringify(propertyData)
-      })
-      const data = await handleResponse(res)
-      if (data && typeof data === 'object') {
-        const cached = localStorage.getItem('evervale_properties')
-        if (cached) {
-          try {
-            let list = JSON.parse(cached)
-            if (Array.isArray(list)) {
-              list = list.map(p => (p._id === id || p.id === id) ? data : p)
-              localStorage.setItem('evervale_properties', JSON.stringify(list))
-            }
-          } catch (err) {
-            console.error('Failed to parse cached properties for update:', err)
-          }
-        }
-        return data
-      }
-    } catch (error) {
-      console.warn('Backend offline: Updating property listing locally.', error.message)
-    }
-
-    const mockUpdated = {
-      ...propertyData,
-      _id: id
-    }
-    const cached = localStorage.getItem('evervale_properties')
-    if (cached) {
-      try {
-        let list = JSON.parse(cached)
-        if (Array.isArray(list)) {
-          list = list.map(p => (p._id === id || p.id === id) ? mockUpdated : p)
-          localStorage.setItem('evervale_properties', JSON.stringify(list))
-        }
-      } catch (err) {
-        console.error('Failed to parse cached properties for local update:', err)
-      }
-    }
-    return mockUpdated
+    const res = await customFetch(`/api/properties/${id}`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(propertyData)
+    })
+    return await handleResponse(res)
   },
 
   deleteProperty: async (id) => {
-    try {
-      const res = await customFetch(`/api/properties/${id}`, {
-        method: 'DELETE',
-        headers: getAuthHeaders()
-      })
-      const data = await handleResponse(res)
-      const cached = localStorage.getItem('evervale_properties')
-      if (cached) {
-        try {
-          let list = JSON.parse(cached)
-          if (Array.isArray(list)) {
-            list = list.filter(p => p._id !== id && p.id !== id)
-            localStorage.setItem('evervale_properties', JSON.stringify(list))
-          }
-        } catch (err) {
-          console.error('Failed to parse cached properties for deletion:', err)
-        }
-      }
-      return data
-    } catch (error) {
-      console.warn('Backend offline: Deleting property listing locally.', error.message)
-    }
-
-    const cached = localStorage.getItem('evervale_properties')
-    if (cached) {
-      try {
-        let list = JSON.parse(cached)
-        if (Array.isArray(list)) {
-          list = list.filter(p => p._id !== id && p.id !== id)
-          localStorage.setItem('evervale_properties', JSON.stringify(list))
-        }
-      } catch (err) {
-        console.error('Failed to parse cached properties for local deletion:', err)
-      }
-    }
-    return { success: true }
+    const res = await customFetch(`/api/properties/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders()
+    })
+    return await handleResponse(res)
   },
 
   // Plots
   updatePlotStatus: async (propertyId, plotId, status) => {
-    try {
-      const res = await customFetch(`/api/properties/${propertyId}/plots/${plotId}/status`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status })
-      })
-      return await handleResponse(res)
-    } catch (error) {
-      console.warn('Backend offline: Updating plot status locally.', error.message)
-    }
-
-    const cached = localStorage.getItem('evervale_properties')
-    if (cached) {
-      try {
-        let list = JSON.parse(cached)
-        if (Array.isArray(list)) {
-          list = list.map(p => {
-            if (p._id === propertyId || p.id === propertyId) {
-              const updatedPlots = p.plots.map(plot => plot.id === plotId ? { ...plot, status } : plot)
-              return { ...p, plots: updatedPlots }
-            }
-            return p
-          })
-          localStorage.setItem('evervale_properties', JSON.stringify(list))
-        }
-      } catch (err) {
-        console.error('Failed to parse cached properties for plot status update:', err)
-      }
-    }
-    return { success: true }
+    const res = await customFetch(`/api/properties/${propertyId}/plots/${plotId}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status })
+    })
+    return await handleResponse(res)
   },
 
   // Inquiries (CRM leads)

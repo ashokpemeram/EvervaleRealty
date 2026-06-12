@@ -33,7 +33,7 @@ export default function HeroSection() {
   }, [])
 
   return (
-    <section id="home" className="relative flex min-h-[92vh] items-center overflow-hidden">
+    <section id="home" className="relative flex min-h-[100vh] items-center overflow-hidden">
       <div
         ref={heroRef}
         className="hero-parallax absolute inset-0"
