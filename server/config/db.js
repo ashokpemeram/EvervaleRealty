@@ -17,7 +17,7 @@ export const connectDB = async () => {
   }
 }
 
-const seedData = async () => {
+export const seedData = async () => {
   try {
     // 1. Seed User
     const userCount = await User.countDocuments()
@@ -116,7 +116,7 @@ const seedData = async () => {
           ],
           brochureUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
           layoutImage: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80',
-          details: { totalPlots: 54, zoning: 'TUDA Approved Layout' },
+          details: { totalPlots: 54, area: '2,400 sq ft' },
           showOnHome: true,
           plots: [
             {
@@ -249,7 +249,7 @@ const seedData = async () => {
           ],
           brochureUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
           layoutImage: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80',
-          details: { totalPlots: 12, zoning: 'Pattadhar Passbook | 8 Acre Gated Project' },
+          details: { totalPlots: 12, area: '10 Cents (~4,356 sq ft)' },
           showOnHome: true,
           plots: [
             {
