@@ -130,14 +130,21 @@ export default function Home() {
             </Link>
           </div>
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {Array.isArray(homeProperties) && homeProperties.map((property, index) => (
-              <PropertyCard
-                key={property.name}
-                {...property}
-                delay={index * 120}
-                onViewPlots={() => handleViewPlots(property)}
-              />
-            ))}
+            {Array.isArray(homeProperties) && homeProperties.length > 0 ? (
+              homeProperties.map((property, index) => (
+                <PropertyCard
+                  key={property.name}
+                  {...property}
+                  delay={index * 120}
+                  onViewPlots={() => handleViewPlots(property)}
+                />
+              ))
+            ) : (
+              <div className="col-span-full border border-dashed border-navy/20 p-12 text-center rounded-3xl max-w-md mx-auto w-full">
+                <p className="text-xs font-bold uppercase tracking-widest text-navy/60">No Active Projects</p>
+                <p className="text-[10px] text-navy/40 mt-1">Operational ventures are currently unavailable.</p>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -235,13 +242,20 @@ export default function Home() {
             </p>
           </div>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {Array.isArray(testimonials) && testimonials.map((testimonial, index) => (
-              <TestimonialCard
-                key={testimonial.name}
-                {...testimonial}
-                delay={index * 120}
-              />
-            ))}
+            {Array.isArray(testimonials) && testimonials.length > 0 ? (
+              testimonials.map((testimonial, index) => (
+                <TestimonialCard
+                  key={testimonial.name}
+                  {...testimonial}
+                  delay={index * 120}
+                />
+              ))
+            ) : (
+              <div className="col-span-full border border-dashed border-navy/20 p-12 text-center rounded-3xl max-w-md mx-auto w-full">
+                <p className="text-xs font-bold uppercase tracking-widest text-navy/60">No Testimonials Available</p>
+                <p className="text-[10px] text-navy/40 mt-1">Client reviews are currently unavailable.</p>
+              </div>
+            )}
           </div>
         </div>
       </section>
