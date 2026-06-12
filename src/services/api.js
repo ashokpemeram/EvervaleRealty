@@ -1,9 +1,5 @@
 // Resilient API client with strict type-guards to prevent runtime rendering crashes
-import {
-  defaultContact,
-  defaultTestimonials,
-  defaultInquiries
-} from './defaults.js'
+
 
 const getAuthHeaders = () => {
   const token = sessionStorage.getItem('evervale_admin_token')
@@ -115,234 +111,66 @@ export const api = {
 
   // Inquiries (CRM leads)
   getInquiries: async () => {
-    try {
-      const res = await customFetch('/api/inquiries', {
-        method: 'GET',
-        headers: getAuthHeaders()
-      })
-      const data = await handleResponse(res)
-      if (Array.isArray(data)) {
-        localStorage.setItem('evervale_inquiries', JSON.stringify(data))
-        return data
-      }
-    } catch (error) {
-      console.warn('Backend offline: Falling back to local inquiries data.', error.message)
-    }
-
-    const cached = localStorage.getItem('evervale_inquiries')
-    if (cached) {
-      try {
-        const parsed = JSON.parse(cached)
-        if (Array.isArray(parsed)) return parsed
-      } catch (err) {
-        console.error('Failed to parse cached inquiries:', err)
-      }
-    }
-    return defaultInquiries
+    const res = await customFetch('/api/inquiries', {
+      method: 'GET',
+      headers: getAuthHeaders()
+    })
+    return await handleResponse(res)
   },
 
   createInquiry: async (inquiryData) => {
-    try {
-      const res = await customFetch('/api/inquiries', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(inquiryData)
-      })
-      return await handleResponse(res)
-    } catch (error) {
-      console.warn('Backend offline: Submitting inquiry locally.', error.message)
-    }
-
-    const cached = localStorage.getItem('evervale_inquiries')
-    let current = []
-    try {
-      current = cached ? JSON.parse(cached) : defaultInquiries
-    } catch (err) {
-      console.error('Failed to parse cached inquiries for creation:', err)
-    }
-    if (!Array.isArray(current)) current = defaultInquiries
-    localStorage.setItem('evervale_inquiries', JSON.stringify([...current, inquiryData]))
-    return inquiryData
+    const res = await customFetch('/api/inquiries', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(inquiryData)
+    })
+    return await handleResponse(res)
   },
 
   deleteInquiry: async (id) => {
-    try {
-      const res = await customFetch(`/api/inquiries/${id}`, {
-        method: 'DELETE',
-        headers: getAuthHeaders()
-      })
-      const data = await handleResponse(res)
-      const cached = localStorage.getItem('evervale_inquiries')
-      if (cached) {
-        try {
-          let list = JSON.parse(cached)
-          if (Array.isArray(list)) {
-            list = list.filter((lead) => lead.id !== id)
-            localStorage.setItem('evervale_inquiries', JSON.stringify(list))
-          }
-        } catch (err) {
-          console.error('Failed to parse cached inquiries for deletion:', err)
-        }
-      }
-      return data
-    } catch (error) {
-      console.warn('Backend offline: Dismissing inquiry locally.', error.message)
-    }
-
-    const cached = localStorage.getItem('evervale_inquiries')
-    if (cached) {
-      try {
-        let list = JSON.parse(cached)
-        if (Array.isArray(list)) {
-          list = list.filter((lead) => lead.id !== id)
-          localStorage.setItem('evervale_inquiries', JSON.stringify(list))
-        }
-      } catch (err) {
-        console.error('Failed to parse cached inquiries for local deletion:', err)
-      }
-    }
-    return { success: true }
+    const res = await customFetch(`/api/inquiries/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders()
+    })
+    return await handleResponse(res)
   },
 
   // Testimonials
   getTestimonials: async () => {
-    try {
-      const res = await customFetch('/api/testimonials')
-      const data = await handleResponse(res)
-      if (Array.isArray(data)) {
-        localStorage.setItem('evervale_testimonials', JSON.stringify(data))
-        return data
-      }
-    } catch (error) {
-      console.warn('Backend offline: Falling back to local testimonials.', error.message)
-    }
-
-    const cached = localStorage.getItem('evervale_testimonials')
-    if (cached) {
-      try {
-        const parsed = JSON.parse(cached)
-        if (Array.isArray(parsed)) return parsed
-      } catch (err) {
-        console.error('Failed to parse cached testimonials:', err)
-      }
-    }
-    return defaultTestimonials
+    const res = await customFetch('/api/testimonials')
+    return await handleResponse(res)
   },
 
   createTestimonial: async (testimonialData) => {
-    try {
-      const res = await customFetch('/api/testimonials', {
-        method: 'POST',
-        headers: getAuthHeaders(),
-        body: JSON.stringify(testimonialData)
-      })
-      const data = await handleResponse(res)
-      if (data && typeof data === 'object') {
-        const cached = localStorage.getItem('evervale_testimonials')
-        const current = cached ? JSON.parse(cached) : defaultTestimonials
-        if (Array.isArray(current)) {
-          localStorage.setItem('evervale_testimonials', JSON.stringify([...current, data]))
-        }
-        return data
-      }
-    } catch (error) {
-      console.warn('Backend offline: Creating testimonial locally.', error.message)
-    }
-
-    const cached = localStorage.getItem('evervale_testimonials')
-    let current = []
-    try {
-      current = cached ? JSON.parse(cached) : defaultTestimonials
-    } catch (err) {
-      console.error('Failed to parse cached testimonials for creation:', err)
-    }
-    if (!Array.isArray(current)) current = defaultTestimonials
-    localStorage.setItem('evervale_testimonials', JSON.stringify([...current, testimonialData]))
-    return testimonialData
+    const res = await customFetch('/api/testimonials', {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(testimonialData)
+    })
+    return await handleResponse(res)
   },
 
   deleteTestimonial: async (id) => {
-    try {
-      const res = await customFetch(`/api/testimonials/${id}`, {
-        method: 'DELETE',
-        headers: getAuthHeaders()
-      })
-      const data = await handleResponse(res)
-      const cached = localStorage.getItem('evervale_testimonials')
-      if (cached) {
-        try {
-          let list = JSON.parse(cached)
-          if (Array.isArray(list)) {
-            list = list.filter(t => t._id !== id)
-            localStorage.setItem('evervale_testimonials', JSON.stringify(list))
-          }
-        } catch (err) {
-          console.error('Failed to parse cached testimonials for deletion:', err)
-        }
-      }
-      return data
-    } catch (error) {
-      console.warn('Backend offline: Deleting testimonial locally.', error.message)
-    }
-
-    const cached = localStorage.getItem('evervale_testimonials')
-    if (cached) {
-      try {
-        let list = JSON.parse(cached)
-        if (Array.isArray(list)) {
-          list = list.filter(t => t._id !== id)
-          localStorage.setItem('evervale_testimonials', JSON.stringify(list))
-        }
-      } catch (err) {
-        console.error('Failed to parse cached testimonials for local deletion:', err)
-      }
-    }
-    return { success: true }
+    const res = await customFetch(`/api/testimonials/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders()
+    })
+    return await handleResponse(res)
   },
 
   // Contact Settings
   getContactSettings: async () => {
-    try {
-      const res = await customFetch('/api/contact-settings')
-      const data = await handleResponse(res)
-      if (data && typeof data === 'object') {
-        localStorage.setItem('evervale_contact', JSON.stringify(data))
-        return data
-      }
-    } catch (error) {
-      console.warn('Backend offline: Falling back to local contact configurations.', error.message)
-    }
-
-    const cached = localStorage.getItem('evervale_contact')
-    if (cached) {
-      try {
-        const parsed = JSON.parse(cached)
-        if (parsed && typeof parsed === 'object') return parsed
-      } catch (err) {
-        console.error('Failed to parse cached contact coordinates:', err)
-      }
-    }
-    return defaultContact
+    const res = await customFetch('/api/contact-settings')
+    return await handleResponse(res)
   },
 
   updateContactSettings: async (settingsData) => {
-    try {
-      const res = await customFetch('/api/contact-settings', {
-        method: 'PUT',
-        headers: getAuthHeaders(),
-        body: JSON.stringify(settingsData)
-      })
-      const data = await handleResponse(res)
-      if (data && typeof data === 'object') {
-        localStorage.setItem('evervale_contact', JSON.stringify(data))
-        return data
-      }
-    } catch (error) {
-      console.warn('Backend offline: Updating contact configurations locally.', error.message)
-    }
-
-    localStorage.setItem('evervale_contact', JSON.stringify(settingsData))
-    return settingsData
+    const res = await customFetch('/api/contact-settings', {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(settingsData)
+    })
+    return await handleResponse(res)
   },
 
   uploadFile: async (file) => {
