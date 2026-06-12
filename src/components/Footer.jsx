@@ -42,15 +42,14 @@ export default function Footer() {
   ].filter(link => link.href)
 
   return (
-    <footer className="bg-navy text-white">
+    <footer className="bg-navy text-white font-sans">
       <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-2 lg:grid-cols-4 lg:px-12">
         <div>
-          <h3 className="text-lg font-semibold tracking-[0.2em]">
+          <h3 className="text-lg font-semibold tracking-[0.2em] text-gold font-serif">
             EVERVALE REALTY
           </h3>
-          <p className="mt-4 text-sm text-white/70">
-            A private real estate advisory specializing in off-market luxury
-            acquisitions and portfolio stewardship.
+          <p className="mt-4 text-xs leading-relaxed text-white/70 font-sans">
+            Evervale Realty LLP is Andhra Pradesh's trusted land advisory firm — helping families and investors make confident, informed land decisions across Tirupati, Srikalahasti, and beyond.
           </p>
           <div className="mt-6 flex gap-3">
             {activeLinks.map((item) => (
@@ -68,13 +67,13 @@ export default function Footer() {
           </div>
         </div>
         <div>
-          <p className="text-sm font-semibold tracking-[0.2em]">EXPLORE ASSETS</p>
+          <p className="text-sm font-semibold tracking-[0.2em]">EXPLORE PROJECTS</p>
           <ul className="mt-4 space-y-3 text-sm text-white/70">
             <li>
-              <Link to="/services">New Acquisitions</Link>
+              <Link to="/projects">Open Plots</Link>
             </li>
             <li>
-              <Link to="/services">Asset Management</Link>
+              <Link to="/projects">Farmland Projects</Link>
             </li>
             <li>
               <Link to="/visualizer">AI Visualiser</Link>
@@ -112,8 +111,8 @@ export default function Footer() {
       </div>
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-6 py-6 text-xs text-white/60 md:flex-row md:items-center lg:px-12">
-          <p>© 2026 Evervale Realty. All rights reserved.</p>
-          <p>Private Office | Global Portfolio | Verified Listings</p>
+          <p>© 2026 Evervale Realty LLP. All rights reserved.</p>
+          <p>Tirupati & Srikalahasti | Verified Plots & Farmlands | Property. Powered.</p>
         </div>
       </div>
     </footer>

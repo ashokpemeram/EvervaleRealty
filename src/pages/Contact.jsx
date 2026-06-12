@@ -53,7 +53,7 @@ export default function Contact() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
-  const [preferredContact, setPreferredContact] = useState('Email')
+  const [preferredContact, setPreferredContact] = useState('WhatsApp')
   const [message, setMessage] = useState(() => {
     return (ventureName && plotNumber)
       ? `I am interested in acquiring ${plotNumber} at ${ventureName} (listed at ${plotPrice}). Please coordinate a private briefing with my office.`
@@ -90,20 +90,18 @@ export default function Contact() {
   return (
     <div className="bg-ivory">
       <section className="pt-28 pb-12">
-        <div className="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-[1.1fr,0.9fr] lg:items-center lg:px-12">
+        <div className="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-[1.1fr,0.9fr] lg:items-center lg:px-12 font-sans">
           <div className="reveal" data-animate>
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-gold">
-              Premium Partnerships
+              Honest Land Advisory
             </p>
-            <h1 className="mt-4 text-4xl font-semibold leading-tight md:text-5xl">
-              LET'S FRAME YOUR <span className="text-gold">VISION.</span>
+            <h1 className="mt-4 text-4xl font-semibold leading-tight md:text-5xl font-serif text-navy">
+              LET'S TALK — <span className="text-gold font-sans font-bold">IT'S FREE.</span>
             </h1>
           </div>
-          <div className="reveal text-sm text-navy/70" data-animate>
+          <div className="reveal text-sm text-navy/60 leading-relaxed font-sans" data-animate>
             <p>
-              Experience the gold standard in luxury real estate. From exclusive
-              listings to strategic acquisitions, we provide the elite
-              architectural perspective your vision deserves.
+              One honest conversation can change everything. Most people spend months researching land and still feel confused. We help you make confident land decisions with zero guesswork.
             </p>
           </div>
         </div>
@@ -220,9 +218,9 @@ export default function Contact() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-serif text-navy font-semibold">Briefing Request Submitted</h3>
+                <h3 className="text-2xl font-serif text-navy font-semibold">Consultation Request Submitted</h3>
                 <p className="text-sm text-navy/60 max-w-sm mt-3 leading-relaxed">
-                  Our private office concierge has registered your operational requirements. A partner will coordinate with your counsel shortly.
+                  Thank you! Our land advisory team has received your inquiry. A partner will reach out to you shortly to guide you.
                 </p>
                 <button
                   onClick={() => setSuccess(false)}
@@ -284,11 +282,12 @@ export default function Contact() {
                       <select
                         value={preferredContact}
                         onChange={(e) => setPreferredContact(e.target.value)}
-                        className="w-full rounded-2xl border border-navy/10 bg-ivory px-4 py-3 text-sm focus:border-gold focus:outline-none"
+                        className="w-full rounded-2xl border border-navy/10 bg-ivory px-4 py-3 text-sm focus:border-gold focus:outline-none cursor-pointer"
                       >
+                        <option>WhatsApp</option>
+                        <option>Phone Call</option>
                         <option>Email</option>
-                        <option>Phone</option>
-                        <option>Private Briefing</option>
+                        <option>In-Person Visit</option>
                       </select>
                     </div>
                   </div>

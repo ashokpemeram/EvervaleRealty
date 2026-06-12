@@ -1,63 +1,57 @@
-﻿import useScrollReveal from '../hooks/useScrollReveal'
+import useScrollReveal from '../hooks/useScrollReveal'
 import { Link } from 'react-router-dom'
 import { PortfolioIcon } from '../components/Icons'
 
 const stats = [
   {
-    value: '$4.2B',
-    label: 'Assets Under Management',
+    value: '100%',
+    label: 'Verified Plots',
   },
   {
-    value: '128',
-    label: 'Private Clients',
+    value: '500+',
+    label: 'Happy Families',
     highlight: true,
   },
   {
-    value: '14',
-    label: 'Global Markets',
+    value: '2',
+    label: 'High-Growth Corridors',
   },
   {
-    value: '98%',
-    label: 'Client Retention',
+    value: '100%',
+    label: 'Legal Clearance',
   },
 ]
 
 const commitments = [
   {
-    title: 'Elite Stewardship',
+    title: 'We Advise Before We Sell',
     description:
-      'A boutique advisory model dedicated to preserving legacy portfolios.',
+      'Your clarity always comes before our commission. Always.',
   },
   {
-    title: 'Curated Intelligence',
+    title: 'Deep Local Knowledge',
     description:
-      'Market intelligence and bespoke analytics for confident acquisitions.',
+      'Tirupati, Srikalahasti, and beyond — we know which corridors are rising and where infrastructure is coming.',
   },
   {
-    title: 'Enduring Value',
+    title: 'End-to-End Protection',
     description:
-      'Long-term positioning, risk screening, and value preservation services.',
+      'Clear titles, expert lawyers, and zero documentation stress. Your investment is safe at every step.',
   },
 ]
 
 const partners = [
   {
-    name: 'Julian Thorne',
-    role: 'Managing Partner',
+    name: 'Yasodha Neelam',
+    role: 'Founder & Managing Partner',
     image:
-      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80',
   },
   {
-    name: 'Elena Rodriguez',
-    role: 'Portfolio Strategist',
+    name: 'Ganesh',
+    role: 'Co-Founder',
     image:
-      'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=600&q=80',
-  },
-  {
-    name: 'Marcus Vane',
-    role: 'Private Markets Lead',
-    image:
-      'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
   },
 ]
 
@@ -67,26 +61,27 @@ export default function About() {
   return (
     <div className="bg-ivory">
       <section className="bg-white pt-28 pb-16">
-        <div className="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-[1.15fr,0.85fr] lg:px-12">
+        <div className="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-[1.1fr,0.9fr] lg:px-12">
           <div className="reveal" data-animate>
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-gold">
-              Elevate Living
+              The Evervale Story
             </p>
-            <h1 className="mt-4 text-4xl font-semibold leading-tight md:text-5xl">
-              Elevating the Standard of Living.
+            <h1 className="mt-4 text-3xl font-semibold leading-tight md:text-4xl font-serif text-navy">
+              We Started Evervale Realty So Your Land Investment Never Becomes Your Biggest Regret
             </h1>
           </div>
-          <div className="reveal text-sm text-navy/70" data-animate>
+          <div className="reveal text-sm text-navy/60 leading-relaxed space-y-4 font-sans" data-animate>
             <p>
-              Since our inception, Evervale Realty has been defined by
-              intentional service, meticulous curation, and a relentless
-              commitment to excellence. We elevate acquisitions with a
-              value-centric lens and unrivaled discretion.
+              There is a moment that every real estate professional in Andhra Pradesh has seen — and most choose to ignore. It is the moment a family realizes they made the wrong decision.
             </p>
-            <p className="mt-4">
-              Our advisory is built on a refined legacy of trust and deep market
-              insight, for clients who demand precision, purpose, and
-              confidentiality.
+            <p>
+              They saved for years. A government employee, a school teacher, a small shop owner. Someone who woke up before sunrise every single day and sacrificed so they could build something real — something they could pass to their children. And then they trusted the wrong person.
+            </p>
+            <p>
+              They bought land in the wrong location, or paid an inflated price, or discovered legal complications. We have seen this. We cannot unsee it.
+            </p>
+            <p className="font-semibold text-gold text-base">
+              No family that trusts us will ever regret their land investment.
             </p>
           </div>
         </div>
@@ -184,30 +179,40 @@ export default function About() {
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-gold">
               Evervale Team
             </p>
-            <h2 className="mt-3 text-3xl font-semibold">
-              The Evervale Partners.
+            <h2 className="mt-3 text-3xl font-semibold font-serif text-navy">
+              The People Behind Every Promise
             </h2>
+            <p className="mt-2 text-sm text-navy/60 max-w-2xl">
+              When you invest with Evervale Realty, you are working directly with people who have staked their reputation on every property they recommend.
+            </p>
           </div>
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <div className="mt-10 grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
             {partners.map((partner, index) => (
               <div
                 key={partner.name}
-                className="reveal rounded-card bg-ivory p-6 shadow-soft"
+                className="reveal rounded-card bg-ivory p-8 shadow-soft flex flex-col justify-between"
                 style={{ transitionDelay: `${index * 120}ms` }}
                 data-animate
               >
-                <img
-                  src={partner.image}
-                  alt={partner.name}
-                  className="h-56 w-full rounded-3xl object-cover"
-                  loading="lazy"
-                />
-                <h3 className="mt-5 text-lg font-semibold text-navy">
-                  {partner.name}
-                </h3>
-                <p className="text-xs uppercase tracking-[0.2em] text-navy/50">
-                  {partner.role}
-                </p>
+                <div>
+                  <img
+                    src={partner.image}
+                    alt={partner.name}
+                    className="h-64 w-full rounded-3xl object-cover"
+                    loading="lazy"
+                  />
+                  <h3 className="mt-5 text-xl font-semibold text-navy">
+                    {partner.name}
+                  </h3>
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold mt-1">
+                    {partner.role}
+                  </p>
+                  <p className="text-sm text-navy/60 mt-4 leading-relaxed">
+                    {partner.name === 'Yasodha Neelam' 
+                      ? 'Yasodha leads Evervale Realty with a vision of absolute transparency. With deep expertise in AP land registrations and legal frameworks, she ensures every plot and farmland layout is 100% compliant and secure.'
+                      : 'Ganesh brings extensive on-ground market intelligence across Tirupati and Srikalahasti. He personally hand-selects every property, analyzing infrastructure growth and connectivity corridors.'}
+                  </p>
+                </div>
               </div>
             ))}
           </div>

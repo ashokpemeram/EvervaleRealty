@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 
 const heroImage =
@@ -39,7 +39,7 @@ export default function HeroSection() {
         className="hero-parallax absolute inset-0"
         style={{ backgroundImage: `url(${heroImage})` }}
         role="img"
-        aria-label="Modern luxury villa at night"
+        aria-label="Beautiful green land landscape"
       />
       <div className="absolute inset-0 bg-hero-gradient" />
       <div className="absolute inset-0 bg-gradient-to-b from-navy/70 via-navy/40 to-navy/90" />
@@ -49,31 +49,31 @@ export default function HeroSection() {
           PROPERTY. POWERED.
         </p>
         <div className="reveal" data-animate>
-          <h1 className="text-4xl font-semibold leading-tight md:text-6xl lg:text-7xl">
-            Find Your <span className="text-gold">Dream</span>
-            <br />
-            Portfolio
+          <h1 className="text-3xl font-semibold leading-tight md:text-5xl lg:text-6xl max-w-4xl font-serif">
+            Confused About Where to Invest Your <span className="text-gold font-sans font-bold">Hard-Earned Money</span> in Land?
           </h1>
+          <h2 className="mt-4 text-lg font-medium tracking-wide text-gold max-w-2xl">
+            You Deserve Honest Answers — Not Just a Sales Pitch.
+          </h2>
         </div>
         <p
-          className="reveal max-w-2xl text-base text-white/80 md:text-lg"
+          className="reveal max-w-2xl text-sm leading-relaxed text-white/80 md:text-base"
           data-animate
         >
-          Experience the Evervale advantage. We combine high-performance data
-          with an old-world approach to luxury real estate acquisitions.
+          Every day, families across Andhra Pradesh make one of the biggest financial decisions of their lives — alone, confused, and surrounded by brokers who care more about commission than your future. At Evervale Realty, we listen first, advise honestly, and guide you to secure land built for your future.
         </p>
-        <div className="reveal flex flex-col gap-4 sm:flex-row" data-animate>
-          <a
-            href="#acquisitions"
-            className="rounded-full bg-gold px-8 py-3 text-sm font-semibold tracking-[0.2em] text-navy transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold/80"
-          >
-            EXPLORE PROPERTIES
-          </a>
+        <div className="reveal flex flex-col gap-4 sm:flex-row mt-2" data-animate>
           <Link
-            to="/about"
-            className="rounded-full border border-white/40 px-8 py-3 text-sm font-semibold tracking-[0.2em] text-white transition-all duration-300 hover:border-gold hover:text-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold/80"
+            to="/contact"
+            className="rounded-full bg-gold px-8 py-3 text-center text-sm font-semibold tracking-[0.2em] text-navy transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold/80"
           >
-            OUR STORY
+            LET'S TALK — IT'S FREE
+          </Link>
+          <Link
+            to="/projects"
+            className="rounded-full border border-white/40 px-8 py-3 text-center text-sm font-semibold tracking-[0.2em] text-white transition-all duration-300 hover:border-gold hover:text-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold/80"
+          >
+            VIEW PROJECTS
           </Link>
         </div>
       </div>

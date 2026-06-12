@@ -37,9 +37,8 @@ export default function Projects() {
   // Filter listings based on category selection
   const filteredProperties = Array.isArray(properties)
     ? properties.filter((property) => {
-        const isVenture = property.tag === 'VENTURE PLOTS' || (Array.isArray(property.plots) && property.plots.length > 0)
-        if (activeFilter === 'residences') return !isVenture
-        if (activeFilter === 'ventures') return isVenture
+        if (activeFilter === 'plots') return property.tag === 'OPEN PLOTS'
+        if (activeFilter === 'farmlands') return property.tag === 'FARMLANDS'
         return true // 'all'
       })
     : []
@@ -51,13 +50,13 @@ export default function Projects() {
         {/* Header Section */}
         <div className="reveal mb-10 text-center md:text-left animate-fade-in" data-animate>
           <span className="text-xs font-semibold uppercase tracking-[0.4em] text-gold">
-            Global Portfolio
+            AP Land Portfolio
           </span>
           <h1 className="mt-3 text-4xl md:text-5xl font-serif text-navy tracking-wide">
-            Our Architectural Projects
+            Our Verified Projects
           </h1>
           <p className="mt-3 max-w-2xl text-sm text-navy/60 leading-relaxed">
-            Browse our curated collection of verified off-market estates and premium land development masterplans engineered for generational wealth preservation.
+            Browse our curated collection of TUDA-approved open plots and gated farmlands in Srikalahasti and Tirupati, engineered for long-term growth and capital appreciation.
           </p>
         </div>
 
@@ -65,8 +64,8 @@ export default function Projects() {
         <div className="reveal flex flex-wrap gap-2.5 mb-12 select-none" data-animate>
           {[
             { id: 'all', label: 'All Portfolio' },
-            { id: 'residences', label: 'Luxury Residences' },
-            { id: 'ventures', label: 'Land Masterplans' }
+            { id: 'plots', label: 'Open Plots' },
+            { id: 'farmlands', label: 'Farmland' }
           ].map((filter) => {
             const isActive = activeFilter === filter.id
             return (

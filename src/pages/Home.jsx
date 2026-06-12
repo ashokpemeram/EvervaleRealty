@@ -18,28 +18,28 @@ import {
 
 const services = [
   {
-    title: 'Acquire',
+    title: 'Open Plots',
     description:
-      'Off-market sourcing and data-led screening to secure rare, high-performing assets.',
-    cta: 'VIEW LISTINGS',
+      'TUDA and DTCP approved residential and commercial plots in high-growth locations across Tirupati and Srikalahasti.',
+    cta: 'VIEW PLOTS',
     icon: TrendingIcon,
     to: '/services',
   },
   {
-    title: 'Divest',
+    title: 'Farmlands',
     description:
-      'Precision exit strategy with valuation intelligence built for generational capital.',
-    cta: 'VALUATION REPORT',
-    icon: ExchangeIcon,
+      'Customized farmland parcels with drip irrigation setup, plantation planning, and government-recognized Pattadhar Passbook.',
+    cta: 'EXPLORE FARMLANDS',
+    icon: PortfolioIcon,
     highlight: true,
     to: '/services',
   },
   {
-    title: 'Manage',
+    title: 'Large Parcels',
     description:
-      'Portfolio stewardship that blends hospitality-grade operations with ROI rigor.',
-    cta: 'EXPLORE PORTFOLIO',
-    icon: PortfolioIcon,
+      'We handle large-scale land transactions (10 to 50 acres) across Tirupati and beyond with complete legal and title verification support.',
+    cta: 'ADVISORY SERVICES',
+    icon: ExchangeIcon,
     to: '/services',
   },
 ]
@@ -90,12 +90,11 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-6 lg:px-12">
           <div className="reveal" data-animate>
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-gold">
-              The Evervale Suite
+              Our Services
             </p>
-            <h2 className="mt-3 text-3xl font-semibold">The Evervale Suite</h2>
-            <p className="mt-3 max-w-2xl text-sm text-navy/60">
-              A refined collection of acquisition, divestment, and stewardship
-              services engineered for discerning real estate portfolios.
+            <h2 className="mt-3 text-3xl font-semibold font-serif text-navy">Everything You Need to Invest in Land — With Zero Guesswork</h2>
+            <p className="mt-3 max-w-2xl text-sm text-navy/60 leading-relaxed">
+              Every plot and farmland layout in our portfolio has been personally verified for legal clarity, growth potential, and transparent pricing.
             </p>
           </div>
           <div className="mt-10 grid gap-6 lg:grid-cols-3">
@@ -115,16 +114,19 @@ export default function Home() {
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div className="reveal" data-animate>
               <p className="text-xs font-semibold uppercase tracking-[0.4em] text-gold">
-                New Acquisitions
+                Featured Projects
               </p>
-              <h2 className="mt-3 text-3xl font-semibold">New Acquisitions</h2>
+              <h2 className="mt-3 text-3xl font-semibold font-serif text-navy">Properties We Stand Behind</h2>
+              <p className="text-sm text-navy/60 mt-1 max-w-xl">
+                Every project listed here has been personally verified by our team for legal clarity, growth potential, and fair pricing.
+              </p>
             </div>
             <Link
               to="/projects"
-              className="reveal text-xs font-semibold tracking-[0.3em] text-navy/70"
+              className="reveal text-xs font-semibold tracking-[0.3em] text-navy/70 border-b border-gold pb-1"
               data-animate
             >
-              VIEW ALL ASSETS
+              VIEW ALL PROJECTS
             </Link>
           </div>
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -141,72 +143,78 @@ export default function Home() {
       </section>
 
       <section id="about" className="py-20 lg:py-24">
-        <div className="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-[1.05fr,0.95fr] lg:px-12">
+        <div className="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-[1.0fr,1.0fr] lg:px-12">
           <div
-            className="reveal relative overflow-hidden rounded-4xl bg-navy p-8 text-white shadow-soft"
+            className="reveal relative overflow-hidden rounded-4xl bg-navy p-8 text-white shadow-soft flex flex-col justify-between"
             data-animate
           >
             <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-gold/20 blur-3xl" />
             <div className="absolute -bottom-16 left-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
             <div className="relative space-y-6">
               <p className="text-xs font-semibold uppercase tracking-[0.4em] text-gold">
-                Safe Investment
+                Dream Protected
               </p>
               <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
                 <ShieldIcon className="h-10 w-10 text-gold" />
-                <p className="mt-6 text-lg font-semibold uppercase tracking-[0.2em] text-white/80">
-                  SECURE. SWIFT. DISCREET.
+                <p className="mt-6 text-base font-semibold uppercase tracking-[0.2em] text-white/80">
+                  YOUR TRUST. OUR REPUTATION.
                 </p>
               </div>
-              <p className="text-sm text-white/70">
-                Our security-first mindset ensures every asset is verified,
-                protected, and positioned for long-term appreciation.
+              <p className="text-sm leading-relaxed text-white/70">
+                Evervale Realty was born from one non-negotiable belief: No family that trusts us will ever regret their land investment.
               </p>
             </div>
           </div>
           <div className="reveal" data-animate>
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-gold">
-              The Evervale Standard
+              How We Work
             </p>
-            <h2 className="mt-3 text-3xl font-semibold">The Evervale Standard</h2>
-            <p className="mt-3 text-sm text-navy/60">
-              A private office experience built on verification, discretion, and
-              elevated access.
+            <h2 className="mt-3 text-3xl font-semibold font-serif text-navy">One Honest Conversation Can Change Everything</h2>
+            <p className="mt-3 text-sm text-navy/60 leading-relaxed">
+              Most people spend months researching land and still feel confused. Our clients feel confident in one conversation.
             </p>
             <div className="mt-8 space-y-6">
               <div className="flex items-start gap-4 border-b border-navy/10 pb-6">
-                <ShieldIcon className="mt-1 h-6 w-6 text-gold" />
+                <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/15 text-gold text-xs font-bold font-sans">
+                  1
+                </div>
                 <div>
-                  <h3 className="text-sm font-semibold">
-                    Institutional Grade Verification
-                  </h3>
-                  <p className="mt-2 text-sm text-navy/60">
-                    Multi-layer diligence, title assurance, and compliance
-                    screening across every market.
+                  <h3 className="text-sm font-semibold">You Talk. We Listen.</h3>
+                  <p className="mt-2 text-sm text-navy/60 leading-relaxed">
+                    Tell us your budget, your timeline, what you're hoping to achieve. There is no judgment here. No pressure. No agenda.
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4 border-b border-navy/10 pb-6">
-                <SupportIcon className="mt-1 h-6 w-6 text-gold" />
+                <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/15 text-gold text-xs font-bold font-sans">
+                  2
+                </div>
                 <div>
-                  <h3 className="text-sm font-semibold">
-                    Private Office Support
-                  </h3>
-                  <p className="mt-2 text-sm text-navy/60">
-                    Dedicated advisors, on-demand reporting, and 24/7 concierge
-                    coordination.
+                  <h3 className="text-sm font-semibold">We Give You the Honest Truth.</h3>
+                  <p className="mt-2 text-sm text-navy/60 leading-relaxed">
+                    Based on deep on-ground knowledge of Tirupati, Srikalahasti, and beyond, we tell you exactly which locations have real growth potential — and which ones to avoid.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4 border-b border-navy/10 pb-6">
+                <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/15 text-gold text-xs font-bold font-sans">
+                  3
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold">We Show You the Right Property.</h3>
+                  <p className="mt-2 text-sm text-navy/60 leading-relaxed">
+                    Every property we present has been personally verified by our team for legal clarity, fair pricing, and genuine appreciation potential.
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <LockIcon className="mt-1 h-6 w-6 text-gold" />
+                <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/15 text-gold text-xs font-bold font-sans">
+                  4
+                </div>
                 <div>
-                  <h3 className="text-sm font-semibold">
-                    Closed-Circuit Access
-                  </h3>
-                  <p className="mt-2 text-sm text-navy/60">
-                    Confidential inventory, private previews, and secure bidding
-                    protocols.
+                  <h3 className="text-sm font-semibold">You Buy With Complete Confidence.</h3>
+                  <p className="mt-2 text-sm text-navy/60 leading-relaxed">
+                    No hidden surprises. No last-minute complications. Just the quiet, solid confidence of knowing you made the right decision.
                   </p>
                 </div>
               </div>
@@ -219,11 +227,11 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-6 lg:px-12">
           <div className="reveal text-center" data-animate>
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-gold">
-              The Evervale Network
+              Client Testimonials
             </p>
-            <h2 className="mt-3 text-3xl font-semibold">The Evervale Network</h2>
+            <h2 className="mt-3 text-3xl font-semibold font-serif text-navy">They Trusted Us With Their Life Savings. Here Is What They Say.</h2>
             <p className="mt-3 text-sm text-navy/60">
-              Trusted by private capital, family offices, and global investors.
+              Real families. Real investments. Real results.
             </p>
           </div>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
@@ -243,21 +251,23 @@ export default function Home() {
         <div className="absolute -right-10 top-6 h-40 w-40 rounded-full bg-gold/20 blur-3xl" />
         <div className="absolute bottom-0 left-0 h-32 w-32 rounded-full bg-white/10 blur-2xl" />
         <div className="relative mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 text-white lg:flex-row lg:items-center lg:justify-between lg:px-12">
-          <div className="reveal" data-animate>
-            <h2 className="text-3xl font-semibold">
-              Ready to power your next real estate chapter?
+          <div className="reveal max-w-3xl" data-animate>
+            <h2 className="text-3xl font-semibold font-serif">
+              Stop Guessing. Start Knowing.
             </h2>
-            <p className="mt-3 text-sm text-white/70">
-              Secure a private briefing with Evervale for curated access,
-              valuation insight, and exclusive acquisitions.
+            <p className="mt-3 text-sm text-white/70 leading-relaxed">
+              One free conversation with our experts will give you more clarity than months of research on your own. Tell us your budget. Tell us your goals. We will tell you exactly where to invest — and why.
+            </p>
+            <p className="mt-2 text-xs italic text-gold">
+              Plots at Suchithra Gardens are selling fast. Prices increase as inventory reduces. Speak to us today.
             </p>
           </div>
           <Link
             to="/contact"
-            className="reveal rounded-full bg-gold px-8 py-3 text-sm font-semibold tracking-[0.2em] text-navy transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold/80"
+            className="reveal rounded-full bg-gold px-8 py-3 text-sm font-semibold tracking-[0.2em] text-navy transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold/80 whitespace-nowrap"
             data-animate
           >
-            BOOK A BRIEFING
+            LET'S TALK — IT'S FREE
           </Link>
         </div>
       </section>
