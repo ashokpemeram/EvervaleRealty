@@ -50,17 +50,20 @@ export default function HeroSection() {
         </p>
         <div className="reveal" data-animate>
           <h1 className="text-3xl font-semibold leading-tight md:text-5xl lg:text-6xl max-w-4xl font-serif">
-            Confused About Where to Invest Your <span className="text-gold font-sans font-bold">Hard-Earned Money</span> in Land?
+            Invest in Land Today. <span className="text-gold font-sans font-bold">Build Your Future Tomorrow.</span>
           </h1>
           <h2 className="mt-4 text-lg font-medium tracking-wide text-gold max-w-2xl">
-            You Deserve Honest Answers — Not Just a Sales Pitch.
+            Premium Land. Trusted Guidance. Confident Decisions. 
           </h2>
         </div>
         <p
           className="reveal max-w-2xl text-sm leading-relaxed text-white/80 md:text-base"
           data-animate
         >
-          Every day, families across Andhra Pradesh make one of the biggest financial decisions of their lives — alone, confused, and surrounded by brokers who care more about commission than your future. At Evervale Realty, we listen first, advise honestly, and guide you to secure land built for your future.
+          Your hard-earned money deserves more than a sales pitch. 
+          Evervale Realty brings you carefully selected land opportunities, 
+          transparent information, and personal guidance—so you can invest with clarity, 
+          confidence, and peace of mind.
         </p>
         <div className="reveal flex flex-col gap-4 sm:flex-row mt-2" data-animate>
           <Link

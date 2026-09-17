@@ -6,7 +6,7 @@ const links = [
   { label: 'About', to: '/about' },
   { label: 'Projects', to: '/projects' },
   { label: 'Services', to: '/services' },
-  { label: 'AI Visualiser', to: '/visualizer' },
+  // { label: 'AI Visualiser', to: '/visualizer' },
 ]
 
 const baseLink =
@@ -86,7 +86,7 @@ export default function Navbar({ isHome }) {
           >
             MENU
           </button>
-          <Link
+          {/* <Link
             to="/admin"
             className={`hidden rounded-full border px-5 py-2 text-xs font-semibold tracking-[0.2em] transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold/80 md:inline-flex ${
               showSolid
@@ -95,7 +95,7 @@ export default function Navbar({ isHome }) {
             }`}
           >
             ADMIN
-          </Link>
+          </Link> */}
           <Link
             to="/contact"
             className={`hidden rounded-full px-5 py-2 text-xs font-semibold tracking-[0.2em] transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold/80 md:inline-flex ${
@@ -130,7 +130,7 @@ export default function Navbar({ isHome }) {
             </NavLink>
           ))}
           <div className="mt-2 flex flex-wrap gap-2.5">
-            <Link
+            {/* <Link
               to="/admin"
               className={`inline-flex rounded-full border px-5 py-2 text-xs font-semibold tracking-[0.2em] ${
                 showSolid
@@ -139,7 +139,7 @@ export default function Navbar({ isHome }) {
               }`}
             >
               ADMIN
-            </Link>
+            </Link> */}
             <Link
               to="/contact"
               className="inline-flex rounded-full bg-gold px-5 py-2 text-xs font-semibold tracking-[0.2em] text-navy"
