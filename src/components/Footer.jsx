@@ -42,14 +42,15 @@ export default function Footer() {
   ].filter(link => link.href)
 
   return (
-    <footer className="bg-navy text-white font-sans">
-      <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-2 lg:grid-cols-4 lg:px-12">
-        <div>
+    <footer className="overflow-hidden bg-navy font-sans text-white">
+      <div className="relative mx-auto grid max-w-6xl gap-10 px-6 py-14 lg:grid-cols-[1.35fr_0.8fr_0.9fr] lg:gap-16 lg:px-12 lg:py-16">
+        <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-gold/10 blur-3xl" />
+        <div className="relative">
           <h3 className="text-lg font-semibold tracking-[0.2em] text-gold font-serif">
             EVERVALE REALTY
           </h3>
-          <p className="mt-4 text-xs leading-relaxed text-white/70 font-sans">
-            Evervale Realty LLP is Andhra Pradesh's trusted land advisory firm — helping families and investors make confident, informed land decisions across Tirupati, Srikalahasti, and beyond.
+          <p className="mt-4 max-w-md text-xs leading-relaxed text-white/70">
+            Evervale Realty LLP is Andhra Pradesh&apos;s trusted land advisory firm — helping families and investors make confident, informed land decisions across Tirupati, Srikalahasti, and beyond.
           </p>
           <div className="mt-6 flex gap-3">
             {activeLinks.map((item) => (
@@ -66,51 +67,35 @@ export default function Footer() {
             ))}
           </div>
         </div>
-        <div>
-          <p className="text-sm font-semibold tracking-[0.2em]">EXPLORE PROJECTS</p>
-          <ul className="mt-4 space-y-3 text-sm text-white/70">
+        <div className="relative border-t border-white/10 pt-8 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
+          <p className="text-xs font-semibold tracking-[0.24em] text-gold">EXPLORE</p>
+          <ul className="mt-5 space-y-3 text-sm text-white/70">
             <li>
-              <Link to="/projects">Open Plots</Link>
+              <Link className="transition-colors hover:text-gold" to="/projects">Our Projects</Link>
             </li>
             <li>
-              <Link to="/projects">Farmland Projects</Link>
+              <Link className="transition-colors hover:text-gold" to="/about">About</Link>
             </li>
             <li>
-              <Link to="/visualizer">AI Visualiser</Link>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <p className="text-sm font-semibold tracking-[0.2em]">THE FIRM</p>
-          <ul className="mt-4 space-y-3 text-sm text-white/70">
-            <li>
-              <Link to="/about">Our Story</Link>
-            </li>
-            <li>
-              <Link to="/admin">Admin Portal</Link>
-            </li>
-            <li>
-              <a href="#">Press</a>
+              <Link className="transition-colors hover:text-gold" to="/Services">Services</Link>
             </li>
           </ul>
         </div>
-        <div>
-          <p className="text-sm font-semibold tracking-[0.2em]">GOVERNANCE</p>
-          <ul className="mt-4 space-y-3 text-sm text-white/70">
-            <li>
-              <a href="#">Privacy</a>
-            </li>
-            <li>
-              <a href="#">Terms</a>
-            </li>
-            <li>
-              <a href="#">Compliance</a>
-            </li>
-          </ul>
+        <div className="relative border-t border-white/10 pt-8 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
+          <p className="text-xs font-semibold tracking-[0.24em] text-gold">MAKE YOUR MOVE</p>
+          <p className="mt-5 max-w-xs text-sm leading-relaxed text-white/70">
+            Get clear, practical guidance before you invest in your next property.
+          </p>
+          <Link
+            to="/contact"
+            className="mt-6 inline-flex items-center border-b border-gold pb-1 text-xs font-semibold tracking-[0.2em] text-white transition-colors hover:text-gold"
+          >
+            TALK TO AN EXPERT
+          </Link>
         </div>
       </div>
       <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-6 py-6 text-xs text-white/60 md:flex-row md:items-center lg:px-12">
+        <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-3 px-6 py-5 text-xs text-white/60 md:flex-row md:items-center lg:px-12">
           <p>© 2026 Evervale Realty LLP. All rights reserved.</p>
           <p>Tirupati & Srikalahasti | Verified Plots & Farmlands | Property. Powered.</p>
         </div>
