@@ -48,6 +48,9 @@ export default function Contact() {
   const ventureName = location.state?.ventureName || ''
   const plotNumber = location.state?.plotNumber || ''
   const plotPrice = location.state?.plotPrice || ''
+  const mapAddress = contact.address || 'Evervale Realty LLP, Tirupati, Andhra Pradesh, India'
+  const mapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(mapAddress)}&output=embed`
+  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapAddress)}`
 
   // Controlled Form States
   const [name, setName] = useState('')
@@ -320,29 +323,22 @@ export default function Contact() {
       <section className="pb-20">
         <div className="mx-auto max-w-6xl px-6 lg:px-12">
           <div className="reveal relative overflow-hidden rounded-4xl shadow-soft" data-animate>
-            <img
-              src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=2000&q=80"
-              alt="City skyline avenue"
-              className="h-[360px] w-full object-cover"
+            <iframe
+              title="Evervale Realty location map"
+              src={mapEmbedUrl}
+              className="h-[360px] w-full border-0"
               loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
             />
-            <div className="absolute inset-0 bg-navy/50" />
-            <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold text-navy">
-                <MapPinIcon className="h-5 w-5" />
-              </div>
-              <div className="rounded-2xl bg-white px-4 py-2 text-xs font-semibold tracking-[0.2em] text-navy">
-                EVERVALE REALTY HQ
-              </div>
-            </div>
-            <div className="absolute bottom-6 right-6 flex flex-col gap-2">
-              <button className="h-10 w-10 rounded-full bg-white text-navy">
-                +
-              </button>
-              <button className="h-10 w-10 rounded-full bg-white text-navy">
-                -
-              </button>
-            </div>
+            <a
+              href={mapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute bottom-5 right-5 rounded-full bg-navy px-5 py-3 text-xs font-semibold tracking-[0.16em] text-white shadow-card transition-colors hover:bg-gold hover:text-navy"
+            >
+              OPEN IN MAPS
+            </a>
           </div>
         </div>
       </section>
