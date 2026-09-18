@@ -161,7 +161,7 @@ export default function Home() {
               VIEW ALL PROJECTS
             </Link>
           </div>
-          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {Array.isArray(homeProperties) && homeProperties.length > 0 ? (
               homeProperties.map((property, index) => (
                 <PropertyCard

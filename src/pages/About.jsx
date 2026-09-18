@@ -60,33 +60,32 @@ export default function About() {
 
   return (
     <div className="bg-ivory">
-      <section className="bg-white pt-28 pb-16">
-        <div className="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-[1.1fr,0.9fr] lg:px-12">
-          <div className="reveal" data-animate>
-            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-gold">
+      <section className="bg-white pt-20 pb-16">
+        <div className="mx-auto mt-12 max-w-6xl px-6 lg:px-12">
+        <h1 className="text-2xl font-semibold uppercase tracking-[0.1em] text-gold">
               The Evervale Story
-            </p>
-            <h1 className="mt-4 text-3xl font-semibold leading-tight md:text-4xl font-serif text-navy">
-              We Started Evervale Realty So Your Land Investment Never Becomes Your Biggest Regret
             </h1>
-          </div>
-          <div className="reveal text-sm text-navy/60 leading-relaxed space-y-4 font-sans" data-animate>
+          
+          <div className="text-m text-navy/60 leading-relaxed space-y-4 font-sans mt-4" data-animate>
             <p>
-              There is a moment that every real estate professional in Andhra Pradesh has seen — and most choose to ignore. It is the moment a family realizes they made the wrong decision.
+              What if the land you choose today could become the foundation of your tomorrow?
+
+At Evervale Realty LLP, we believe the right property is more than an asset—it is a possibility, a foundation, and a step toward a more secure future.
             </p>
             <p>
-              They saved for years. A government employee, a school teacher, a small shop owner. Someone who woke up before sunrise every single day and sacrificed so they could build something real — something they could pass to their children. And then they trusted the wrong person.
+              Our approach combines strategic locations, thoughtful development, transparent dealings, and customer-focused real-estate solutions to help you make property decisions with confidence. We seek opportunities where growing connectivity, infrastructure, and communities can create meaningful potential for the future.
             </p>
             <p>
-              They bought land in the wrong location, or paid an inflated price, or discovered legal complications. We have seen this. We cannot unsee it.
+              Whether you are looking for a place to build your dream, a property for your family, or an opportunity to strengthen your portfolio, Evervale Realty LLP is committed to guiding you at every step.
             </p>
             <p className="font-semibold text-gold text-base">
-              No family that trusts us will ever regret their land investment.
+              {/* No family that trusts us will ever regret their land investment. */}
+              Because when the right property meets the right vision, growth becomes a journey worth investing in.
             </p>
           </div>
-        </div>
+          </div>
         <div className="mx-auto mt-12 max-w-6xl px-6 lg:px-12">
-          <div className="reveal overflow-hidden rounded-4xl shadow-soft" data-animate>
+          <div className="overflow-hidden rounded-4xl shadow-soft" data-animate>
             <img
               src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=2000&q=80"
               alt="Modern luxury villa overlooking a pool"
@@ -139,21 +138,34 @@ export default function About() {
                 The Vision
               </p>
               <p className="mt-3 text-sm text-white/80">
-                Elevating global portfolios through intentional design and
-                performance.
+                To make property ownership simple, trusted, and valuable for everyone.
               </p>
             </div>
           </div>
           <div className="reveal" data-animate>
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-gold">
-              Property. Powered.
+              Our Vision
             </p>
-            <h2 className="mt-3 text-3xl font-semibold">Property. Powered.</h2>
-            <p className="mt-3 text-sm text-navy/60">
-              Our private office approach is grounded in research, data, and
-              elevated client service.
+            <p className="mt-3 text-m text-navy/60">
+              At Evervale Realty LLP, 
+              our vision is to help people find the right property for their needs, 
+              dreams, and future. We focus on offering quality properties in promising locations, 
+              supported by transparent information, thoughtful development, and dependable service.
             </p>
-            <div className="mt-8 space-y-6">
+            <p className="mt-3 text-m text-navy/60">
+              We place strong importance on legal due diligence and documentation 
+              with expertise lawyers, helping customers understand the property, 
+              verify relevant approvals and title documents, and move forward with 
+              greater confidence.
+            </p>
+            <p className="mt-3 text-m text-navy/60">
+              We believe every property has the potential to become more than 
+              just land—it can be a home, an investment, a business opportunity, or a 
+              lasting legacy. Through honest guidance, transparent processes, and 
+              customer-focused solutions, we aim to build lasting relationships and 
+              grow together with the communities we serve.
+            </p>
+            {/* <div className="mt-8 space-y-6">
               {commitments.map((item) => (
                 <div
                   key={item.title}
@@ -168,7 +180,7 @@ export default function About() {
                   </div>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
       </section>

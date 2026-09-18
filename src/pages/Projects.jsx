@@ -86,7 +86,7 @@ export default function Projects() {
 
         {/* Listings Grid */}
         {Array.isArray(filteredProperties) && filteredProperties.length > 0 ? (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 animate-fade-in">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 animate-fade-in">
             {filteredProperties.map((property, index) => (
               <div key={property.name} className="reveal" data-animate>
                 <PropertyCard
