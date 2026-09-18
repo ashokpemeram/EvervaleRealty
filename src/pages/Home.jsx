@@ -20,28 +20,51 @@ const services = [
   {
     title: 'Open Plots',
     description:
-      'TUDA and DTCP approved residential and commercial plots in high-growth locations across Tirupati and Srikalahasti.',
+      'TUDA and DTCP approved residential and commercial plots in prime and developing locations around Tirupati and Srikalahasti.',
     cta: 'VIEW PLOTS',
     icon: TrendingIcon,
-    to: '/services',
+    // to: '/services',
   },
   {
     title: 'Farmlands',
     description:
-      'Customized farmland parcels with drip irrigation setup, plantation planning, and government-recognized Pattadhar Passbook.',
+      'Own a piece of green land. We bring you carefully selected farmlands for agricultural use and long-term investment.',
     cta: 'EXPLORE FARMLANDS',
     icon: PortfolioIcon,
-    highlight: true,
-    to: '/services',
+    // to: '/services',
   },
+  // {
+  //   title: 'Prime Locations',
+  //   description:
+  //     'Properties near key locations — including temples, hospitals, educational institutions and major roads in Tirupati & Srikalahasti.',
+  //   cta: 'EXPLORE LOCATIONS',
+  //   icon: ExchangeIcon,
+  //   to: '/services',
+  // },
   {
-    title: 'Large Parcels',
+    title: 'Verified Documentation',
     description:
-      'We handle large-scale land transactions (10 to 50 acres) across Tirupati and beyond with complete legal and title verification support.',
-    cta: 'ADVISORY SERVICES',
-    icon: ExchangeIcon,
-    to: '/services',
+      'We provide clear property details, approvals and documentation information for a safe and transparent purchase.',
+    cta: 'CHECK DETAILS',
+    icon: LockIcon,
+    // to: '/services',
   },
+  // {
+  //   title: 'End-to-End Support',
+  //   description:
+  //     'From site visit to registration, our team guides you at every step of your land buying journey.',
+  //   cta: 'TALK TO US',
+  //   icon: SupportIcon,
+  //   to: '/services',
+  // },
+  // {
+  //   title: 'Investment Guidance',
+  //   description:
+  //     'Get expert advice on location potential, market trends and future value — to help you make the right decision.',
+  //   cta: 'GET GUIDANCE',
+  //   icon: TrendingIcon,
+  //   to: '/services',
+  // },
 ]
 
 export default function Home() {
@@ -88,16 +111,25 @@ export default function Home() {
 
       <section id="services" className="relative py-20 lg:py-24">
         <div className="mx-auto max-w-6xl px-6 lg:px-12">
-          <div className="reveal" data-animate>
-            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-gold">
-              Our Services
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold font-serif text-navy">Everything You Need to Invest in Land — With Zero Guesswork</h2>
-            <p className="mt-3 max-w-2xl text-sm text-navy/60 leading-relaxed">
-              Every plot and farmland layout in our portfolio has been personally verified for legal clarity, growth potential, and transparent pricing.
-            </p>
+           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div className="reveal" data-animate>
+              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-gold">
+                Our Services
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold font-serif text-navy">Your Trusted Partner in Land Investments </h2>
+              <p className="text-sm text-navy/60 mt-1 max-w-xl">
+                From residential plots to farmlands, we offer verified properties, prime locations, transparent information, and complete support—so you can invest in land with confidence.
+              </p>
+            </div>
+            <Link
+              to="/services"
+              className="reveal text-xs font-semibold tracking-[0.3em] text-navy/70 border-b border-gold pb-1"
+              data-animate
+            >
+              EXPLORE ALL SERVICES
+            </Link>
           </div>
-          <div className="mt-10 grid gap-6 lg:grid-cols-3">
+          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {services.map((service, index) => (
               <ServiceCard
                 key={service.title}
@@ -176,9 +208,9 @@ export default function Home() {
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-gold">
               How We Work
             </p>
-            <h2 className="mt-3 text-3xl font-semibold font-serif text-navy">One Honest Conversation Can Change Everything</h2>
+            <h2 className="mt-3 text-3xl font-semibold font-serif text-navy">Exceptional Results Start with One Honest Conversation </h2>
             <p className="mt-3 text-sm text-navy/60 leading-relaxed">
-              Most people spend months researching land and still feel confused. Our clients feel confident in one conversation.
+              Most buyers spend months second-guessing land deals in regional markets. We replace speculation with complete clarity in a single, strategy-focused discussion.
             </p>
             <div className="mt-8 space-y-6">
               <div className="flex items-start gap-4 border-b border-navy/10 pb-6">
@@ -186,9 +218,9 @@ export default function Home() {
                   1
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold">You Talk. We Listen.</h3>
+                  <h3 className="text-sm font-semibold">Tell Us Your Vision</h3>
                   <p className="mt-2 text-sm text-navy/60 leading-relaxed">
-                    Tell us your budget, your timeline, what you're hoping to achieve. There is no judgment here. No pressure. No agenda.
+                    Share your target budget, timeline, and long-term investment goals. We offer transparent guidance with zero sales pressure, zero agendas, and zero obligation.
                   </p>
                 </div>
               </div>
@@ -197,9 +229,9 @@ export default function Home() {
                   2
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold">We Give You the Honest Truth.</h3>
+                  <h3 className="text-sm font-semibold">Get Unfiltered Local Market Insights</h3>
                   <p className="mt-2 text-sm text-navy/60 leading-relaxed">
-                    Based on deep on-ground knowledge of Tirupati, Srikalahasti, and beyond, we tell you exactly which locations have real growth potential — and which ones to avoid.
+                    Powered by deep on-the-ground presence across Tirupati, Srikalahasti, and surrounding growth corridors, we show you which micro-markets deliver verified ROI—and which ones to skip.
                   </p>
                 </div>
               </div>
@@ -208,13 +240,13 @@ export default function Home() {
                   3
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold">We Show You the Right Property.</h3>
+                  <h3 className="text-sm font-semibold">Secure a Fully Vetted Property</h3>
                   <p className="mt-2 text-sm text-navy/60 leading-relaxed">
-                    Every property we present has been personally verified by our team for legal clarity, fair pricing, and genuine appreciation potential.
+                    Skip the guesswork. Every parcel we curate undergoes rigorous background checks for clear legal titles, accurate pricing, and long-term value appreciation.
                   </p>
                 </div>
               </div>
-              <div className="flex items-start gap-4">
+              {/* <div className="flex items-start gap-4">
                 <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/15 text-gold text-xs font-bold font-sans">
                   4
                 </div>
@@ -224,7 +256,7 @@ export default function Home() {
                     No hidden surprises. No last-minute complications. Just the quiet, solid confidence of knowing you made the right decision.
                   </p>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -236,9 +268,9 @@ export default function Home() {
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-gold">
               Client Testimonials
             </p>
-            <h2 className="mt-3 text-3xl font-semibold font-serif text-navy">They Trusted Us With Their Life Savings. Here Is What They Say.</h2>
+            <h2 className="mt-3 text-3xl font-semibold font-serif text-navy">Real experiences. Genuine guidance. Confident investments.</h2>
             <p className="mt-3 text-sm text-navy/60">
-              Real families. Real investments. Real results.
+              “Evervale Realty made the entire land-buying process simple and transparent. Their team explained everything clearly and helped us make a confident decision.”
             </p>
           </div>
           <div className="mt-10 grid gap-6 md:grid-cols-3">

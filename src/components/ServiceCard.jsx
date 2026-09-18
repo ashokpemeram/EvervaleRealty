@@ -43,14 +43,15 @@ export default function ServiceCard({
           <ArrowUpRight className="h-4 w-4" />
         </Link>
       ) : (
-        <span
-          className={`mt-6 inline-flex items-center gap-2 text-xs font-semibold tracking-[0.25em] ${
-            highlight ? 'text-gold' : 'text-navy'
-          }`}
-        >
-          {cta}
-          <ArrowUpRight className="h-4 w-4" />
-        </span>
+        ""
+        // <span
+        //   className={`mt-6 inline-flex items-center gap-2 text-xs font-semibold tracking-[0.25em] ${
+        //     highlight ? 'text-gold' : 'text-navy'
+        //   }`}
+        // >
+        //   {cta}
+        //   <ArrowUpRight className="h-4 w-4" />
+        // </span>
       )}
     </div>
   )
