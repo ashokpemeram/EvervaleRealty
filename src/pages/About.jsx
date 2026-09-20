@@ -63,12 +63,11 @@ export default function About() {
       <section className="bg-white pt-20 pb-16">
         <div className="mx-auto mt-12 max-w-6xl px-6 lg:px-12">
         <h1 className="text-2xl font-semibold uppercase tracking-[0.1em] text-gold">
-              The Evervale Story
+              What if the land you choose today could become the foundation of your tomorrow?
             </h1>
           
           <div className="text-m text-navy/60 leading-relaxed space-y-4 font-sans mt-4" data-animate>
             <p>
-              What if the land you choose today could become the foundation of your tomorrow?
 
 At Evervale Realty LLP, we believe the right property is more than an asset—it is a possibility, a foundation, and a step toward a more secure future.
             </p>

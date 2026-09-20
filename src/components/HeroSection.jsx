@@ -53,7 +53,7 @@ export default function HeroSection() {
             Invest in Land Today. <span className="text-gold font-sans font-bold">Build Your Future Tomorrow.</span>
           </h1>
           <h2 className="mt-4 text-lg font-medium tracking-wide text-gold max-w-2xl">
-            Premium Land. Trusted Guidance. Confident Decisions. 
+            Right Land. Trusted Guidance. Confident Decisions. 
           </h2>
         </div>
         <p

@@ -5,6 +5,7 @@ import Footer from '../components/Footer'
 export default function Layout() {
   const { pathname } = useLocation()
   const isHome = pathname === '/'
+  const isPropertyDetails = pathname.startsWith('/properties/')
 
   return (
     <div className="min-h-screen bg-ivory text-navy">
@@ -12,7 +13,7 @@ export default function Layout() {
       <main>
         <Outlet />
       </main>
-      <Footer />
+      {!isPropertyDetails && <Footer />}
     </div>
   )
 }

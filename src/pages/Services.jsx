@@ -131,7 +131,7 @@ function ServiceCard({ service, index }) {
       style={{ transitionDelay: `${index * 90}ms` }}
       data-animate
     >
-      <div className="relative h-44 overflow-hidden sm:h-48">
+      <div className="relative h-44 overflow-hidden sm:h-[168px]">
         <img
           src={service.image}
           alt=""
@@ -139,7 +139,7 @@ function ServiceCard({ service, index }) {
           loading={index > 2 ? 'lazy' : 'eager'}
         />
       </div>
-      <div className="relative flex min-h-[254px] flex-col px-6 pb-6 pt-9 sm:min-h-[244px]">
+      <div className="relative flex min-h-[246px] flex-col px-6 pb-6 pt-9">
         <div className="absolute -top-7 left-6 flex h-14 w-14 items-center justify-center rounded-full border-4 border-white bg-[#f8dfa0] text-navy shadow-sm">
           <Icon className="h-6 w-6" />
         </div>
@@ -162,7 +162,7 @@ export default function Services() {
 
   return (
     <main className="bg-[#f7f8fa] pb-12 pt-[50px] text-navy sm:pb-16">
-      <section className="service-hero relative isolate overflow-hidden px-6 py-5 text-center sm:py-20 lg:py-[74px]">
+      <section className="service-hero relative isolate overflow-hidden px-6 py-12 text-center sm:py-14 lg:py-[58px]">
         <div className="service-hero-wash absolute inset-0 -z-10" />
         <div className="absolute left-[-1.25rem] top-12 -z-10 h-28 w-28 rotate-[-15deg] rounded-full bg-[#7c9a32]/20 blur-sm sm:left-8 sm:h-36 sm:w-36" />
         <MapPinIcon className="absolute -right-2 bottom-10 -z-10 h-32 w-32 rotate-[8deg] text-[#e4c57d]/35 sm:right-8 sm:h-40 sm:w-40" />
@@ -172,7 +172,7 @@ export default function Services() {
             <p className="text-xs font-bold uppercase tracking-[0.48em] sm:text-sm">Our Services</p>
             <span className="h-px w-12 bg-current/70" />
           </div>
-          <h1 className="mt-6 font-serif text-[42px] font-semibold leading-[1.08] tracking-[-0.035em] text-navy sm:text-5xl lg:text-[60px]">
+          <h1 className="mt-6 font-serif text-[42px] font-semibold leading-[1.08] tracking-[-0.035em] text-navy sm:text-5xl lg:text-[58px]">
             Your Trusted Partner in <span className="block">Land Investments</span>
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-navy/80 sm:text-lg">
@@ -181,14 +181,14 @@ export default function Services() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 pt-9 sm:px-6 sm:pt-10 lg:px-12">
+      <section className="mx-auto max-w-[1090px] px-5 pt-9 sm:px-6 sm:pt-10 lg:px-5">
         <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-7">
           {services.map((service, index) => (
             <ServiceCard key={service.title} service={service} index={index} />
           ))}
         </div>
 
-        <div className="reveal mt-8 grid overflow-hidden rounded-xl border border-[#e9e7e1] bg-[#fbfaf6] shadow-[0_8px_20px_rgba(11,31,58,0.035)] sm:grid-cols-2 lg:grid-cols-4" data-animate>
+        <div className="reveal mt-7 grid overflow-hidden rounded-xl border border-[#e9e7e1] bg-[#fbfaf6] shadow-[0_8px_20px_rgba(11,31,58,0.035)] sm:grid-cols-2 lg:grid-cols-4" data-animate>
           {trustPoints.map(({ label, icon }, index) => (
             <div key={label} className={`flex items-center gap-4 px-6 py-5 ${index < trustPoints.length - 1 ? 'border-b border-[#e9e7e1] lg:border-b-0 lg:border-r' : ''} ${index === 1 ? 'sm:border-b-0' : ''} ${index === 0 ? 'sm:border-r' : ''} ${index === 2 ? 'sm:border-r sm:border-b-0' : ''}`}>
               {createElement(icon, { className: 'h-9 w-9 shrink-0 text-navy' })}
