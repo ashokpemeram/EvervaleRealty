@@ -23,8 +23,16 @@ const plotSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['available', 'reserved', 'sold'],
+    enum: ['available', 'reserved', 'sold', 'hold'],
     default: 'available'
+  },
+  facing: {
+    type: String,
+    default: 'East'
+  },
+  roadWidth: {
+    type: String,
+    default: '40 ft'
   },
   x: {
     type: Number,
@@ -78,6 +86,18 @@ const propertySchema = new mongoose.Schema({
   details: {
     beds: Number,
     baths: Number,
+    description: {
+      type: String,
+      default: ''
+    },
+    totalArea: {
+      type: String,
+      default: ''
+    },
+    layoutRows: {
+      type: Number,
+      default: 0
+    },
     area: {
       type: String,
       required: true

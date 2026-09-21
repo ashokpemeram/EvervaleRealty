@@ -1,6 +1,40 @@
 import { useState, useEffect } from 'react'
 import { api } from '../services/api'
 
+const plotProjectTags = ['OPEN PLOTS', 'VENTURE PLOTS', 'FARMLANDS', 'RESIDENTIAL PLOTS']
+
+const isPlotProjectTag = (tag) => plotProjectTags.includes(tag)
+
+const createPropertyForm = () => ({
+  name: '',
+  location: '',
+  price: '',
+  tag: 'OPEN PLOTS',
+  image: '',
+  images: [],
+  videos: [],
+  brochureUrl: '',
+  layoutImage: '',
+  description: '',
+  totalArea: '',
+  isVenture: true,
+  beds: '',
+  baths: '',
+  area: '',
+  totalPlots: '',
+  layoutRows: 'auto',
+  plots: [],
+  defaultPrice: 'Price on Request',
+  defaultDimensions: "40' x 60'",
+  defaultArea: '2,400 sq ft',
+  defaultFacing: 'East',
+  defaultRoadWidth: '40 ft',
+  defaultVerification: 'DTCP Approved',
+  showOnHome: false
+})
+
+const getLayoutRows = (value) => value && value !== 'auto' ? Number(value) : undefined
+
 export default function Admin() {
   const [activeTab, setActiveTab] = useState('overview')
   const [properties, setProperties] = useState([])
@@ -23,27 +57,7 @@ export default function Admin() {
   // Modal / Form state for Add/Edit Listing
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [editingItem, setEditingItem] = useState(null)
-  const [formData, setFormData] = useState({
-    name: '',
-    location: '',
-    price: '',
-    tag: 'NEW ACQUISITION',
-    image: '',
-    images: [],
-    videos: [],
-    brochureUrl: '',
-    layoutImage: '',
-    isVenture: false,
-    beds: '',
-    baths: '',
-    area: '',
-    totalPlots: '',
-    plots: [],
-    defaultPrice: '$450K',
-    defaultDimensions: "80' x 120'",
-    defaultArea: '9,600 sq ft',
-    showOnHome: false
-  })
+  const [formData, setFormData] = useState(createPropertyForm)
 
   const [uploadingField, setUploadingField] = useState({
     cover: false,
@@ -133,13 +147,13 @@ export default function Admin() {
     }
   }
 
-  const generatePlotsLayout = (count, defaultDim, defaultArea, defaultPrice) => {
+  const generatePlotsLayout = (count, defaultDim, defaultArea, defaultPrice, defaultFacing, defaultRoadWidth, defaultVerification, requestedRows) => {
     const list = []
     const countNum = parseInt(count) || 8
     
     // Distribute plots in rows:
     // 2 rows for N <= 12, 4 rows for larger counts
-    const rows = countNum <= 12 ? 2 : 4
+    const rows = requestedRows || (countNum <= 12 ? 2 : 4)
     const gap = countNum > 30 ? 6 : 8
     
     // Track current x-offset for each row starting at x=70 (after forest buffer zone)
@@ -186,12 +200,14 @@ export default function Admin() {
         area: defaultArea || "9,600 sq ft",
         price: defaultPrice || "$450K",
         status: 'available',
+        facing: defaultFacing || 'East',
+        roadWidth: defaultRoadWidth || '40 ft',
         x: Math.round(x),
         y: Math.round(y),
         width: plotWidth,
         height: plotHeight,
         zoning: 'Residential Land',
-        verification: 'Approved'
+        verification: defaultVerification || 'Approved'
       })
       
       // Update offset for this row
@@ -254,14 +270,43 @@ export default function Admin() {
     e.preventDefault()
 
     const details = formData.isVenture
-      ? { totalPlots: Number(formData.totalPlots) || 8, area: formData.area || "80' x 120' - 120' x 160'" }
-      : { beds: Number(formData.beds) || 3, baths: Number(formData.baths) || 3, area: formData.area || '4,500 sq ft' }
+      ? {
+          totalPlots: Number(formData.totalPlots) || 8,
+          area: formData.area || formData.defaultArea || '2,400 sq ft',
+          totalArea: formData.totalArea || 'Contact for project area',
+          description: formData.description.trim(),
+          layoutRows: getLayoutRows(formData.layoutRows) || 0
+        }
+      : {
+          beds: Number(formData.beds) || 3,
+          baths: Number(formData.baths) || 3,
+          area: formData.area || '4,500 sq ft',
+          totalArea: formData.totalArea || formData.area || '4,500 sq ft',
+          description: formData.description.trim()
+        }
 
     let plots = undefined
     if (formData.isVenture) {
-      plots = formData.plots && formData.plots.length > 0
-        ? recalculatePlotsLayout(formData.plots, Number(formData.totalPlots) || formData.plots.length)
-        : generatePlotsLayout(Number(formData.totalPlots) || 8, formData.defaultDimensions, formData.defaultArea, formData.defaultPrice)
+      const configuredPlots = Array.isArray(formData.plots)
+        ? formData.plots.map((plot) => ({
+            ...plot,
+            facing: plot.facing || formData.defaultFacing,
+            roadWidth: plot.roadWidth || formData.defaultRoadWidth,
+            verification: plot.verification || formData.defaultVerification
+          }))
+        : []
+      plots = configuredPlots.length > 0
+        ? recalculatePlotsLayout(configuredPlots, getLayoutRows(formData.layoutRows))
+        : generatePlotsLayout(
+            Number(formData.totalPlots) || 8,
+            formData.defaultDimensions,
+            formData.defaultArea,
+            formData.defaultPrice,
+            formData.defaultFacing,
+            formData.defaultRoadWidth,
+            formData.defaultVerification,
+            getLayoutRows(formData.layoutRows)
+          )
     }
 
     const payload = {
@@ -294,27 +339,7 @@ export default function Admin() {
       }
       setIsFormOpen(false)
       setEditingItem(null)
-      setFormData({
-        name: '',
-        location: '',
-        price: '',
-        tag: 'NEW ACQUISITION',
-        image: '',
-        images: [],
-        videos: [],
-        brochureUrl: '',
-        layoutImage: '',
-        isVenture: false,
-        beds: '',
-        baths: '',
-        area: '',
-        totalPlots: '',
-        plots: [],
-        defaultPrice: '$450K',
-        defaultDimensions: "80' x 120'",
-        defaultArea: '9,600 sq ft',
-        showOnHome: false
-      })
+      setFormData(createPropertyForm())
     } catch (error) {
       console.error('Error submitting property:', error)
       alert(error.message || 'Failed to save property listing.')
@@ -335,15 +360,21 @@ export default function Admin() {
       videos: Array.isArray(item.videos) ? item.videos : [],
       brochureUrl: item.brochureUrl || '',
       layoutImage: item.layoutImage || '',
-      isVenture: item.tag === 'VENTURE PLOTS' || (Array.isArray(item.plots) && item.plots.length > 0),
+      description: item.details.description || '',
+      totalArea: item.details.totalArea || '',
+      isVenture: isPlotProjectTag(item.tag) || (Array.isArray(item.plots) && item.plots.length > 0),
       beds: item.details.beds || '',
       baths: item.details.baths || '',
       area: item.details.area,
       totalPlots: item.details.totalPlots || '',
+      layoutRows: item.details.layoutRows ? String(item.details.layoutRows) : 'auto',
       plots: Array.isArray(item.plots) ? item.plots : [],
-      defaultPrice: item.plots && item.plots[0] ? item.plots[0].price : '$450K',
-      defaultDimensions: item.plots && item.plots[0] ? item.plots[0].dimensions : "80' x 120'",
-      defaultArea: item.plots && item.plots[0] ? item.plots[0].area : '9,600 sq ft',
+      defaultPrice: item.plots && item.plots[0] ? item.plots[0].price : 'Price on Request',
+      defaultDimensions: item.plots && item.plots[0] ? item.plots[0].dimensions : "40' x 60'",
+      defaultArea: item.plots && item.plots[0] ? item.plots[0].area : '2,400 sq ft',
+      defaultFacing: item.plots && item.plots[0] ? item.plots[0].facing || 'East' : 'East',
+      defaultRoadWidth: item.plots && item.plots[0] ? item.plots[0].roadWidth || '40 ft' : '40 ft',
+      defaultVerification: item.plots && item.plots[0] ? item.plots[0].verification || 'DTCP Approved' : 'DTCP Approved',
       showOnHome: !!item.showOnHome
     })
     setIsFormOpen(true)
@@ -493,6 +524,7 @@ export default function Admin() {
             <button
               onClick={() => {
                 setEditingItem(null)
+                setFormData(createPropertyForm())
                 setIsFormOpen(true)
               }}
               className="rounded-full bg-[#F4C542] px-6 py-2.5 text-xs font-bold tracking-widest text-[#071120] hover:shadow-card uppercase transition-all duration-300"
@@ -860,14 +892,51 @@ export default function Admin() {
                         setFormData(prev => ({
                           ...prev,
                           tag: nextTag,
-                          isVenture: nextTag === 'VENTURE PLOTS'
+                          isVenture: isPlotProjectTag(nextTag)
                         }))
                       }}
                       className="w-full bg-[#0A0F1E] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#F4C542]"
                     >
-                      <option>NEW ACQUISITION</option>
+                      <option>OPEN PLOTS</option>
                       <option>VENTURE PLOTS</option>
+                      <option>FARMLANDS</option>
+                      <option>RESIDENTIAL PLOTS</option>
+                      <option>NEW ACQUISITION</option>
                     </select>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs uppercase tracking-widest text-gray-400 font-bold">Project Overview</label>
+                  <textarea
+                    rows="3"
+                    placeholder="Describe the project, its planning, access and investment value. This appears in the Project Overview section."
+                    value={formData.description}
+                    onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                    className="w-full resize-y bg-[#0A0F1E] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#F4C542]"
+                  />
+                </div>
+
+                <div className="grid gap-5 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <label className="text-xs uppercase tracking-widest text-gray-400 font-bold">Total Project Area</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 25 Acres"
+                      value={formData.totalArea}
+                      onChange={(e) => setFormData(prev => ({ ...prev, totalArea: e.target.value }))}
+                      className="w-full bg-[#0A0F1E] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#F4C542]"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs uppercase tracking-widest text-gray-400 font-bold">Plot Size Range / Built-up Area</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 2,000 - 2,400 sq ft"
+                      value={formData.area}
+                      onChange={(e) => setFormData(prev => ({ ...prev, area: e.target.value }))}
+                      className="w-full bg-[#0A0F1E] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#F4C542]"
+                    />
                   </div>
                 </div>
 
@@ -1144,9 +1213,12 @@ export default function Admin() {
                 {/* CONDITIONALLY RENDER STANDARD VS VENTURE PLOTS DATA LAYOUT FIELDS */}
                 {formData.isVenture ? (
                   <div className="space-y-5 p-5 bg-[#0A0F1E] rounded-2xl border border-white/5">
-                    <h4 className="text-xs uppercase tracking-widest text-[#F4C542] font-extrabold border-b border-white/5 pb-2">Masterplan Plot Generator</h4>
+                    <div className="border-b border-white/5 pb-2">
+                      <h4 className="text-xs uppercase tracking-widest text-[#F4C542] font-extrabold">Interactive Project Layout Builder</h4>
+                      <p className="mt-1 text-[10px] leading-relaxed text-gray-500">Generate the clickable layout shown on the property page, then set the details for every individual plot.</p>
+                    </div>
                     
-                    <div className="grid gap-5 md:grid-cols-2">
+                    <div className="grid gap-5 md:grid-cols-3">
                       <div className="space-y-2">
                         <label className="text-xs uppercase tracking-widest text-gray-400 font-bold">Total Plot Subdivisions</label>
                         <input
@@ -1159,6 +1231,19 @@ export default function Admin() {
                         />
                       </div>
                       <div className="space-y-2">
+                        <label className="text-xs uppercase tracking-widest text-gray-400 font-bold">Layout Rows</label>
+                        <select
+                          value={formData.layoutRows}
+                          onChange={(e) => setFormData(prev => ({ ...prev, layoutRows: e.target.value }))}
+                          className="w-full bg-[#0F1A3A] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#F4C542]"
+                        >
+                          <option value="auto">Auto arrange</option>
+                          <option value="2">2 rows</option>
+                          <option value="3">3 rows</option>
+                          <option value="4">4 rows</option>
+                        </select>
+                      </div>
+                      <div className="space-y-2">
                         <label className="text-xs uppercase tracking-widest text-gray-400 font-bold">Default Dimensions</label>
                         <input
                           type="text"
@@ -1169,7 +1254,7 @@ export default function Admin() {
                       </div>
                     </div>
 
-                    <div className="grid gap-5 md:grid-cols-2">
+                    <div className="grid gap-5 md:grid-cols-3">
                       <div className="space-y-2">
                         <label className="text-xs uppercase tracking-widest text-gray-400 font-bold">Default Sizing/Area</label>
                         <input
@@ -1188,6 +1273,39 @@ export default function Admin() {
                           className="w-full bg-[#0F1A3A] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#F4C542]"
                         />
                       </div>
+                      <div className="space-y-2">
+                        <label className="text-xs uppercase tracking-widest text-gray-400 font-bold">Default Facing</label>
+                        <select
+                          value={formData.defaultFacing}
+                          onChange={(e) => setFormData(prev => ({ ...prev, defaultFacing: e.target.value }))}
+                          className="w-full bg-[#0F1A3A] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#F4C542]"
+                        >
+                          <option>East</option><option>West</option><option>North</option><option>South</option><option>North-East</option><option>North-West</option><option>South-East</option><option>South-West</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-5 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <label className="text-xs uppercase tracking-widest text-gray-400 font-bold">Default Road Width</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 40 ft"
+                          value={formData.defaultRoadWidth}
+                          onChange={(e) => setFormData(prev => ({ ...prev, defaultRoadWidth: e.target.value }))}
+                          className="w-full bg-[#0F1A3A] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#F4C542]"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-xs uppercase tracking-widest text-gray-400 font-bold">Approval / Verification</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. DTCP Approved"
+                          value={formData.defaultVerification}
+                          onChange={(e) => setFormData(prev => ({ ...prev, defaultVerification: e.target.value }))}
+                          className="w-full bg-[#0F1A3A] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#F4C542]"
+                        />
+                      </div>
                     </div>
 
                     <div className="pt-2">
@@ -1195,7 +1313,16 @@ export default function Admin() {
                         type="button"
                         onClick={() => {
                           const count = Number(formData.totalPlots) || 8
-                          const newPlots = generatePlotsLayout(count, formData.defaultDimensions, formData.defaultArea, formData.defaultPrice)
+                          const newPlots = generatePlotsLayout(
+                            count,
+                            formData.defaultDimensions,
+                            formData.defaultArea,
+                            formData.defaultPrice,
+                            formData.defaultFacing,
+                            formData.defaultRoadWidth,
+                            formData.defaultVerification,
+                            getLayoutRows(formData.layoutRows)
+                          )
                           setFormData(prev => ({ ...prev, plots: newPlots }))
                         }}
                         className="w-full py-3 border border-[#F4C542]/40 hover:border-[#F4C542] text-[#F4C542] hover:bg-[#F4C542]/10 rounded-xl text-[10px] font-bold tracking-widest uppercase transition-all duration-300"
@@ -1203,6 +1330,42 @@ export default function Admin() {
                         Regenerate Plot Layout Grid
                       </button>
                     </div>
+
+                    {formData.plots && formData.plots.length > 0 && (
+                      <div className="rounded-xl border border-white/10 bg-[#071120] p-4">
+                        <div className="mb-3 flex items-center justify-between gap-3">
+                          <div>
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-white">Live Layout Preview</p>
+                            <p className="mt-0.5 text-[9px] text-gray-500">This is the interactive plot arrangement that will appear on the project details page.</p>
+                          </div>
+                          <span className="shrink-0 rounded-full bg-[#F4C542]/15 px-2.5 py-1 text-[9px] font-bold text-[#F4C542]">{formData.plots.length} PLOTS</span>
+                        </div>
+                        <div
+                          className="grid gap-1.5 rounded-lg bg-[#0F1A3A] p-3"
+                          style={{
+                            gridTemplateColumns: `repeat(${Math.max(1, Math.ceil(formData.plots.length / (getLayoutRows(formData.layoutRows) || (formData.plots.length <= 12 ? 2 : 4))))}, minmax(0, 1fr))`
+                          }}
+                        >
+                          {formData.plots.map((plot) => (
+                            <div
+                              key={`preview-${plot.id}`}
+                              title={`${plot.number} — ${plot.status}`}
+                              className={`min-h-9 rounded border border-white/30 px-1 py-2 text-center text-[9px] font-extrabold text-[#071120] ${
+                                plot.status === 'sold' ? 'bg-red-400' : plot.status === 'reserved' ? 'bg-orange-300' : plot.status === 'hold' ? 'bg-slate-400' : 'bg-emerald-400'
+                              }`}
+                            >
+                              {plot.number.replace(/Plot\s*/i, '')}
+                            </div>
+                          ))}
+                        </div>
+                        <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[9px] text-gray-400">
+                          <span className="inline-flex items-center gap-1"><i className="h-2 w-2 rounded-full bg-emerald-400" />Available</span>
+                          <span className="inline-flex items-center gap-1"><i className="h-2 w-2 rounded-full bg-orange-300" />Reserved</span>
+                          <span className="inline-flex items-center gap-1"><i className="h-2 w-2 rounded-full bg-red-400" />Sold</span>
+                          <span className="inline-flex items-center gap-1"><i className="h-2 w-2 rounded-full bg-slate-400" />Hold</span>
+                        </div>
+                      </div>
+                    )}
 
                     {formData.plots && formData.plots.length > 0 && (
                       <div className="space-y-4 pt-3 border-t border-white/5">
@@ -1230,7 +1393,7 @@ export default function Admin() {
                                 const val = prompt("Enter dimensions for all plots (e.g. 80' x 120'):")
                                 if (val !== null) {
                                   const updated = formData.plots.map(p => ({ ...p, dimensions: val }))
-                                  const recalculated = recalculatePlotsLayout(updated, formData.plots.length <= 12 ? 2 : 4)
+                                  const recalculated = recalculatePlotsLayout(updated, getLayoutRows(formData.layoutRows))
                                   setFormData(prev => ({
                                     ...prev,
                                     plots: recalculated
@@ -1260,13 +1423,13 @@ export default function Admin() {
                               type="button"
                               onClick={() => {
                                 const val = prompt("Enter status for all plots (available, reserved, sold):")
-                                if (val && ['available', 'reserved', 'sold'].includes(val.toLowerCase())) {
+                                if (val && ['available', 'reserved', 'sold', 'hold'].includes(val.toLowerCase())) {
                                   setFormData(prev => ({
                                     ...prev,
                                     plots: prev.plots.map(p => ({ ...p, status: val.toLowerCase() }))
                                   }))
                                 } else if (val !== null) {
-                                  alert("Status must be available, reserved, or sold")
+                                  alert("Status must be available, reserved, sold, or hold")
                                 }
                               }}
                               className="py-2 bg-white/5 hover:bg-white/10 rounded-lg text-[9px] font-extrabold uppercase tracking-wider text-gray-300 border border-white/5"
@@ -1283,10 +1446,20 @@ export default function Admin() {
                           
                           <div className="max-h-64 overflow-y-auto border border-white/10 bg-[#071120] rounded-xl p-3 space-y-3 scrollbar-thin">
                             {formData.plots.map((plot, index) => (
-                              <div key={plot.id} className="grid gap-2 grid-cols-2 md:grid-cols-5 items-center p-3 bg-white/5 rounded-lg border border-white/5">
-                                <div className="text-[10px] font-bold text-white uppercase tracking-wider truncate">
-                                  {plot.number}
-                                </div>
+                              <div key={plot.id} className="grid gap-2 grid-cols-2 md:grid-cols-4 items-center p-3 bg-white/5 rounded-lg border border-white/5">
+                                <input
+                                  type="text"
+                                  aria-label={`Plot ${index + 1} number`}
+                                  placeholder="Plot number"
+                                  value={plot.number}
+                                  onChange={(e) => {
+                                    const nextPlots = [...formData.plots]
+                                    nextPlots[index] = { ...plot, number: e.target.value }
+                                    setFormData(prev => ({ ...prev, plots: nextPlots }))
+                                  }}
+                                  className="w-full bg-[#0F1A3A] border border-white/10 rounded-lg px-2.5 py-1.5 text-[10px] font-bold text-white focus:outline-none focus:border-[#F4C542]"
+                                  required
+                                />
                                 <input
                                   type="text"
                                   placeholder="Dim (80' x 120')"
@@ -1294,7 +1467,7 @@ export default function Admin() {
                                   onChange={(e) => {
                                     const nextPlots = [...formData.plots]
                                     nextPlots[index] = { ...plot, dimensions: e.target.value }
-                                    const recalculated = recalculatePlotsLayout(nextPlots, formData.plots.length <= 12 ? 2 : 4)
+                                    const recalculated = recalculatePlotsLayout(nextPlots, getLayoutRows(formData.layoutRows))
                                     setFormData(prev => ({ ...prev, plots: recalculated }))
                                   }}
                                   className="w-full bg-[#0F1A3A] border border-white/10 rounded-lg px-2.5 py-1.5 text-[10px] text-white focus:outline-none focus:border-[#F4C542]"
@@ -1325,17 +1498,56 @@ export default function Admin() {
                                   required
                                 />
                                 <select
+                                  aria-label={`${plot.number} facing`}
+                                  value={plot.facing || 'East'}
+                                  onChange={(e) => {
+                                    const nextPlots = [...formData.plots]
+                                    nextPlots[index] = { ...plot, facing: e.target.value }
+                                    setFormData(prev => ({ ...prev, plots: nextPlots }))
+                                  }}
+                                  className="w-full bg-[#0F1A3A] border border-white/10 rounded-lg px-2.5 py-1.5 text-[10px] text-white focus:outline-none focus:border-[#F4C542]"
+                                >
+                                  <option>East</option><option>West</option><option>North</option><option>South</option><option>North-East</option><option>North-West</option><option>South-East</option><option>South-West</option>
+                                </select>
+                                <input
+                                  type="text"
+                                  aria-label={`${plot.number} road width`}
+                                  placeholder="Road width (40 ft)"
+                                  value={plot.roadWidth || ''}
+                                  onChange={(e) => {
+                                    const nextPlots = [...formData.plots]
+                                    nextPlots[index] = { ...plot, roadWidth: e.target.value }
+                                    setFormData(prev => ({ ...prev, plots: nextPlots }))
+                                  }}
+                                  className="w-full bg-[#0F1A3A] border border-white/10 rounded-lg px-2.5 py-1.5 text-[10px] text-white focus:outline-none focus:border-[#F4C542]"
+                                  required
+                                />
+                                <input
+                                  type="text"
+                                  aria-label={`${plot.number} approval`}
+                                  placeholder="Approval / verification"
+                                  value={plot.verification || ''}
+                                  onChange={(e) => {
+                                    const nextPlots = [...formData.plots]
+                                    nextPlots[index] = { ...plot, verification: e.target.value }
+                                    setFormData(prev => ({ ...prev, plots: nextPlots }))
+                                  }}
+                                  className="w-full bg-[#0F1A3A] border border-white/10 rounded-lg px-2.5 py-1.5 text-[10px] text-white focus:outline-none focus:border-[#F4C542]"
+                                  required
+                                />
+                                <select
                                   value={plot.status}
                                   onChange={(e) => {
                                     const nextPlots = [...formData.plots]
                                     nextPlots[index] = { ...plot, status: e.target.value }
                                     setFormData(prev => ({ ...prev, plots: nextPlots }))
                                   }}
-                                  className="w-full bg-[#0F1A3A] border border-white/10 rounded-lg px-2.5 py-1.5 text-[10px] text-white focus:outline-none focus:border-[#F4C542] col-span-2 md:col-span-1"
+                                  className="w-full bg-[#0F1A3A] border border-white/10 rounded-lg px-2.5 py-1.5 text-[10px] text-white focus:outline-none focus:border-[#F4C542]"
                                 >
                                   <option value="available">Available</option>
                                   <option value="reserved">Reserved</option>
                                   <option value="sold">Sold</option>
+                                  <option value="hold">Hold</option>
                                 </select>
                               </div>
                             ))}
