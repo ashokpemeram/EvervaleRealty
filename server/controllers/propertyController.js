@@ -32,7 +32,7 @@ export const getPropertyById = async (req, res) => {
 // @route   POST /api/properties
 // @access  Private/Admin
 export const createProperty = async (req, res) => {
-  const { name, location, price, tag, image, images, videos, brochureUrl, layoutImage, details, plots, showOnHome } = req.body
+  const { name, location, price, tag, image, images, videos, brochureUrl, layoutImage, projectHighlights, locationHighlights, locationMapUrl, details, plots, showOnHome } = req.body
 
   try {
     // Check if property name already exists
@@ -51,6 +51,9 @@ export const createProperty = async (req, res) => {
       videos: videos || [],
       brochureUrl: brochureUrl || '',
       layoutImage: layoutImage || '',
+      projectHighlights: Array.isArray(projectHighlights) ? projectHighlights : [],
+      locationHighlights: Array.isArray(locationHighlights) ? locationHighlights : [],
+      locationMapUrl: locationMapUrl || '',
       details,
       plots: plots || [],
       showOnHome: showOnHome === true
@@ -67,7 +70,7 @@ export const createProperty = async (req, res) => {
 // @route   PUT /api/properties/:id
 // @access  Private/Admin
 export const updateProperty = async (req, res) => {
-  const { name, location, price, tag, image, images, videos, brochureUrl, layoutImage, details, plots, showOnHome } = req.body
+  const { name, location, price, tag, image, images, videos, brochureUrl, layoutImage, projectHighlights, locationHighlights, locationMapUrl, details, plots, showOnHome } = req.body
 
   try {
     const property = await Property.findById(req.params.id)
@@ -82,6 +85,9 @@ export const updateProperty = async (req, res) => {
       property.videos = videos !== undefined ? videos : property.videos
       property.brochureUrl = brochureUrl !== undefined ? brochureUrl : property.brochureUrl
       property.layoutImage = layoutImage !== undefined ? layoutImage : property.layoutImage
+      property.projectHighlights = projectHighlights !== undefined ? projectHighlights : property.projectHighlights
+      property.locationHighlights = locationHighlights !== undefined ? locationHighlights : property.locationHighlights
+      property.locationMapUrl = locationMapUrl !== undefined ? locationMapUrl : property.locationMapUrl
       property.details = details || property.details
       property.showOnHome = showOnHome !== undefined ? showOnHome : property.showOnHome
       if (plots) {

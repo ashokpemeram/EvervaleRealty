@@ -121,6 +121,18 @@ const propertySchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  projectHighlights: {
+    type: [String],
+    default: []
+  },
+  locationHighlights: {
+    type: [String],
+    default: []
+  },
+  locationMapUrl: {
+    type: String,
+    default: ''
+  },
   showOnHome: {
     type: Boolean,
     default: false

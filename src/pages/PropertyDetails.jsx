@@ -30,6 +30,9 @@ function enrichProperty(data) {
     ...data,
     image: data?.image || fallbackImage,
     details: data?.details || {},
+    projectHighlights: Array.isArray(data?.projectHighlights) ? data.projectHighlights.filter(Boolean) : [],
+    locationHighlights: Array.isArray(data?.locationHighlights) ? data.locationHighlights.filter(Boolean) : [],
+    locationMapUrl: data?.locationMapUrl || '',
     plots: (Array.isArray(data?.plots) ? data.plots : []).map((plot, index) => ({
       ...plot,
       id: plot.id || `plot-${index + 1}`,
@@ -91,9 +94,15 @@ function ProjectPlan({ plots, selectedPlot, onSelect }) {
   )
 }
 
-function LocationCard({ title, tone, icon, rows }) {
-  return <article className={`location-card location-card--${tone}`}><h3><span>{icon}</span>{title}</h3>{rows.map(([label, distance]) => <p key={label}><span>{label}</span><b>{distance}</b></p>)}</article>
+function parseHighlight(value) {
+  const [label, ...detailParts] = String(value || '').split('|')
+  return {
+    label: label.trim(),
+    detail: detailParts.join('|').trim()
+  }
 }
+
+const hasSecureHttpUrl = (value) => /^https?:\/\//i.test(String(value || '').trim())
 
 export default function PropertyDetails() {
   const { id } = useParams()
@@ -138,6 +147,42 @@ export default function PropertyDetails() {
   const videoUrl = Array.isArray(property.videos) ? property.videos[0] : ''
   const photos = gallery.length ? gallery : [fallbackImage]
   const contactQuery = selectedPlot ? `?property=${encodeURIComponent(property.name)}&plot=${encodeURIComponent(selectedPlot.number)}` : `?property=${encodeURIComponent(property.name)}`
+  const defaultProjectHighlights = [
+    `Total Plots | ${totalPlots}`,
+    `Plot Sizes | ${area}`,
+    'Wide Roads | 30 ft+',
+    'Security | 24 × 7',
+    'Water Supply | Ready',
+    'Electricity | Ready',
+    'Parks & Greenery | Green',
+    'Documents | Verified'
+  ]
+  const projectHighlights = (property.projectHighlights.length ? property.projectHighlights : defaultProjectHighlights).map(parseHighlight)
+  const defaultLocationHighlights = [
+    'Education | Schools and colleges nearby',
+    'Healthcare | Hospitals and clinics nearby',
+    'Transportation | Airport, railway and bus access',
+    'Shopping | Daily essentials and retail nearby',
+    'Business | Employment hubs within reach'
+  ]
+  const locationHighlights = (property.locationHighlights.length ? property.locationHighlights : defaultLocationHighlights).map(parseHighlight)
+  const savedMapUrl = property.locationMapUrl.trim()
+  const mapUrl = hasSecureHttpUrl(savedMapUrl)
+    ? savedMapUrl
+    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${property.name}, ${property.location}`)}`
+  const mapEmbedUrl = hasSecureHttpUrl(savedMapUrl) && /google\.[^/]+\/maps\/embed/i.test(savedMapUrl) ? savedMapUrl : ''
+  const highlightIcons = ['grid', 'area', 'road', 'shield', 'pin', 'road', 'photo', 'shield']
+  const locationTones = ['blue', 'red', 'purple', 'orange', 'teal']
+  const locationIcons = ['□', '✚', '✦', '♙', '▤']
+  const nearbyLocations = locationHighlights.map(({ label, detail }) => {
+    const [distance = 'Nearby', travelTime = ''] = detail.split('·').map((item) => item.trim())
+    return {
+      place: label || detail,
+      distance,
+      travelTime,
+      directionsUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${label || detail}, ${property.location}`)}`
+    }
+  }).filter(({ place }) => place)
 
   return <div className="property-page">
     <section className="property-hero" style={{ backgroundImage: `url("${activeImage || property.image}")` }}>
@@ -155,11 +200,63 @@ export default function PropertyDetails() {
 
       {plots.length ? <section className="layout-section" id="project-layout"><div className="pd-container layout-heading"><div><h2>Project Layout</h2><p>Click any plot to review its size, dimensions, facing and availability.</p><div className="plot-legend"><span className="available">Available</span><span className="sold">Sold</span><span className="reserved">Reserved</span><span className="hold">Hold</span></div>{property.brochureUrl && <a className="download-layout" href={property.brochureUrl} target="_blank" rel="noreferrer"><Icon name="down" />Download Layout (PDF)</a>}</div><ProjectPlan plots={plots} selectedPlot={selectedPlot} onSelect={setSelectedPlot} /><aside className="plot-detail-card" aria-live="polite">{selectedPlot ? <><div className="plot-detail-card__top"><h3>{selectedPlot.number}</h3><span className={`plot-status plot-status--${selectedPlot.status}`}>{displayStatus(selectedPlot.status)}</span></div><dl><div><dt>Area</dt><dd>{selectedPlot.area}</dd></div><div><dt>Dimensions</dt><dd>{selectedPlot.dimensions}</dd></div><div><dt>Facing</dt><dd>{selectedPlot.facing}</dd></div><div><dt>Road width</dt><dd>{selectedPlot.roadWidth}</dd></div></dl><div className="plot-price"><span>Price</span><strong>{displayPrice(selectedPlot.price)}</strong></div>{selectedPlot.status === 'sold' ? <button type="button" disabled>Plot sold</button> : <Link to={`/contact${contactQuery}`}>Enquire Now</Link>}</> : <p>Select a plot from the layout to see its details.</p>}</aside></div></section> : <section className="layout-section layout-section--simple"><div className="pd-container"><h2>Project Layout</h2><img src={property.layoutImage || property.image} alt={`${property.name} layout`} /></div></section>}
 
-      <section className="highlights-section pd-container"><div className="highlight-list"><h2>Project Highlights</h2><div className="highlight-grid">{[['grid', totalPlots, 'Total Plots'], ['area', area, 'Plot Sizes'], ['road', '30 ft+', 'Wide Roads'], ['shield', '24 × 7', 'Security'], ['pin', 'Ready', 'Water Supply'], ['road', 'Ready', 'Electricity'], ['photo', 'Green', 'Parks & Greenery'], ['shield', 'Verified', 'Documents']].map(([icon, value, label]) => <div className="highlight-item" key={label}><i><Icon name={icon} /></i><span><b>{value}</b>{label}</span></div>)}</div></div><img className="highlights-image" src={gallery[2] || property.image} alt="Project lifestyle view" /></section>
+      <section className="highlights-section pd-container">
+        <div className="highlight-list">
+          <h2>Project Highlights</h2>
+          <div className="highlight-grid">
+            {projectHighlights.map(({ label, detail }, index) => (
+              <div className="highlight-item" key={`${label}-${index}`}>
+                <i><Icon name={highlightIcons[index % highlightIcons.length]} /></i>
+                <span><b>{detail || label}</b>{detail && label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <img className="highlights-image" src={gallery[2] || property.image} alt="Project lifestyle view" />
+      </section>
 
-      <section className="location-section pd-container"><h2>Location Highlights</h2><p>Everything you need, just minutes away.</p><div className="location-grid"><LocationCard title="Education" icon="▣" tone="blue" rows={[["School", "2.5 km"], ["College", "5.8 km"], ["University", "12 km"]]} /><LocationCard title="Healthcare" icon="✚" tone="red" rows={[["Hospital", "6.2 km"], ["Clinic", "3.1 km"], ["Pharmacy", "2.8 km"]]} /><LocationCard title="Transportation" icon="✦" tone="purple" rows={[["Airport", "18 km"], ["Railway Station", "12 km"], ["Bus Stand", "4.5 km"]]} /><LocationCard title="Shopping" icon="♙" tone="orange" rows={[["Mall", "10 km"], ["Supermarket", "3.2 km"], ["Market", "2.7 km"]]} /><LocationCard title="Business" icon="▤" tone="teal" rows={[["IT Park", "15 km"], ["Industrial Area", "8 km"], ["Business District", "14 km"]]} /></div></section>
+      <section className="location-section pd-container">
+        <h2>Location Highlights</h2>
+        <p>Everything you need, just minutes away.</p>
+        <div className="location-grid">
+          {locationHighlights.map(({ label, detail }, index) => (
+            <article className={`location-card location-card--${locationTones[index % locationTones.length]}`} key={`${label}-${index}`}>
+              <h3><span>{locationIcons[index % locationIcons.length]}</span>{label || detail}</h3>
+              <p><span>{detail ? 'Distance / time' : 'Nearby landmark'}</span><b>{detail || 'Conveniently located'}</b></p>
+            </article>
+          ))}
+        </div>
+      </section>
 
-      <section className="map-section pd-container"><div className="map-heading"><h2>Project Location</h2><p>See how well connected your future home is.</p></div><div className="map-layout"><div className="location-map" style={{ backgroundImage: `linear-gradient(rgba(246,250,245,.1),rgba(246,250,245,.1)),url("${property.layoutImage || property.image}")` }}><div className="map-street map-street--one" /><div className="map-street map-street--two" /><div className="map-street map-street--three" /><span className="map-stop map-stop--school">School<br /><b>2.5 km</b></span><span className="map-stop map-stop--hospital">Hospital<br /><b>6.2 km</b></span><span className="map-stop map-stop--airport">Airport<br /><b>18 km</b></span><strong className="map-project"><Icon name="pin" />{property.name}</strong></div><div className="nearby-list">{[['ABC International School', '2.5 km', '8 min'], ['Sunrise Hospital', '6.2 km', '12 min'], ['Railway Station', '12 km', '20 min'], ['International Airport', '18 km', '30 min'], ['Metro Mall', '10 km', '18 min']].map(([place, distance, time]) => <div key={place}><span><Icon name="pin" size={15} />{place}</span><em>{distance}</em><em>{time}</em><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${place}, ${property.location}`)}`} target="_blank" rel="noreferrer">Directions</a></div>)}</div></div></section>
+      <section className="map-section pd-container">
+        <div className="map-heading">
+          <div><h2>Project Location</h2><p>See how well connected your future home is.</p></div>
+          <a className="map-link" href={mapUrl} target="_blank" rel="noreferrer">Open in Google Maps <Icon name="arrow" size={14} /></a>
+        </div>
+        <div className="map-layout">
+          {mapEmbedUrl ? (
+            <div className="location-map location-map--embed">
+              <iframe src={mapEmbedUrl} title={`${property.name} location map`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+            </div>
+          ) : (
+            <div className="location-map" style={{ backgroundImage: `linear-gradient(rgba(246,250,245,.1),rgba(246,250,245,.1)),url("${property.layoutImage || property.image}")` }}>
+              <div className="map-street map-street--one" /><div className="map-street map-street--two" /><div className="map-street map-street--three" />
+              <span className="map-stop map-stop--school">{nearbyLocations[0]?.place || 'Nearby'}<br /><b>{nearbyLocations[0]?.distance || 'Well connected'}</b></span>
+              <span className="map-stop map-stop--hospital">{nearbyLocations[1]?.place || 'Landmark'}<br /><b>{nearbyLocations[1]?.distance || 'Convenient access'}</b></span>
+              <span className="map-stop map-stop--airport">{nearbyLocations[2]?.place || 'Destination'}<br /><b>{nearbyLocations[2]?.distance || 'Easy reach'}</b></span>
+              <strong className="map-project"><Icon name="pin" />{property.name}</strong>
+            </div>
+          )}
+          <div className="nearby-list">
+            {nearbyLocations.map(({ place, distance, travelTime, directionsUrl }) => (
+              <div key={place}>
+                <span><Icon name="pin" size={15} />{place}</span><em>{distance}</em><em>{travelTime}</em>
+                <a href={directionsUrl} target="_blank" rel="noreferrer">Directions</a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section className="gallery-section pd-container"><div><h2>Gallery</h2><button type="button" onClick={() => setShowGallery(true)}>Photos</button></div><div className="gallery-row">{photos.slice(0, 6).map((image, index) => <button key={`${image}-gallery-${index}`} type="button" onClick={() => { setActiveImage(image); setShowGallery(true) }}><img src={image} alt={`${property.name} gallery image ${index + 1}`} /></button>)}</div></section>
     </main>

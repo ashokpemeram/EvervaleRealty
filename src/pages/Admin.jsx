@@ -15,6 +15,9 @@ const createPropertyForm = () => ({
   videos: [],
   brochureUrl: '',
   layoutImage: '',
+  projectHighlights: [],
+  locationHighlights: [],
+  locationMapUrl: '',
   description: '',
   totalArea: '',
   isVenture: true,
@@ -34,6 +37,15 @@ const createPropertyForm = () => ({
 })
 
 const getLayoutRows = (value) => value && value !== 'auto' ? Number(value) : undefined
+
+const propertyFormSteps = [
+  ['1', 'Project Details'],
+  ['2', 'Project Highlights'],
+  ['3', 'Media & Documents'],
+  ['4', 'Interactive Layout'],
+  ['5', 'Location Highlights'],
+  ['6', 'Review & Publish']
+]
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState('overview')
@@ -57,6 +69,7 @@ export default function Admin() {
   // Modal / Form state for Add/Edit Listing
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [editingItem, setEditingItem] = useState(null)
+  const [formStep, setFormStep] = useState(1)
   const [formData, setFormData] = useState(createPropertyForm)
 
   const [uploadingField, setUploadingField] = useState({
@@ -319,6 +332,9 @@ export default function Admin() {
       videos: Array.isArray(formData.videos) ? formData.videos : [],
       brochureUrl: formData.brochureUrl,
       layoutImage: formData.layoutImage,
+      projectHighlights: formData.projectHighlights.map((highlight) => highlight.trim()).filter(Boolean),
+      locationHighlights: formData.locationHighlights.map((highlight) => highlight.trim()).filter(Boolean),
+      locationMapUrl: formData.locationMapUrl.trim(),
       details,
       plots,
       showOnHome: formData.showOnHome === true
@@ -340,10 +356,28 @@ export default function Admin() {
       setIsFormOpen(false)
       setEditingItem(null)
       setFormData(createPropertyForm())
+      setFormStep(1)
     } catch (error) {
       console.error('Error submitting property:', error)
       alert(error.message || 'Failed to save property listing.')
     }
+  }
+
+  const advanceFormStep = () => {
+    const form = document.getElementById('property-form')
+    if (form && !form.reportValidity()) return
+
+    setFormStep((currentStep) => Math.min(currentStep + 1, propertyFormSteps.length))
+  }
+
+  const handlePropertyFormSubmit = (e) => {
+    if (formStep < propertyFormSteps.length) {
+      e.preventDefault()
+      advanceFormStep()
+      return
+    }
+
+    handleSubmitProperty(e)
   }
 
   // Trigger Edit
@@ -360,6 +394,9 @@ export default function Admin() {
       videos: Array.isArray(item.videos) ? item.videos : [],
       brochureUrl: item.brochureUrl || '',
       layoutImage: item.layoutImage || '',
+      projectHighlights: Array.isArray(item.projectHighlights) ? item.projectHighlights : [],
+      locationHighlights: Array.isArray(item.locationHighlights) ? item.locationHighlights : [],
+      locationMapUrl: item.locationMapUrl || '',
       description: item.details.description || '',
       totalArea: item.details.totalArea || '',
       isVenture: isPlotProjectTag(item.tag) || (Array.isArray(item.plots) && item.plots.length > 0),
@@ -377,6 +414,7 @@ export default function Admin() {
       defaultVerification: item.plots && item.plots[0] ? item.plots[0].verification || 'DTCP Approved' : 'DTCP Approved',
       showOnHome: !!item.showOnHome
     })
+    setFormStep(1)
     setIsFormOpen(true)
   }
 
@@ -525,6 +563,7 @@ export default function Admin() {
               onClick={() => {
                 setEditingItem(null)
                 setFormData(createPropertyForm())
+                setFormStep(1)
                 setIsFormOpen(true)
               }}
               className="rounded-full bg-[#F4C542] px-6 py-2.5 text-xs font-bold tracking-widest text-[#071120] hover:shadow-card uppercase transition-all duration-300"
@@ -835,17 +874,57 @@ export default function Admin() {
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/80 backdrop-blur-md animate-fade-in">
             <div className="relative w-full max-w-2xl bg-[#0F1A3A] border border-white/10 rounded-3xl p-6 md:p-8 max-h-[92vh] overflow-y-auto">
               <button
-                onClick={() => setIsFormOpen(false)}
+                onClick={() => {
+                  setIsFormOpen(false)
+                  setFormStep(1)
+                }}
                 className="absolute right-6 top-6 flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-transparent text-gray-400 transition-all duration-300 hover:border-white hover:text-white"
               >
                 ✕
               </button>
 
-              <h3 className="text-2xl font-serif text-white font-semibold mb-6">
+              <h3 className="text-2xl font-serif text-white font-semibold">
                 {editingItem !== null ? 'Modify Asset Specifications' : 'Commission New Real Estate Asset'}
               </h3>
 
-              <form onSubmit={handleSubmitProperty} className="space-y-5">
+              <div className="my-6 grid grid-cols-2 gap-3 sm:grid-cols-3" aria-label="Asset form progress">
+                {propertyFormSteps.map(([step, label]) => {
+                  const stepNumber = Number(step)
+                  const isCurrent = formStep === stepNumber
+                  const isComplete = formStep > stepNumber
+
+                  return (
+                    <button
+                      key={step}
+                      type="button"
+                      onClick={() => isComplete && setFormStep(stepNumber)}
+                      disabled={!isComplete && !isCurrent}
+                      aria-current={isCurrent ? 'step' : undefined}
+                      className={`flex min-w-0 items-center gap-2 rounded-xl border px-3 py-2 text-left transition-colors ${
+                        isCurrent
+                          ? 'border-[#F4C542] bg-[#F4C542]/10 text-white'
+                          : isComplete
+                            ? 'border-emerald-400/40 bg-emerald-400/10 text-emerald-200 hover:border-emerald-300'
+                            : 'cursor-not-allowed border-white/10 bg-[#0A0F1E] text-gray-500'
+                      }`}
+                    >
+                      <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-extrabold ${
+                        isCurrent ? 'bg-[#F4C542] text-[#071120]' : isComplete ? 'bg-emerald-400 text-[#071120]' : 'bg-white/10 text-gray-400'
+                      }`}>{isComplete ? '✓' : step}</span>
+                      <span className="min-w-0 truncate text-[9px] font-bold uppercase tracking-wider">{label}</span>
+                    </button>
+                  )
+                })}
+              </div>
+
+              <form id="property-form" onSubmit={handlePropertyFormSubmit} className="space-y-5">
+                {formStep === 1 && (
+                  <section className="space-y-5" aria-labelledby="asset-details-heading">
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#F4C542]">Stage 1 of 6</p>
+                      <h4 id="asset-details-heading" className="mt-1 text-lg font-semibold text-white">Project details</h4>
+                      <p className="mt-1 text-xs text-gray-400">Set the information buyers see first.</p>
+                    </div>
                 <div className="grid gap-5 md:grid-cols-2">
                   <div className="space-y-2">
                     <label className="text-xs uppercase tracking-widest text-gray-400 font-bold">Asset Name</label>
@@ -939,6 +1018,65 @@ export default function Admin() {
                     />
                   </div>
                 </div>
+
+                  </section>
+                )}
+
+                {formStep === 2 && (
+                  <section className="space-y-5" aria-labelledby="project-highlights-heading">
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#F4C542]">Stage 2 of 6</p>
+                      <h4 id="project-highlights-heading" className="mt-1 text-lg font-semibold text-white">Project highlights</h4>
+                      <p className="mt-1 text-xs text-gray-400">Add the amenities, approvals, and benefits buyers should notice. Optionally use <span className="text-gray-300">Title | Detail</span>, for example <span className="text-gray-300">Internal roads | 40 ft wide</span>.</p>
+                    </div>
+
+                    <div className="space-y-3 rounded-2xl border border-white/5 bg-[#0A0F1E] p-4">
+                      {formData.projectHighlights.length === 0 && (
+                        <p className="rounded-xl border border-dashed border-white/15 px-4 py-5 text-center text-xs text-gray-500">No custom project highlights yet. Add one to show it on the project page.</p>
+                      )}
+                      {formData.projectHighlights.map((highlight, index) => (
+                        <div key={`project-highlight-${index}`} className="flex gap-2">
+                          <input
+                            type="text"
+                            value={highlight}
+                            placeholder="e.g. DTCP approved | Clear documentation"
+                            onChange={(e) => setFormData((prev) => ({
+                              ...prev,
+                              projectHighlights: prev.projectHighlights.map((item, itemIndex) => itemIndex === index ? e.target.value : item)
+                            }))}
+                            className="min-w-0 flex-1 rounded-xl border border-white/10 bg-[#0F1A3A] px-4 py-3 text-sm text-white focus:border-[#F4C542] focus:outline-none"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setFormData((prev) => ({
+                              ...prev,
+                              projectHighlights: prev.projectHighlights.filter((_, itemIndex) => itemIndex !== index)
+                            }))}
+                            className="rounded-xl border border-red-500/20 px-3 text-xs font-bold uppercase tracking-wider text-red-400 transition-colors hover:bg-red-500/10"
+                            aria-label={`Remove project highlight ${index + 1}`}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => setFormData((prev) => ({ ...prev, projectHighlights: [...prev.projectHighlights, ''] }))}
+                        className="w-full rounded-xl border border-dashed border-[#F4C542]/50 px-4 py-3 text-xs font-bold uppercase tracking-widest text-[#F4C542] transition-colors hover:bg-[#F4C542]/10"
+                      >
+                        + Add project highlight
+                      </button>
+                    </div>
+                  </section>
+                )}
+
+                {formStep === 3 && (
+                  <section className="space-y-5" aria-labelledby="asset-media-heading">
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#F4C542]">Stage 3 of 6</p>
+                      <h4 id="asset-media-heading" className="mt-1 text-lg font-semibold text-white">Media & documents</h4>
+                      <p className="mt-1 text-xs text-gray-400">Add the visual assets and files that support this listing.</p>
+                    </div>
 
                 <div className="space-y-2">
                   <label className="text-xs uppercase tracking-widest text-gray-400 font-bold block">Cover Image Presentation</label>
@@ -1196,6 +1334,17 @@ export default function Admin() {
                     )}
                   </div>
                 </div>
+
+                  </section>
+                )}
+
+                {formStep === 4 && (
+                  <section className="space-y-5" aria-labelledby="asset-layout-heading">
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#F4C542]">Stage 4 of 6</p>
+                      <h4 id="asset-layout-heading" className="mt-1 text-lg font-semibold text-white">{formData.isVenture ? 'Interactive layout' : 'Property specifications'}</h4>
+                      <p className="mt-1 text-xs text-gray-400">{formData.isVenture ? 'Configure plots and their availability for the project layout.' : 'Add the essential room and built-up area details.'}</p>
+                    </div>
 
                 <div className="flex items-center gap-3 p-4 bg-[#0A0F1E] rounded-2xl border border-white/5">
                   <input
@@ -1597,18 +1746,123 @@ export default function Admin() {
                     </div>
                   </div>
                 )}
+                  </section>
+                )}
 
-                <div className="pt-4 flex gap-3">
-                  <button
-                    type="submit"
-                    className="flex-1 py-4 bg-[#F4C542] hover:bg-[#d9ae36] rounded-full text-[#071120] font-bold text-xs tracking-widest uppercase transition-all duration-300 shadow-soft"
-                  >
-                    Save Specifications
-                  </button>
+                {formStep === 5 && (
+                  <section className="space-y-5" aria-labelledby="location-highlights-heading">
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#F4C542]">Stage 5 of 6</p>
+                      <h4 id="location-highlights-heading" className="mt-1 text-lg font-semibold text-white">Location highlights</h4>
+                      <p className="mt-1 text-xs text-gray-400">Add nearby landmarks and travel distances. Use <span className="text-gray-300">Place | Distance or travel time</span>, for example <span className="text-gray-300">Tirupati Airport | 18 km · 30 min</span>.</p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Google Maps URL</label>
+                      <input
+                        type="url"
+                        placeholder="https://www.google.com/maps/... or a Google Maps Embed URL"
+                        value={formData.locationMapUrl}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, locationMapUrl: e.target.value }))}
+                        className="w-full rounded-xl border border-white/10 bg-[#0A0F1E] px-4 py-3 text-sm text-white focus:border-[#F4C542] focus:outline-none"
+                      />
+                      <p className="text-[10px] leading-relaxed text-gray-500">A normal Google Maps link adds an “Open in Google Maps” button. A Google Maps Embed URL also renders an interactive map on the property page.</p>
+                    </div>
+
+                    <div className="space-y-3 rounded-2xl border border-white/5 bg-[#0A0F1E] p-4">
+                      {formData.locationHighlights.length === 0 && (
+                        <p className="rounded-xl border border-dashed border-white/15 px-4 py-5 text-center text-xs text-gray-500">No nearby locations yet. Add landmarks to show how well connected this project is.</p>
+                      )}
+                      {formData.locationHighlights.map((highlight, index) => (
+                        <div key={`location-highlight-${index}`} className="flex gap-2">
+                          <input
+                            type="text"
+                            value={highlight}
+                            placeholder="e.g. Railway Station | 12 km · 20 min"
+                            onChange={(e) => setFormData((prev) => ({
+                              ...prev,
+                              locationHighlights: prev.locationHighlights.map((item, itemIndex) => itemIndex === index ? e.target.value : item)
+                            }))}
+                            className="min-w-0 flex-1 rounded-xl border border-white/10 bg-[#0F1A3A] px-4 py-3 text-sm text-white focus:border-[#F4C542] focus:outline-none"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setFormData((prev) => ({
+                              ...prev,
+                              locationHighlights: prev.locationHighlights.filter((_, itemIndex) => itemIndex !== index)
+                            }))}
+                            className="rounded-xl border border-red-500/20 px-3 text-xs font-bold uppercase tracking-wider text-red-400 transition-colors hover:bg-red-500/10"
+                            aria-label={`Remove location highlight ${index + 1}`}
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => setFormData((prev) => ({ ...prev, locationHighlights: [...prev.locationHighlights, ''] }))}
+                        className="w-full rounded-xl border border-dashed border-[#F4C542]/50 px-4 py-3 text-xs font-bold uppercase tracking-widest text-[#F4C542] transition-colors hover:bg-[#F4C542]/10"
+                      >
+                        + Add location highlight
+                      </button>
+                    </div>
+                  </section>
+                )}
+
+                {formStep === 6 && (
+                  <section className="space-y-5" aria-labelledby="asset-review-heading">
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#F4C542]">Stage 6 of 6</p>
+                      <h4 id="asset-review-heading" className="mt-1 text-lg font-semibold text-white">Review & publish</h4>
+                      <p className="mt-1 text-xs text-gray-400">Everything is ready for a final check before this asset is saved.</p>
+                    </div>
+
+                    <div className="grid gap-3 rounded-2xl border border-white/10 bg-[#0A0F1E] p-4 text-xs sm:grid-cols-2">
+                      <div><span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Asset</span><p className="mt-1 font-semibold text-white">{formData.name || 'Untitled asset'}</p></div>
+                      <div><span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Category</span><p className="mt-1 font-semibold text-white">{formData.tag}</p></div>
+                      <div><span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Location</span><p className="mt-1 font-semibold text-white">{formData.location || 'Not provided'}</p></div>
+                      <div><span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Listing price</span><p className="mt-1 font-semibold text-white">{formData.price || 'Not provided'}</p></div>
+                      <div><span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Media</span><p className="mt-1 font-semibold text-white">{[formData.image, ...(formData.images || []), ...(formData.videos || []), formData.brochureUrl].filter(Boolean).length} files attached</p></div>
+                      <div><span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Visibility</span><p className="mt-1 font-semibold text-white">{formData.showOnHome ? 'Featured on home page' : 'Projects page only'}</p></div>
+                    </div>
+
+                    <p className="rounded-xl border border-[#F4C542]/20 bg-[#F4C542]/5 p-3 text-xs leading-relaxed text-gray-300">Use the completed steps above to revise any section before publishing.</p>
+                  </section>
+                )}
+
+                <div className="flex flex-col-reverse gap-3 border-t border-white/10 pt-5 sm:flex-row">
+                  {formStep > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => setFormStep((currentStep) => currentStep - 1)}
+                      className="flex-1 rounded-full border border-white/20 py-4 text-xs font-bold uppercase tracking-widest text-white transition-all duration-300 hover:border-white/50"
+                    >
+                      Back
+                    </button>
+                  )}
+                  {formStep < propertyFormSteps.length ? (
+                    <button
+                      type="button"
+                      onClick={advanceFormStep}
+                      className="flex-1 rounded-full bg-[#F4C542] py-4 text-xs font-bold uppercase tracking-widest text-[#071120] shadow-soft transition-all duration-300 hover:bg-[#d9ae36]"
+                    >
+                      Continue to {propertyFormSteps[formStep][1]}
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      className="flex-1 rounded-full bg-[#F4C542] py-4 text-xs font-bold uppercase tracking-widest text-[#071120] shadow-soft transition-all duration-300 hover:bg-[#d9ae36]"
+                    >
+                      {editingItem !== null ? 'Save Asset Changes' : 'Publish Asset'}
+                    </button>
+                  )}
                   <button
                     type="button"
-                    onClick={() => setIsFormOpen(false)}
-                    className="flex-1 py-4 border border-white/20 hover:border-white/50 rounded-full text-white font-bold text-xs tracking-widest uppercase transition-all duration-300"
+                    onClick={() => {
+                      setIsFormOpen(false)
+                      setFormStep(1)
+                    }}
+                    className="flex-1 rounded-full border border-white/20 py-4 text-xs font-bold uppercase tracking-widest text-white transition-all duration-300 hover:border-white/50"
                   >
                     Cancel
                   </button>

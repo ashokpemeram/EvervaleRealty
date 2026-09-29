@@ -174,45 +174,33 @@ export const api = {
   },
 
   uploadFile: async (file) => {
-    try {
-      const formData = new FormData()
-      formData.append('file', file)
-      const token = sessionStorage.getItem('evervale_admin_token')
-      const headers = token ? { 'Authorization': `Bearer ${token}` } : {}
+    const formData = new FormData()
+    formData.append('file', file)
+    const token = sessionStorage.getItem('evervale_admin_token')
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {}
 
-      const res = await customFetch('/api/upload', {
-        method: 'POST',
-        headers,
-        body: formData
-      })
-      return await handleResponse(res)
-    } catch (error) {
-      console.warn('Backend offline: Mocking upload path locally.', error.message)
-      return { url: `/uploads/mock-local-${Date.now()}-${file.name}` }
-    }
+    const res = await customFetch('/api/upload', {
+      method: 'POST',
+      headers,
+      body: formData
+    })
+    return await handleResponse(res)
   },
 
   uploadMultipleFiles: async (files) => {
-    try {
-      const formData = new FormData()
-      for (let i = 0; i < files.length; i++) {
-        formData.append('files', files[i])
-      }
-      const token = sessionStorage.getItem('evervale_admin_token')
-      const headers = token ? { 'Authorization': `Bearer ${token}` } : {}
-
-      const res = await customFetch('/api/upload/multiple', {
-        method: 'POST',
-        headers,
-        body: formData
-      })
-      const data = await handleResponse(res)
-      return data // returns { urls: [...] }
-    } catch (error) {
-      console.warn('Backend offline: Mocking multiple upload paths locally.', error.message)
-      const urls = Array.from(files).map((file, idx) => `/uploads/mock-local-${Date.now()}-${idx}-${file.name}`)
-      return { urls }
+    const formData = new FormData()
+    for (let i = 0; i < files.length; i++) {
+      formData.append('files', files[i])
     }
+    const token = sessionStorage.getItem('evervale_admin_token')
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {}
+
+    const res = await customFetch('/api/upload/multiple', {
+      method: 'POST',
+      headers,
+      body: formData
+    })
+    return await handleResponse(res)
   }
 }
 

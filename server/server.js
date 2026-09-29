@@ -11,16 +11,17 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import uploadRoutes from './routes/uploadRoutes.js'
 
-// Load environment variables
-dotenv.config()
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+// Server credentials live in the project-level .env during local development.
+// Deployment platforms supply the same variables through their environment settings.
+dotenv.config({ path: path.resolve(__dirname, '../.env') })
 
 // Connect to MongoDB Database
 connectDB()
 
 const app = express()
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 
 // Middleware
 app.use(cors())
@@ -43,7 +44,8 @@ app.get('/health', (req, res) => {
 // Fallback error handler
 app.use((err, req, res, next) => {
   console.error(err.stack)
-  res.status(500).json({ message: 'Internal server error: ' + err.message })
+  const statusCode = err.statusCode || (err.code === 'LIMIT_FILE_SIZE' ? 413 : 500)
+  res.status(statusCode).json({ message: err.message || 'Internal server error.' })
 })
 
 const PORT = process.env.PORT || 5000
