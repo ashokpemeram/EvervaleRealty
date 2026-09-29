@@ -4,7 +4,6 @@ import HeroSection from '../components/HeroSection'
 import ServiceCard from '../components/ServiceCard'
 import PropertyCard from '../components/PropertyCard'
 import TestimonialCard from '../components/TestimonialCard'
-import PlotPlanViewer from '../components/PlotPlanViewer'
 import useScrollReveal from '../hooks/useScrollReveal'
 import { api } from '../services/api'
 import {
@@ -70,8 +69,6 @@ const services = [
 export default function Home() {
   const [properties, setProperties] = useState([])
   const [testimonials, setTestimonials] = useState([])
-  const [isViewerOpen, setIsViewerOpen] = useState(false)
-  const [selectedVenture, setSelectedVenture] = useState(null)
   useScrollReveal([properties, testimonials])
 
   const homeProperties = Array.isArray(properties)
@@ -99,11 +96,6 @@ export default function Home() {
       active = false
     }
   }, [])
-
-  const handleViewPlots = (venture) => {
-    setSelectedVenture(venture)
-    setIsViewerOpen(true)
-  }
 
   return (
     <div className="bg-ivory">
@@ -168,7 +160,6 @@ export default function Home() {
                   key={property.name}
                   {...property}
                   delay={index * 120}
-                  onViewPlots={() => handleViewPlots(property)}
                 />
               ))
             ) : (
@@ -318,11 +309,6 @@ export default function Home() {
         </div>
       </section>
       
-      <PlotPlanViewer
-        venture={selectedVenture}
-        isOpen={isViewerOpen}
-        onClose={() => setIsViewerOpen(false)}
-      />
     </div>
   )
 }

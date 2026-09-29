@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import PropertyCard from '../components/PropertyCard'
-import PlotPlanViewer from '../components/PlotPlanViewer'
 import useScrollReveal from '../hooks/useScrollReveal'
 import { api } from '../services/api'
 
@@ -8,8 +7,6 @@ export default function Projects() {
   const [properties, setProperties] = useState([])
 
   const [activeFilter, setActiveFilter] = useState('all')
-  const [isViewerOpen, setIsViewerOpen] = useState(false)
-  const [selectedVenture, setSelectedVenture] = useState(null)
 
   useScrollReveal([properties, activeFilter])
 
@@ -28,11 +25,6 @@ export default function Projects() {
       active = false
     }
   }, [])
-
-  const handleViewPlots = (venture) => {
-    setSelectedVenture(venture)
-    setIsViewerOpen(true)
-  }
 
   // Filter listings based on category selection
   const filteredProperties = Array.isArray(properties)
@@ -92,7 +84,6 @@ export default function Projects() {
                 <PropertyCard
                   {...property}
                   delay={index * 100}
-                  onViewPlots={() => handleViewPlots(property)}
                 />
               </div>
             ))}
@@ -109,14 +100,6 @@ export default function Projects() {
 
       </section>
 
-      {/* SVG Masterplan Floorplan Viewer Modal */}
-      {selectedVenture && (
-        <PlotPlanViewer
-          isOpen={isViewerOpen}
-          onClose={() => setIsViewerOpen(false)}
-          venture={selectedVenture}
-        />
-      )}
     </div>
   )
 }

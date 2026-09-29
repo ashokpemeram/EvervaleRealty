@@ -12,7 +12,6 @@ export default function PropertyCard({
   details,
   delay,
   plots,
-  onViewPlots,
 }) {
   const isVenture = tag === 'VENTURE PLOTS' || (Array.isArray(plots) && plots.length > 0)
   const detailLink = `/properties/${_id || id || 'mock-id'}`
@@ -56,15 +55,12 @@ export default function PropertyCard({
               <span>{details.totalPlots} Total Subdivisions</span>
               <span className="font-semibold text-gold">{details.area}</span>
             </div>
-            <button
-              onClick={(e) => {
-                e.preventDefault()
-                onViewPlots?.()
-              }}
-              className="w-full rounded-2xl bg-gold/10 hover:bg-gold py-2.5 text-center text-xs font-semibold tracking-[0.15em] text-gold hover:text-navy transition-all duration-300 hover:shadow-sm"
+            <Link
+              to={detailLink}
+              className="block w-full rounded-2xl bg-gold/10 hover:bg-gold py-2.5 text-center text-xs font-semibold tracking-[0.15em] text-gold hover:text-navy transition-all duration-300 hover:shadow-sm"
             >
               PLOTS PLAN
-            </button>
+            </Link>
           </div>
         ) : (
           <div className="flex items-center gap-4 text-xs text-navy/70 pt-2">
