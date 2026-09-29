@@ -50,6 +50,7 @@ const propertyFormSteps = [
 export default function Admin() {
   const [activeTab, setActiveTab] = useState('overview')
   const [properties, setProperties] = useState([])
+  const [visibilitySaving, setVisibilitySaving] = useState({})
   const [contact, setContact] = useState({
     address: '',
     phone: '',
@@ -157,6 +158,31 @@ export default function Admin() {
     } catch (error) {
       console.error('Error deleting property:', error)
       alert('Failed to delete property listing.')
+    }
+  }
+
+  const handleToggleShowOnHome = async (item) => {
+    const targetId = item._id
+    if (!targetId || visibilitySaving[targetId]) return
+
+    setVisibilitySaving((prev) => ({ ...prev, [targetId]: true }))
+    try {
+      const updated = await api.updateProperty(targetId, {
+        ...item,
+        showOnHome: !item.showOnHome
+      })
+      setProperties((prev) => prev.map((property) => (
+        property._id === targetId ? updated : property
+      )))
+    } catch (error) {
+      console.error('Error updating home page visibility:', error)
+      alert(error.message || 'Failed to update home page visibility.')
+    } finally {
+      setVisibilitySaving((prev) => {
+        const next = { ...prev }
+        delete next[targetId]
+        return next
+      })
     }
   }
 
@@ -689,11 +715,22 @@ export default function Admin() {
                           : `${item.details.beds}B / ${item.details.baths}B (${item.details.area})`}
                       </td>
                       <td className="p-5">
-                        <span className={`px-3.5 py-1.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider ${
-                          item.showOnHome ? 'bg-teal-500/10 text-teal-400' : 'bg-gray-800 text-gray-400'
-                        }`}>
-                          {item.showOnHome ? 'Yes' : 'No'}
-                        </span>
+                        <button
+                          type="button"
+                          role="switch"
+                          aria-checked={!!item.showOnHome}
+                          aria-label={`Show ${item.name} on home page`}
+                          disabled={!!visibilitySaving[item._id]}
+                          onClick={() => handleToggleShowOnHome(item)}
+                          className="inline-flex items-center gap-2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 disabled:cursor-wait disabled:opacity-60"
+                        >
+                          <span className={`relative h-6 w-11 rounded-full transition-colors ${item.showOnHome ? 'bg-teal-500' : 'bg-gray-700'}`} aria-hidden="true">
+                            <span className={`absolute left-1 top-1 h-4 w-4 rounded-full bg-white shadow transition-transform ${item.showOnHome ? 'translate-x-5' : 'translate-x-0'}`} />
+                          </span>
+                          <span className={`text-[9px] font-extrabold uppercase tracking-wider ${item.showOnHome ? 'text-teal-400' : 'text-gray-400'}`}>
+                            {item.showOnHome ? 'Yes' : 'No'}
+                          </span>
+                        </button>
                       </td>
                       <td className="p-5 text-right space-x-2">
                         <button
