@@ -57,6 +57,7 @@ export default function Contact() {
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [preferredContact, setPreferredContact] = useState('WhatsApp')
+  const [preferredTime, setPreferredTime] = useState('')
   const [message, setMessage] = useState(() => {
     return (ventureName && plotNumber)
       ? `I am interested in acquiring ${plotNumber} at ${ventureName} (listed at ${plotPrice}). Please coordinate a private briefing with my office.`
@@ -74,6 +75,7 @@ export default function Contact() {
       email,
       phone,
       contact: preferredContact,
+      preferredTime,
       message
     }
 
@@ -83,6 +85,7 @@ export default function Contact() {
       setName('')
       setEmail('')
       setPhone('')
+      setPreferredTime('')
       setMessage('')
     } catch (error) {
       console.error('Error submitting inquiry:', error)
@@ -117,7 +120,7 @@ export default function Contact() {
               className="reveal rounded-4xl bg-navy p-6 text-white shadow-soft"
               data-animate
             >
-              <h2 className="text-lg font-semibold text-gold">Our Studio</h2>
+              {/* <h2 className="text-lg font-semibold text-gold">Our Studio</h2> */}
               <div className="mt-5 space-y-4 text-sm text-white/80">
                 <div className="flex items-start gap-3">
                   <MapPinIcon className="mt-0.5 h-5 w-5 text-gold" />
@@ -152,7 +155,7 @@ export default function Contact() {
                   Connect With Us
                 </p>
                 <div className="mt-3 flex gap-3 text-gold">
-                  {contact.linkedin && (
+                  {/* {contact.linkedin && (
                     <a
                       href={contact.linkedin}
                       target="_blank"
@@ -162,7 +165,7 @@ export default function Contact() {
                     >
                       <LinkedinIcon className="h-4 w-4" />
                     </a>
-                  )}
+                  )} */}
                   {contact.instagram && (
                     <a
                       href={contact.instagram}
@@ -174,7 +177,7 @@ export default function Contact() {
                       <InstagramIcon className="h-4 w-4" />
                     </a>
                   )}
-                  {contact.twitter && (
+                  {/* {contact.twitter && (
                     <a
                       href={contact.twitter}
                       target="_blank"
@@ -184,7 +187,7 @@ export default function Contact() {
                     >
                       <XIcon className="h-4 w-4" />
                     </a>
-                  )}
+                  )} */}
                   {contact.facebook && (
                     <a
                       href={contact.facebook}
@@ -293,6 +296,22 @@ export default function Contact() {
                         <option>In-Person Visit</option>
                       </select>
                     </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="preferred-time"
+                      className="text-xs uppercase tracking-[0.2em] text-navy/50 font-bold"
+                    >
+                      Preferred Time to Contact
+                    </label>
+                    <input
+                      id="preferred-time"
+                      type="time"
+                      value={preferredTime}
+                      onChange={(e) => setPreferredTime(e.target.value)}
+                      className="w-full rounded-2xl border border-navy/10 bg-ivory px-4 py-3 text-sm focus:border-gold focus:outline-none"
+                      required
+                    />
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs uppercase tracking-[0.2em] text-navy/50 font-bold">

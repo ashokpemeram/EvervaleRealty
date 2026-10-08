@@ -81,6 +81,7 @@ export const seedData = async () => {
           email: 'ramachandra@example.com',
           phone: '+91 94401 23456',
           contact: 'Phone',
+          preferredTime: '10:00',
           message: 'Interested in Plot 1 in Suchithra Gardens, Srikalahasti. Please contact me regarding pricing and registration details.'
         },
         {
@@ -89,6 +90,7 @@ export const seedData = async () => {
           email: 'lakshmi.priya@example.com',
           phone: '+91 98480 12345',
           contact: 'Email',
+          preferredTime: '15:00',
           message: 'I would like to enquire about the availability of farmland plots in Mayuri Farmlands, Tirupati.'
         }
       ])

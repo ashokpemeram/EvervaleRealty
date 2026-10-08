@@ -879,6 +879,9 @@ export default function Admin() {
                           <span className="px-3 py-1.5 rounded-full text-[9px] font-extrabold uppercase bg-teal-500/10 text-teal-400 tracking-wider">
                             {lead.contact}
                           </span>
+                          <p className="mt-2 text-[10px] text-gray-400">
+                            Preferred time: {lead.preferredTime || 'Not specified'}
+                          </p>
                         </td>
                         <td className="p-5 text-gray-300 max-w-[320px] leading-relaxed break-words">{lead.message}</td>
                         <td className="p-5 text-right">

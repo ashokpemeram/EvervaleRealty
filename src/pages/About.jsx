@@ -53,6 +53,24 @@ const partners = [
     image:
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
   },
+  {
+    name: 'Lokesh Sreenivasan',
+    role: 'Chief Brand officer',
+    image:
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
+  },
+  {
+    name: 'Ganesh',
+    role: 'Chief Growth officer',
+    image:
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
+  },
+  {
+    name: 'Ganesh',
+    role: 'Chief marketing officer',
+    image:
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
+  },
 ]
 
 export default function About() {
@@ -197,7 +215,7 @@ At Evervale Realty LLP, we believe the right property is more than an asset—it
               When you invest with Evervale Realty, you are working directly with people who have staked their reputation on every property they recommend.
             </p>
           </div>
-          <div className="mt-10 grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
+          <div className="mt-10 grid gap-8 md:grid-cols-3 max-w-8xl mx-auto">
             {partners.map((partner, index) => (
               <div
                 key={partner.name}
@@ -218,11 +236,11 @@ At Evervale Realty LLP, we believe the right property is more than an asset—it
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold mt-1">
                     {partner.role}
                   </p>
-                  <p className="text-sm text-navy/60 mt-4 leading-relaxed">
+                  {/* <p className="text-sm text-navy/60 mt-4 leading-relaxed">
                     {partner.name === 'Yasodha Neelam' 
                       ? 'Yasodha leads Evervale Realty with a vision of absolute transparency. With deep expertise in AP land registrations and legal frameworks, she ensures every plot and farmland layout is 100% compliant and secure.'
                       : 'Ganesh brings extensive on-ground market intelligence across Tirupati and Srikalahasti. He personally hand-selects every property, analyzing infrastructure growth and connectivity corridors.'}
-                  </p>
+                  </p> */}
                 </div>
               </div>
             ))}

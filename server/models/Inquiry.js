@@ -22,6 +22,10 @@ const inquirySchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  preferredTime: {
+    type: String,
+    required: true
+  },
   message: {
     type: String,
     required: true

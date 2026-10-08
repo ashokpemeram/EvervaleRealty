@@ -16,7 +16,7 @@ export const getInquiries = async (req, res) => {
 // @route   POST /api/inquiries
 // @access  Public
 export const createInquiry = async (req, res) => {
-  const { id, name, email, phone, contact, message } = req.body
+  const { id, name, email, phone, contact, preferredTime, message } = req.body
 
   try {
     const inquiry = new Inquiry({
@@ -25,6 +25,7 @@ export const createInquiry = async (req, res) => {
       email,
       phone,
       contact,
+      preferredTime,
       message
     })
 
