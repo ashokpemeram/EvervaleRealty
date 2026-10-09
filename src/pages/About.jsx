@@ -1,6 +1,11 @@
 import useScrollReveal from '../hooks/useScrollReveal'
 import { Link } from 'react-router-dom'
 import { PortfolioIcon } from '../components/Icons'
+import ganesh from '../../public/ganesh.jpeg'
+import ranjith from '../../public/ranjith.jpeg'
+import kiran from '../../public/kiran.jpeg'
+import lokesh from '../../public/lokesh.jpeg'
+import yasodha from '../../public/yasodha.jpeg'
 
 const stats = [
   {
@@ -44,33 +49,28 @@ const partners = [
   {
     name: 'Yasodha Neelam',
     role: 'Founder & Managing Partner',
-    image:
-      'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80',
+    image: yasodha,
   },
   {
-    name: 'Ganesh',
+    name: 'S Ganesh',
     role: 'Co-Founder',
-    image:
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
+    image: ganesh
   },
   {
-    name: 'Lokesh Sreenivasan',
+    name: 'S Lokesh',
     role: 'Chief Brand officer',
-    image:
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
+    image: lokesh,
   },
   {
-    name: 'Ganesh',
+    name: 'K Ranjith Kumar',
     role: 'Chief Growth officer',
-    image:
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
+    image: ranjith,
   },
   {
-    name: 'Ganesh',
+    name: 'P Kiran Kumar',
     role: 'Chief marketing officer',
-    image:
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
-  },
+    image: kiran,
+  }
 ]
 
 export default function About() {
@@ -227,7 +227,7 @@ At Evervale Realty LLP, we believe the right property is more than an asset—it
                   <img
                     src={partner.image}
                     alt={partner.name}
-                    className="h-64 w-full rounded-3xl object-cover"
+                    className="h-64 w-full rounded-3xl object-cover object-top grayscale"
                     loading="lazy"
                   />
                   <h3 className="mt-5 text-xl font-semibold text-navy">
