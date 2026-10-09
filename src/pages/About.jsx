@@ -44,27 +44,27 @@ const partners = [
   {
     name: 'Yasodha Neelam',
     role: 'Founder & Managing Partner',
-    image: '/yasodha.jpeg',
+    image: '/yasodha.png',
   },
   {
     name: 'S Ganesh',
     role: 'Co-Founder',
-    image: '/ganesh.jpeg'
+    image: '/ganesh.png'
   },
   {
     name: 'S Lokesh',
     role: 'Chief Brand officer',
-    image: '/lokesh.jpeg',
+    image: '/lokesh.png',
   },
   {
     name: 'K Ranjith Kumar',
     role: 'Chief Growth officer',
-    image: '/ranjith.jpeg',
+    image: '/ranjith.png',
   },
   {
     name: 'P Kiran Kumar',
     role: 'Chief marketing officer',
-    image: '/kiran.jpeg',
+    image: '/kiran.png',
   }
 ]
 
