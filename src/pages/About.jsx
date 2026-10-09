@@ -1,11 +1,6 @@
 import useScrollReveal from '../hooks/useScrollReveal'
 import { Link } from 'react-router-dom'
 import { PortfolioIcon } from '../components/Icons'
-import ganesh from '../assets/ganesh.jpeg'
-import ranjith from '../assets/ranjith.jpeg'
-import kiran from '../assets/kiran.jpeg'
-import lokesh from '../assets/lokesh.jpeg'
-import yasodha from '../assets/yasodha.jpeg'
 
 const stats = [
   {
